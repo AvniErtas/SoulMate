@@ -179,6 +179,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+
                   Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -222,5 +223,6 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         ),
       ),
     );
+    return carouselSlider;
   }
 }
