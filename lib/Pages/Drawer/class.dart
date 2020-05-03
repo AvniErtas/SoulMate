@@ -1,6 +1,7 @@
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/mainpage.dart';
 import 'package:soulmate/Pages/Drawer/settings.dart';
+import 'package:soulmate/Pages/profile.dart';
 
 import '../giris.dart';
 
@@ -17,6 +18,8 @@ class ClassBuilder {
     register<GirisSayfasi>(() => GirisSayfasi());
     register<CalendarPage>(() => CalendarPage());
     register<SettingsPage>(() => SettingsPage());
+    register<UserProfilePage>(() => UserProfilePage());
+
   }
 
   static dynamic fromString(String type) {

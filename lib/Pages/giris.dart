@@ -4,10 +4,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:kf_drawer/kf_drawer.dart';
+import 'package:soulmate/Pages/Kategoriler.dart';
+import 'package:soulmate/Pages/Kesfet/kesfet.dart';
+import 'package:soulmate/Pages/sonuc_inceleme.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
+import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 
-
-class GirisSayfasi  extends KFDrawerContent {
+class GirisSayfasi extends KFDrawerContent {
   @override
   _GirisSayfasiState createState() => _GirisSayfasiState();
 }
@@ -29,25 +32,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       vsync: this,
       duration: myDuration,
     );
-
-    siralianimasyon = SequenceAnimationBuilder()
-        .addAnimatable(
-            animatable: Tween<double>(begin: -200, end: 200), // Opacity için
-            from: Duration.zero,
-            to: Duration(seconds: 1),
-            tag: "translate1")
-        .addAnimatable(
-            animatable: Tween<double>(begin: 400, end: 5),
-            from: Duration(seconds: 1),
-            to: Duration(seconds: 2),
-            tag: "translate2")
-        .addAnimatable(
-            animatable: Tween<double>(begin: -200, end: 200),
-            from: Duration(seconds: 2),
-            to: Duration(seconds: 3),
-            tag: "translate3")
-        .animate(_controller);
-    
+    siralianimasyon = sequenceAnimation();
     _controller.forward();
   }
 
@@ -59,8 +44,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
-   width = MediaQuery.of(context).size.width;
-   height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.blue,
       body: SingleChildScrollView(
@@ -89,37 +74,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                         ),
                       ],
                     ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          width: width,
-                          height: height * 0.55,
-                        ),
-                        Transform.translate(
-                          offset:
-                              Offset(siralianimasyon["translate1"].value, 0),
-                          child: circleImages("testsec"),
-                        ),
-                        Transform.translate(
-                          offset: Offset(siralianimasyon["translate2"].value,
-                              height * 0.15),
-                          child: circleImages("sonucincele"),
-                        ),
-                        Transform.translate(
-                          offset: Offset(siralianimasyon["translate3"].value,
-                              height * 0.3),
-                          child: circleImages("kesfet"),
-                        ),
-                        Positioned(
-                          top: height * 0.5,
-                          left: width * 0.015,
-                          child: Text(
-                            "Popüler Testler",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
+                    testisecsonucincelekesfet(),
                     cardDesingTests(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -138,7 +93,75 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
+  SequenceAnimation sequenceAnimation() {
+    return  SequenceAnimationBuilder()
+        .addAnimatable(
+        animatable: Tween<double>(begin: -200, end: 200), // Opacity için
+        from: Duration.zero,
+        to: Duration(milliseconds: 500),
+        tag: "translate1")
+        .addAnimatable(
+        animatable: Tween<double>(begin: 400, end: 5),
+        from: Duration(milliseconds: 500),
+        to: Duration(milliseconds: 1000),
+        tag: "translate2")
+        .addAnimatable(
+        animatable: Tween<double>(begin: -200, end: 200),
+        from: Duration(milliseconds: 1000),
+        to: Duration(milliseconds: 1500),
+        tag: "translate3")
+        .animate(_controller);
+  }
+  Widget testisecsonucincelekesfet (){
 
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: width,
+          height: height * 0.55,
+        ),
+        Transform.translate(
+          offset:
+          Offset(siralianimasyon["translate1"].value, 0),
+          child: InkWell(child: circleImages("testsec"),onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => KategoriBolumu()));
+          },),
+        ),
+        Transform.translate(
+          offset: Offset(siralianimasyon["translate2"].value,
+              height * 0.15),
+          child: InkWell(child: circleImages("sonucincele"),onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SonucInceleme()));
+          },),
+        ),
+        Transform.translate(
+          offset: Offset(siralianimasyon["translate3"].value,
+              height * 0.3),
+          child: InkWell(child: circleImages("kesfet"),onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Kesfet()));
+          },),
+        ),
+        Positioned(
+          top: height * 0.5,
+          left: width * 0.015,
+          child: Text(
+            "Popüler Testler",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      ],
+    );
+
+  }
   Widget circleImages(String title) {
     return Container(
       height: height * 0.25,
@@ -152,77 +175,4 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
   }
 
-  Widget cardDesingTests() {
-    CarouselSlider carouselSlider = CarouselSlider.builder(
-      itemCount: 5,
-      itemBuilder: (BuildContext context, int itemIndex) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(colors: [
-                  Color(0xff6DC8F3),
-                  Color(0xff73A1F9)
-                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xff73A1F9),
-                    blurRadius: 5,
-                    //offset: Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "En Sevdiğin Oyun Satranç Mı ?",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, bottom: 20),
-                        child: Text(
-                          '${itemIndex + 1}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              top: 0,
-              child: CustomPaint(
-                size: Size(100, 150),
-                painter: CustomCardShapePainter(12,
-                  Color(0xff6DC8F3),
-                  Color(0xff73A1F9),),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-    return carouselSlider;
-  }
 }

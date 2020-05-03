@@ -5,8 +5,6 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
-import 'package:soulmate/Pages/Drawer/mainpage.dart';
-
 import 'Pages/giris.dart';
 
 void main() {
@@ -38,11 +36,18 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   KFDrawerController _drawerController;
-
+  List<String> tumSayfalar;
+  int selectedIndex = 0;
   @override
   void initState() {
     super.initState();
-    _drawerController = drawerController();
+    tumSayfalar = [
+      "GirisSayfasi",
+      "CalendarPage",
+      "SettingsPage",
+      "UserProfilePage",
+    ];
+  //  _drawerController = drawerController();
   }
   @override
   Widget build(BuildContext context) {
@@ -51,13 +56,15 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       body: drawer(),
     );
   }
+
   Widget drawer() {
     return KFDrawer(
+
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
 //        menuPadding: EdgeInsets.all(0.0),
 //        scrollable: true,
-      controller: _drawerController,
+      controller: drawerController(),
       header: Align(
         alignment: Alignment.centerLeft,
         child: Container(
@@ -99,7 +106,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   }
   KFDrawerController drawerController() {
     return  KFDrawerController(
-      initialPage: ClassBuilder.fromString('GirisSayfasi'),
+
+      initialPage: ClassBuilder.fromString(tumSayfalar[selectedIndex]),
       items: [
         KFDrawerItem.initWithPage(
           text: Text('MAIN', style: TextStyle(color: Colors.white)),
@@ -127,7 +135,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   }
   bottomBarDesign() {
     return CurvedNavigationBar(
-      index: 0,
+      index: selectedIndex,
       height: 50.0,
       items: <Widget>[
         Icon(Icons.home, size: 30),
@@ -142,7 +150,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       animationDuration: Duration(milliseconds: 600),
       onTap: (index) {
         setState(() {
-         // _page = index;
+          selectedIndex = index;
         });
       },
     );
