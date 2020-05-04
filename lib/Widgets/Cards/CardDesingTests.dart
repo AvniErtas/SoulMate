@@ -1,16 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:soulmate/Pages/evethayir.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 
-Widget cardDesingTests() {
-
+Widget cardDesingTests(double aspectRatio) {
   CarouselSlider carouselSlider = CarouselSlider.builder(
+    aspectRatio: aspectRatio,
     itemCount: 5,
     itemBuilder: (BuildContext context, int itemIndex) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EvetHayirBolumu()));
         },
         child: Stack(
           children: <Widget>[

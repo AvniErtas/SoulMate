@@ -273,7 +273,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         )),
                   ),
                   SizedBox(height: 8.0),
-                 cardDesingTests(),
+                 cardDesingTests(3),
                 ],
               ),
             ),

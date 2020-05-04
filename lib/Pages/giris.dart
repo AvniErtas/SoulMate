@@ -75,7 +75,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                       ],
                     ),
                     testisecsonucincelekesfet(),
-                    cardDesingTests(),
+                    cardDesingTests(16 / 9,),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
@@ -85,7 +85,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           )),
                     ),
-                    cardDesingTests(),
+                    cardDesingTests(16 / 9,),
                   ],
                 ),
               );
