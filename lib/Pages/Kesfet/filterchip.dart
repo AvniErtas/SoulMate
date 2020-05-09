@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soulmate/Tools/kategoriResimleri.dart';
 
 class FilterChipDisplay extends StatefulWidget {
   @override
@@ -6,6 +7,9 @@ class FilterChipDisplay extends StatefulWidget {
 }
 
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
+  List<int> secilenler = new List<int>();
+  List<bool> isSecildi = new List<bool>(kategoriIsmi.length);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -45,12 +49,8 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                 spacing: 5.0,
                 runSpacing: 3.0,
                 children: <Widget>[
-                  filterChipWidget(chipName: 'Elevator'),
-                  filterChipWidget(chipName: 'Washer/Dryer'),
-                  filterChipWidget(chipName: 'Fireplace'),
-                  filterChipWidget(chipName: 'Dogs ok'),
-                  filterChipWidget(chipName: 'Cats ok'),
-                  filterChipWidget(chipName: 'Wheelchair access'),
+                  for(int i=0 ; i<kategoriIsmi.length ; i++)
+                  filterChip(kategoriIsmi[i],i),
                 ],
               )),
             ),
@@ -58,7 +58,10 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                debugPrint(secilenler.toString());
+
+              },
               color: Colors.green,
               child: Text(
                 "Filtrele",
@@ -74,7 +77,35 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
       ),
     );
   }
-}
+
+  Widget filterChip (String chipName,int index) {
+    var _isSelected = false;
+
+
+    return FilterChip(
+      label: Text(chipName),
+      labelStyle: TextStyle(
+          color: Color(0xff6200ee),
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold),
+      selected: _isSelected,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      backgroundColor: Color(0xffededed),
+      onSelected: (isSelected) {
+        setState(() {
+          debugPrint("girdim amk "+index.toString());
+          _isSelected = isSelected;
+          if(isSelected)
+          secilenler.add(index);
+          else secilenler.remove(index);
+        });
+      },
+      selectedColor: Color(0xffeadffd),
+    );
+  }
+  }
 
 Widget _titleContainer(String myTitle) {
   return Text(

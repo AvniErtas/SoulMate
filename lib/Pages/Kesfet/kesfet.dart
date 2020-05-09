@@ -7,9 +7,12 @@ import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 
 class Kesfet extends StatelessWidget {
   double height;
+  double width;
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: appBarTasarim("title"),
@@ -79,15 +82,15 @@ class Kesfet extends StatelessWidget {
                 child: FadeInImage(
                   image: NetworkImage("imageurl"),
                   fit: BoxFit.cover,
-                  width: 80.0,
-                  height: 80.0,
+                  width: width/6,
+                  height: height/10,
                   placeholder: AssetImage("assets/profile.jpeg"),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
-                  "Eum perferendis voluptatibus qui illo. Nemo quos voluptatum reiciendis labore reprehenderit iure vel. Optio quod nihil voluptatibus labore ab odio.",
+                  "Eum perferendis voluptatibus qui illo. Nemo quos voluptatum reiciendluptatibus labore ab odioum reiciendluptatibus labore ab odio.",
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: TextStyle(fontSize: 14,color: Colors.white),
