@@ -125,8 +125,8 @@ Widget profileCardDesign(double yukseklik, double genislik) {
               ),
             ),
             Container(
-              height: 125,
-              width: 125,
+              height: height/1.2,
+              width: width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -140,21 +140,21 @@ Widget profileCardDesign(double yukseklik, double genislik) {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        height: 50,
-                        width: 50,
+                        height: height/2.5,       // 2 TARAFTA HEIGHT EŞİT OLSUN DİYE ELLEME
+                        width: height/2.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(height)),
-                          color: Colors.blue.shade300,
+                          color: Colors.indigoAccent,
                         ),
                         child: Text("Test Çöz",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
                       ),
                       Container(
                         alignment: Alignment.center,
-                        height: 50,
-                        width: 50,
+                        height: height/2.5,
+                        width: height/2.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(height)),
-                          color: Colors.blue.shade300,
+                          color: Colors.indigoAccent,
                         ),
                         child: Text("Ekle",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
                       ),

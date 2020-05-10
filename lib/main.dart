@@ -5,6 +5,7 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
+import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'Pages/giris.dart';
 
 void main() {
@@ -44,7 +45,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     tumSayfalar = [
       "GirisSayfasi",
       "CalendarPage",
-      "SettingsPage",
+      "SettingsOnePage",
       "UserProfilePage",
     ];
   //  _drawerController = drawerController();
@@ -110,25 +111,25 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       initialPage: ClassBuilder.fromString(tumSayfalar[selectedIndex]),
       items: [
         KFDrawerItem.initWithPage(
-          text: Text('MAIN', style: TextStyle(color: Colors.white)),
+          text: Text('ANASAYFA', style: TextStyle(color: Colors.white)),
           icon: Icon(Icons.home, color: Colors.white),
           page: GirisSayfasi(),
         ),
         KFDrawerItem.initWithPage(
           text: Text(
-            'CALENDAR',
+            'SORU HAZIRLA',
             style: TextStyle(color: Colors.white),
           ),
           icon: Icon(Icons.calendar_today, color: Colors.white),
-          page: CalendarPage(),
+          page: SoruSecmeVeHazirlama(),
         ),
         KFDrawerItem.initWithPage(
           text: Text(
-            'SETTINGS',
+            'AYARLAR',
             style: TextStyle(color: Colors.white),
           ),
           icon: Icon(Icons.settings, color: Colors.white),
-          page: ClassBuilder.fromString('SettingsPage'),
+          page: ClassBuilder.fromString('SettingsOnePage'),
         ),
       ],
     );
@@ -138,14 +139,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       index: selectedIndex,
       height: 50.0,
       items: <Widget>[
-        Icon(Icons.home, size: 30),
-        Icon(Icons.send, size: 30),
-        Icon(Icons.message, size: 30),
-        Icon(Icons.account_circle, size: 30),
+        Icon(Icons.home, size: 30,color: Colors.white,),
+        Icon(Icons.send, size: 30,color: Colors.white,),
+        Icon(Icons.message, size: 30,color: Colors.white,),
+        Icon(Icons.account_circle, size: 30,color: Colors.white,),
       ],
-      color: Colors.white,
-      buttonBackgroundColor: Colors.white,
-      backgroundColor: Colors.blueAccent,
+      color: Colors.indigo,
+      buttonBackgroundColor: Colors.indigo,
+      backgroundColor: Colors.white,
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 600),
       onTap: (index) {

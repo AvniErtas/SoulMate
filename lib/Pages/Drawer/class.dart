@@ -1,7 +1,7 @@
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/mainpage.dart';
-import 'package:soulmate/Pages/Drawer/settings.dart';
 import 'package:soulmate/Pages/profile.dart';
+import 'package:soulmate/Pages/settings_yeni.dart';
 
 import '../giris.dart';
 
@@ -17,7 +17,7 @@ class ClassBuilder {
   static void registerClasses() {
     register<GirisSayfasi>(() => GirisSayfasi());
     register<CalendarPage>(() => CalendarPage());
-    register<SettingsPage>(() => SettingsPage());
+    register<SettingsOnePage>(() => SettingsOnePage());
     register<UserProfilePage>(() => UserProfilePage());
 
   }

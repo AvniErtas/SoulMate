@@ -52,6 +52,53 @@ class GradientColors {
     Color(0xff9a8478),
   ]);
 
+  static LinearGradient Background1 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff43C6AC),
+    Color(0xff191654),
+  ]);
+
+  static LinearGradient Background2 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff3a6186),
+    Color(0xff89253e),
+  ]);
+
+  static LinearGradient Background3 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff4ecdc4),
+    Color(0xff556270),
+  ]);
+
+  static LinearGradient Background4 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xffbe93c5),
+    Color(0xff7bc6cc),
+  ]);
+  static LinearGradient Background5 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xffe96443),
+    Color(0xff904e95),
+  ]);
+  static LinearGradient Background6 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff4b79a1),
+    Color(0xff283e51),
+  ]);
+  static LinearGradient Background7 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff2980b9),
+    Color(0xff2c3e50),
+  ]);
+  static LinearGradient Background8 = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff2c3e50),
+    Color(0xff3498db),
+  ]);
+
+  static LinearGradient CardColor = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff6DC8F3),
+    Color(0xff73A1F9),
+  ]);
+
+  static LinearGradient beyaz = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xffffffff),
+    Color(0xffffffff),
+  ]);
+
+
   static LinearGradient taitanum = buildGradient(_beginAlignment, _endAlignment, const [
     Color(0xff283048),
     Color(0xff859398),

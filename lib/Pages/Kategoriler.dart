@@ -22,7 +22,7 @@ Widget kategoriler() {
       appBar: appBarTasarim(""),
       body: Container(
         decoration: BoxDecoration(
-          gradient: GradientColors.arkaplan,
+          gradient: GradientColors.Background1,
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -58,7 +58,7 @@ Widget kategoriler() {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Testler(kategoriIsim)));
+                builder: (context) => Testler(false)));
       },
       child: GradientCard(
         margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
