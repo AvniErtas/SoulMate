@@ -1,15 +1,19 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
+import 'package:soulmate/blocs/locator.dart';
 import 'Pages/giris.dart';
+import 'blocs/test_bloc.dart';
 
 void main() {
   ClassBuilder.registerClasses();
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -22,7 +26,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainWidget(),
+      home: BlocProvider<TestBloc>(
+          create: (context)=>TestBloc(),
+          child: MainWidget()),
     );
   }
 }

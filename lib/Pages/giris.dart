@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
@@ -11,6 +12,7 @@ import 'package:soulmate/Pages/sonuc_inceleme.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/blocs/bloc.dart';
 import 'package:soulmate/model/test.dart';
 
 import 'evethayir.dart';
@@ -42,11 +44,41 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     siralianimasyon = sequenceAnimation();
     _controller.forward();
 
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test başlığıdır 1 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 2 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 3 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 4 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 5 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test başlığıdır 1 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 2 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 3 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 4 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -57,6 +89,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
+    final _testBloc = BlocProvider.of<TestBloc>(context);
+
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -92,7 +126,26 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),
                       testisecsonucincelekesfet(),
-                      cardDesingTests(testler: testler,onClick: (itemIndex) => onClickTest(itemIndex) ),
+                      BlocBuilder<TestBloc,TestState>(
+                          bloc: _testBloc,
+                          builder: (context, TestState state) {
+                            if (state is TestUninitialized) {
+                              return Text("UNINIT");
+                            } else if (state is TestLoading) {
+                              return new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                            } else if (state is TestLoaded) {
+                              return cardDesingTests(
+                                  testler: state.Tests,
+                                  onClick: (itemIndex) =>
+                                      onClickTest(itemIndex));
+                            } else if (state is TestError) {
+                              return Text("İnternet yok amk");
+                            }else {
+                              Container();
+                            }
+                          }),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
@@ -112,10 +165,15 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
+
   Function onClickTest(int secilenSoru) {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => EvetHayirBolumu(testler[secilenSoru].testAdi)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                EvetHayirBolumu(testler[secilenSoru].testAdi)));
   }
+
   SequenceAnimation sequenceAnimation() {
     return SequenceAnimationBuilder()
         .addAnimatable(
@@ -168,8 +226,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           child: InkWell(
             child: circleImages("kesfet"),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Testler(true)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Testler(true)));
             },
           ),
         ),
