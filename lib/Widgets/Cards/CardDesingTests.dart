@@ -1,16 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:soulmate/Pages/evethayir.dart';
 import 'package:soulmate/Pages/profile.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
-import 'package:soulmate/Widgets/Cards/circle%C4%B1mage.dart';
+import 'package:soulmate/model/test.dart';
 
-Widget cardDesingTests() {
-  CarouselSlider carouselSlider = CarouselSlider.builder(
-    itemCount: 5,
+import 'circleimage.dart';
+
+CarouselSlider cardDesingTests({@required List<Test> testler,Function onClick,Function pageChanged}) {
+
+  return  CarouselSlider.builder(
+    itemCount: testler.length,
+    onPageChanged: (index) => pageChanged(index),
+
     itemBuilder: (BuildContext context, int itemIndex) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onClick(itemIndex);
+        },
         child: Stack(
           children: <Widget>[
             Container(
@@ -53,7 +61,7 @@ Widget cardDesingTests() {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "En Sevdiğin Oyun Satranç Mı ?",
+                      testler[itemIndex].testAdi,
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
@@ -66,7 +74,7 @@ Widget cardDesingTests() {
                     Padding(
                       padding: const EdgeInsets.only(right: 20, bottom: 20),
                       child: Text(
-                        '${itemIndex + 1}',
+                        '${itemIndex + 1}/${testler.length}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -79,8 +87,6 @@ Widget cardDesingTests() {
       ),
     ),
   );
-
-  return carouselSlider;
 }
 
 Widget profileCardDesign(double yukseklik, double genislik) {
@@ -98,8 +104,8 @@ Widget profileCardDesign(double yukseklik, double genislik) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              height: height/1.5,
-              width: width/1.5,
+              height: height / 1.5,
+              width: width / 1.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                     height), // height yazdım çünkü ekran ne olursa olsun tamamen yuvarlak yapıcak.
@@ -125,7 +131,7 @@ Widget profileCardDesign(double yukseklik, double genislik) {
               ),
             ),
             Container(
-              height: height/1.2,
+              height: height / 1.2,
               width: width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -140,25 +146,35 @@ Widget profileCardDesign(double yukseklik, double genislik) {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        height: height/2.5,       // 2 TARAFTA HEIGHT EŞİT OLSUN DİYE ELLEME
-                        width: height/2.5,
+                        height: height /
+                            2.5, // 2 TARAFTA HEIGHT EŞİT OLSUN DİYE ELLEME
+                        width: height / 2.5,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(height)),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(height)),
                           color: Colors.indigoAccent,
                         ),
-                        child: Text("Test Çöz",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                        child: Text(
+                          "Test Çöz",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Container(
                         alignment: Alignment.center,
-                        height: height/2.5,
-                        width: height/2.5,
+                        height: height / 2.5,
+                        width: height / 2.5,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(height)),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(height)),
                           color: Colors.indigoAccent,
                         ),
-                        child: Text("Ekle",style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                        child: Text(
+                          "Ekle",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-
                     ],
                   ),
                 ],

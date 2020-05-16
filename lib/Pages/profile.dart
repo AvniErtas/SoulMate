@@ -5,6 +5,7 @@ import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/model/test.dart';
 
 class UserProfilePage  extends KFDrawerContent {
   @override
@@ -26,6 +27,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
   final String _scores = "450";
 
   double heightMedia;
+
+  List<Test> testler = new List<Test>();
+  
+  
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -236,7 +241,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
-
+  @override
+  void initState() {
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur XX ???'));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     heightMedia = MediaQuery.of(context).size.height;
@@ -273,7 +286,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         )),
                   ),
                   SizedBox(height: 8.0),
-                 cardDesingTests(),
+                 cardDesingTests(testler: testler),
                 ],
               ),
             ),
@@ -282,4 +295,5 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+
 }

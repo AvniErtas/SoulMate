@@ -11,6 +11,9 @@ import 'package:soulmate/Pages/sonuc_inceleme.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/model/test.dart';
+
+import 'evethayir.dart';
 
 class GirisSayfasi extends KFDrawerContent {
   @override
@@ -27,6 +30,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   Animation animation2;
   SequenceAnimation siralianimasyon;
 
+  List<Test> testler = new List<Test>();
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +41,12 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
     siralianimasyon = sequenceAnimation();
     _controller.forward();
+
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test başlığıdır 1 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 2 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 3 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 4 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -81,7 +92,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),
                       testisecsonucincelekesfet(),
-                      cardDesingTests(),
+                      cardDesingTests(testler: testler,onClick: (itemIndex) => onClickTest(itemIndex) ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
@@ -101,7 +112,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
-
+  Function onClickTest(int secilenSoru) {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => EvetHayirBolumu(testler[secilenSoru].testAdi)));
+  }
   SequenceAnimation sequenceAnimation() {
     return SequenceAnimationBuilder()
         .addAnimatable(

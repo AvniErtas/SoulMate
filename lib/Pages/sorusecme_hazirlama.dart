@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/model/sorular.dart';
 
 class SoruSecmeVeHazirlama extends KFDrawerContent {
   @override
@@ -47,12 +48,14 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "İstediğin Soru Tipini Seç",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
               SizedBox(
@@ -98,8 +101,8 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                           width: height * 0.10 * animatedContainerSize[1],
                           decoration: new BoxDecoration(
                             image: DecorationImage(
-                              image:
-                                  new AssetImage('images/digericonlar/abcd.png'),
+                              image: new AssetImage(
+                                  'images/digericonlar/abcd.png'),
                               fit: BoxFit.contain,
                             ),
                             shape: BoxShape.circle,
@@ -149,7 +152,10 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
               ),
               Text(
                 "Sorunu Hazirla",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               Slider(),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -232,7 +238,6 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
@@ -478,8 +483,17 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   }
 
   void kaydet() {
-    int soru_sayisi = 5;
-    for (int i = 0; i < soru_sayisi; i++) {
+    bool hasNull = false;
+
+    _soru_siklari.forEach((element) {
+      if (element == null) hasNull = true;
+    });
+    if (hasNull)
+      showEmptyDialog();
+    else
+      showBitirmeDialog();
+
+    /* for (int i = 0; i < soru_sayisi; i++) {
       if(_soru_controller[i].text.isNotEmpty) {
         String soru;
         List<String> siklar;
@@ -515,7 +529,51 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
 
       }
 
-    }
+    }*/
+  }
+
+  showEmptyDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Tüm cevapları işaretleyiniz!"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Tamam"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  showBitirmeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Testi bitirmek istiyor musunuz?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+                child: new Text("Evet"),
+                onPressed: () {
+                  // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
+                  //   Paylasilan paylasilan = new Paylasilan("paylasimID", "paylasilanUid", siklar);
+                }),
+          ],
+        );
+      },
+    );
   }
 
   sikButton() {

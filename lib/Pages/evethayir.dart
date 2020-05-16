@@ -4,8 +4,15 @@ import 'dart:ui' as ui;
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
+import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/model/paylasilan.dart';
+import 'package:soulmate/model/paylasim.dart';
+import 'package:soulmate/model/test.dart';
 
 class EvetHayirBolumu extends StatefulWidget {
+  String testAdi;
+  EvetHayirBolumu(this.testAdi);
+
   @override
   _EvetHayirBolumuState createState() => _EvetHayirBolumuState();
 }
@@ -14,7 +21,6 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation animation;
-  int index=0;
   int _current = 0;
   int soruNo = 0;
   double rating = 50;
@@ -23,8 +29,9 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   double heightMedia;
   double widthMedia;
   List<double> animatedContainerSize = new List<double>(2);
-
+  List<int> soru_tipler = new List<int>(5);
   CarouselSlider carouselSlider;
+  List<Test> testler = new List<Test>();
 
   @override
   void initState() {
@@ -50,6 +57,18 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         }
       },
     );
+
+    soru_tipler[0] = 0;
+    soru_tipler[1] = 0;
+    soru_tipler[2] = 1;
+    soru_tipler[3] = 2;
+    soru_tipler[4] = 2;
+
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 1 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 2 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 3 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 4 ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -63,12 +82,10 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(widget.testAdi),),
       backgroundColor: animation.value,
-      body: SingleChildScrollView(
-        child: Container(
-          child: testevethayirBolumu(),
-        ),
+      body: Container(
+        child: testevethayirBolumu(),
       ),
     );
   }
@@ -78,7 +95,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         buttonDemo(),
-       soruSecimleri(index),
+       soruSecimleri(soru_tipler[soruNo]),
+        bitir_buton(),
       ],
     );
   }
@@ -131,7 +149,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                   });
                 });
 
-                carouselSlider.previousPage(
+                carouselSlider.nextPage(
                     duration: Duration(milliseconds: 600),
                     curve: Curves.linear);
               },
@@ -153,95 +171,18 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         );
         break;
       case 1:
-       return  sliderTasarim();
+       return  abcdSiklari();
 //    altProfilBolumu(),
         break;
       case 2:
-        return abcdSiklari();
+        return sliderTasarim();
         break;
     }
   }
   Widget buttonDemo() {
-    carouselSlider = CarouselSlider.builder(
-      itemCount: 5,
-      onPageChanged: (index) {
-        setState(() {
-          soruNo = index;
-          animatedContainerSize[0] = 100.0;
-          animatedContainerSize[1] = 100.0;
-          if (siklar[index] != null) {
-            animatedContainerSize[siklar[index]] = 150.0;
-          }
-        });
-      },
-      itemBuilder: (BuildContext context, int itemIndex) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          children: <Widget>[
-            Container(
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(colors: [
-                  Color(0xff6DC8F3),
-                  Color(0xff73A1F9)
-                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xff73A1F9),
-                    blurRadius: 5,
-                    //offset: Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "En Sevdiğin Oyun Satranç Mı ?",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, bottom: 20),
-                        child: Text(
-                          '${itemIndex + 1}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              top: 0,
-              child: CustomPaint(
-                size: Size(100, 150),
-                painter: CustomCardShapePainter(12,
-                    Color(0xff6DC8F3),
-                    Color(0xff73A1F9),),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    carouselSlider = cardDesingTests(testler: testler,pageChanged: (index) {
+      onPageChanged(index);
+    });
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -258,7 +199,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                       curve: Curves.linear);
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.075,
+                  height: MediaQuery.of(context).size.height * 0.050,
                   width: MediaQuery.of(context).size.width * 0.25,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
@@ -273,15 +214,15 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
             Flexible(
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    index++;
-                  });
+//                  setState(() {
+//                    index++;
+//                  });
                   carouselSlider.nextPage(
                       duration: Duration(milliseconds: 300),
                       curve: Curves.linear);
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.075,
+                  height: MediaQuery.of(context).size.height * 0.050,
                   width: MediaQuery.of(context).size.width * 0.25,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
@@ -296,6 +237,24 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
           ]),
         ]);
   }
+
+  Function onPageChanged(int index){
+    setState(() {
+//          this.soruNo = soru_tipler[index];
+      soruNo = index;
+      animatedContainerSize[0] = 100.0;
+      animatedContainerSize[1] = 100.0;
+      if (siklar[index] != null) {
+        if(soru_tipler[index]==0)
+          animatedContainerSize[siklar[index]] = 150.0;
+        if(soru_tipler[index]==1)
+          border[siklar[index]] = Border.all(width: 5);
+        debugPrint(siklar[index].toString());
+      }
+
+    });
+  }
+
   Widget sliderTasarim() {
     return Column(
       children: <Widget>[
@@ -308,12 +267,12 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
             borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: Text(
-            "${rating.toInt()}",
+            "${siklar[soruNo] != null ? siklar[soruNo].toInt() : 50}",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         ),
         Slider(
-          value: rating,
+          value: siklar[soruNo] != null ? siklar[soruNo].toDouble() : 50.0,
           min: 0,
           max: 100,
           //label: "${rating.toInt()}",
@@ -322,7 +281,6 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
           inactiveColor: Colors.white,
           onChanged: (newRating) {
             setState(() {
-              rating = newRating;
               siklar[soruNo] = newRating.toInt();
             });
           },
@@ -331,52 +289,142 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     );
   }
   Widget abcdSiklari() {
-    return SizedBox(
-      height: heightMedia * 0.4,
-      child: ListView.builder(
-          itemCount: 4,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return Material(
-              color: Colors.white.withOpacity(0.0),
-              child: InkWell(
-                onTap: () => {
-                  this.setState(() {
-                    siklar[soruNo] = index;
+    return ListView.builder(
+        itemCount: 4,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return Material(
+            color: Colors.white.withOpacity(0.0),
+            child: InkWell(
+              onTap: () => {
+                this.setState(() {
+                  siklar[soruNo] = index;
 
-                    for (int i = 0; i < border.length; i++) {
-                      if (i != index) border[i] = null;
-                    }
-                    border[index] = Border.all(width: 5);
-                    carouselSlider.nextPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.linear);
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      setState(() {
-                        border[index] = null;
-                      });
+                  for (int i = 0; i < border.length; i++) {
+                    if (i != index) border[i] = null;
+                  }
+                  border[index] = Border.all(width: 5);
+                  carouselSlider.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.linear);
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    setState(() {
+                      border[index] = null;
                     });
-                  })
-                },
-                child: Container(
+                  });
+                })
+              },
+              child: Container(
 
-                  height: heightMedia * 0.075,
-                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  decoration: BoxDecoration(
-                    /* gradient: renkler[index + 12].gradient, */
-                    gradient: GradientColors.purplewhite,
-                    borderRadius: BorderRadius.circular(15.0),
-                    border: border[index],
-                  ),
-                  child: Center(
-                      child: Text(
-                        "Bu bir şıktır",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                height: heightMedia * 0.075,
+                margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                decoration: BoxDecoration(
+                  /* gradient: renkler[index + 12].gradient, */
+                  gradient: GradientColors.purplewhite,
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: /*border[soruNo] == null ? null : Border.all(width: 5) ,*/ border[index],
                 ),
+                child: Center(
+                    child: Text(
+                      "Bu bir şıktır",
+                      style: TextStyle(color: Colors.white),
+                    )),
               ),
-            );
-          }),
+            ),
+          );
+        });
+  }
+
+  Widget bitir_buton() {
+    bool hasNull = false;
+   return Align(
+     alignment: Alignment.centerRight,
+     child: Padding(
+       padding: const EdgeInsets.only(right: 10),
+       child: ButtonTheme(
+          height: 25.0,
+          child: FlatButton(
+            onPressed: () => {
+              siklar.forEach((element) {
+                if(element == null)
+                  hasNull = true;
+              }),
+             if(hasNull)
+               showEmptyDialog()
+              else showBitirmeDialog()
+
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            color: Colors.green,
+            child: Row(
+              // Replace with a Row for horizontal icon + text
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 6),
+                  child: Icon(
+                    Icons.done,
+                    size: 15,
+                  ),
+                ),
+                Text(
+                  "Bitir",
+                  style: TextStyle(fontSize: 11),
+                )
+              ],
+            ),
+          ),
+        ),
+     ),
+   );
+  }
+
+  showEmptyDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Tüm cevapları işaretleyiniz!"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Tamam"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  showBitirmeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Testi bitirmek istiyor musunuz?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Evet"),
+              onPressed: () {
+                // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
+                Paylasilan paylasilan = new Paylasilan("paylasimID", "paylasilanUid", siklar);
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      },
     );
   }
 }
