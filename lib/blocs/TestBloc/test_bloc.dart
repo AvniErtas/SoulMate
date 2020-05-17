@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:soulmate/data/test_repository.dart';
 import 'package:soulmate/model/test.dart';
-import './bloc.dart';
-import 'locator.dart';
+import 'bloc.dart';
+import '../locator.dart';
 
 class TestBloc extends Bloc<TestEvent, TestState> {
 

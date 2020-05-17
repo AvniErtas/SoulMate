@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
-import 'package:soulmate/blocs/bloc.dart';
-import 'package:soulmate/blocs/test_bloc.dart';
+import 'package:soulmate/blocs/TestBloc/bloc.dart';
+import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 
 import 'Kesfet/filterchip.dart';
 
@@ -100,7 +100,8 @@ class _TestlerState extends State<Testler> {
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 5),
                                     child: Text(
-                                      state.Tests[index].sorular.length.toString(),
+//                                      state.Tests[index].sorular.length.toString(),
+                                    5.toString(),
                                       textAlign: TextAlign.end,
                                       style: TextStyle(color: Colors.white),
                                     ),

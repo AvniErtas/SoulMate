@@ -12,7 +12,7 @@ import 'package:soulmate/Pages/sonuc_inceleme.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
-import 'package:soulmate/blocs/bloc.dart';
+import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
 
 import 'evethayir.dart';

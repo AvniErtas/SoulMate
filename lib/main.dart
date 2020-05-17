@@ -9,7 +9,7 @@ import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/blocs/locator.dart';
 import 'Pages/giris.dart';
-import 'blocs/test_bloc.dart';
+import 'blocs/TestBloc/test_bloc.dart';
 
 void main() {
 //  ClassBuilder.registerClasses();
@@ -21,12 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider<TestBloc>(
+      create: (context)=>TestBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MainWidget(),
       ),
-      home: MainWidget(),
     );
   }
 }
@@ -58,10 +61,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomBarDesign(),
-      body: BlocProvider<TestBloc>(
-        create: (contextB)=>TestBloc(),
-
-          child: drawer(),),
+      body: drawer(),
     );
   }
 
