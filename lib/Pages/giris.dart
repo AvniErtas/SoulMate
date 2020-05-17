@@ -90,7 +90,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   @override
   Widget build(BuildContext context) {
     final _testBloc = BlocProvider.of<TestBloc>(context);
-
+    _testBloc.add(FetchPopulerEvent());
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -143,7 +143,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                             } else if (state is TestError) {
                               return Text("İnternet yok amk");
                             }else {
-                              Container();
+
+                              return Text("state");
                             }
                           }),
                       Padding(

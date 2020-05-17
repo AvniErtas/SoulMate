@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/blocs/bloc.dart';
+import 'package:soulmate/blocs/test_bloc.dart';
 
 import 'Kesfet/filterchip.dart';
 
@@ -20,6 +23,8 @@ class _TestlerState extends State<Testler> {
   WhyFarther _selection;
   @override
   Widget build(BuildContext context) {
+    final _testBloc = BlocProvider.of<TestBloc>(context);
+    _testBloc.add(FetchKategoriEvent());
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double cardWidth = width * 0.2;
@@ -55,48 +60,65 @@ class _TestlerState extends State<Testler> {
               alignment: Alignment.centerRight,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 7,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: cardHeight,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: GradientCard(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                      ),
-                      gradient: GradientColors.anasayfaswiper,
-                      child: Center(
-                        child: ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: width * 0.2,
-                              height: height * 0.08,
-                              child: Image.asset(kategoriImageURL[index],
-                                  fit: BoxFit.contain),
+              child : BlocBuilder<TestBloc,TestState>(
+                  bloc: _testBloc,
+                  builder: (context, TestState state) {
+                    if (state is TestUninitialized) {
+                      return Text("UNINIT");
+                    } else if (state is TestLoading) {
+                      return new Center(
+                        child: new CircularProgressIndicator(),
+                      );
+                    } else if (state is TestLoaded) {
+                      return  ListView.builder(
+                        itemCount: state.Tests.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: cardHeight,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: GradientCard(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              ),
+                              gradient: GradientColors.anasayfaswiper,
+                              child: Center(
+                                child: ListTile(
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: width * 0.2,
+                                      height: height * 0.08,
+                                      child: Image.asset(kategoriImageURL[index],
+                                          fit: BoxFit.contain),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    state.Tests[index].testAdi,
+                                    style: TextStyle(fontSize: 14, color: Colors.white),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      state.Tests[index].sorular.length.toString(),
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  trailing: popUp(),
+                                ),
+                              ),
                             ),
-                          ),
-                          title: Text(
-                            'Lorem ipsum dolor sit amet, ante metus, in etiam diam.',
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Text(
-                              'Soru Sayısı: 15',
-                              textAlign: TextAlign.end,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          trailing: popUp(),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                          );
+                        },
+                      );
+                    } else if (state is TestError) {
+                      return Text("İnternet yok amk");
+                    }else {
+
+                      return Text("state");
+                    }
+                  }),
             ),
           ],
         ),

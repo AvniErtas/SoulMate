@@ -12,27 +12,38 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   @override
   // TODO: implement initialState
-  TestState get initialState => null;
+  TestState get initialState => TestUninitialized();
 
   @override
   Stream<TestState> mapEventToState(
     TestEvent event,
   ) async* {
 
-    if(event is FetchEvent) {
+    if(event is FetchPopulerEvent) {
 
       yield TestLoading();
       try{
 
-        List<Test> getirilenTest = await testRepository.getTest();
-        yield TestLoaded(Tests: getirilenTest );
+        List<Test> getirilenTest = testRepository.getPopulerTest();
+        yield TestLoaded(Tests: getirilenTest);
       }catch(_){
       yield TestError();
       }
 
 
-    }
+    } else if(event is FetchKategoriEvent) {
 
+      yield TestLoading();
+      try{
+
+        List<Test> getirilenTest = testRepository.getKategoriTest();
+        yield TestLoaded(Tests: getirilenTest);
+      }catch(_){
+        yield TestError();
+      }
+
+
+    }
 
   }
 }

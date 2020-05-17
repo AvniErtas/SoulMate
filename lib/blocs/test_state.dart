@@ -12,6 +12,7 @@ abstract class TestState extends Equatable {
 class TestUninitialized extends TestState {
   
 }
+class InitialTestState extends TestState {}
 
 
 class TestError extends TestState {}

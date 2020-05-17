@@ -1,9 +1,12 @@
 
 import 'package:get_it/get_it.dart';
+import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/data/test_repository.dart';
 
-GetIt locator= GetIt.instance();
+final GetIt locator= GetIt.instance;
 
 void setupLocator(){
-  locator.registerLazySingleton(() => TestRepository);
+
+  locator.registerLazySingleton(() => TestRepository());
+  ClassBuilder.registerClasses();
 }

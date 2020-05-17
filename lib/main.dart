@@ -12,7 +12,7 @@ import 'Pages/giris.dart';
 import 'blocs/test_bloc.dart';
 
 void main() {
-  ClassBuilder.registerClasses();
+//  ClassBuilder.registerClasses();
   setupLocator();
   runApp(MyApp());
 }
@@ -26,9 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider<TestBloc>(
-          create: (context)=>TestBloc(),
-          child: MainWidget()),
+      home: MainWidget(),
     );
   }
 }
@@ -60,7 +58,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomBarDesign(),
-      body: drawer(),
+      body: BlocProvider<TestBloc>(
+        create: (contextB)=>TestBloc(),
+
+          child: drawer(),),
     );
   }
 
