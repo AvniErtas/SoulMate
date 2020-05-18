@@ -5,10 +5,8 @@ abstract class TestEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchPopulerEvent extends TestEvent {
+class FetchPopulerEvent extends TestEvent {}
 
-}
+class FetchKategoriEvent extends TestEvent {}
 
-class FetchKategoriEvent extends TestEvent {
-
-}
+class FetchSonucEvent extends TestEvent {}

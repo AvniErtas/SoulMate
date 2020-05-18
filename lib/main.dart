@@ -7,6 +7,8 @@ import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
+import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
+import 'package:soulmate/blocs/SonucBloc/bloc.dart';
 import 'package:soulmate/blocs/locator.dart';
 import 'Pages/giris.dart';
 import 'blocs/TestBloc/test_bloc.dart';
@@ -21,8 +23,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TestBloc>(
-      create: (context)=>TestBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AnaSayfaBloc>(
+          create: (BuildContext context) => AnaSayfaBloc(),
+        ),
+        BlocProvider<TestBloc>(
+          create: (BuildContext context) => TestBloc(),
+        ),
+        BlocProvider<SonucBloc>(
+          create: (BuildContext context) => SonucBloc(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

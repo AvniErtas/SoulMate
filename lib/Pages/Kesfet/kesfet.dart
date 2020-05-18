@@ -8,7 +8,7 @@ import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 class Kesfet extends StatelessWidget {
   double height;
   double width;
-
+ //TODO bloc yapısını hazırla
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;

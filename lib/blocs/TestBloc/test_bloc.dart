@@ -6,9 +6,7 @@ import 'bloc.dart';
 import '../locator.dart';
 
 class TestBloc extends Bloc<TestEvent, TestState> {
-
   final TestRepository testRepository = locator<TestRepository>();
-
 
   @override
   // TODO: implement initialState
@@ -18,32 +16,31 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   Stream<TestState> mapEventToState(
     TestEvent event,
   ) async* {
-
-    if(event is FetchPopulerEvent) {
-
+    if (event is FetchPopulerEvent) {
       yield TestLoading();
-      try{
-
+      try {
         List<Test> getirilenTest = testRepository.getPopulerTest();
         yield TestLoaded(Tests: getirilenTest);
-      }catch(_){
-      yield TestError();
-      }
-
-
-    } else if(event is FetchKategoriEvent) {
-
-      yield TestLoading();
-      try{
-
-        List<Test> getirilenTest = testRepository.getKategoriTest();
-        yield TestLoaded(Tests: getirilenTest);
-      }catch(_){
+      } catch (_) {
         yield TestError();
       }
-
-
+    } else if (event is FetchKategoriEvent) {
+      yield TestLoading();
+      try {
+        List<Test> getirilenTest = testRepository.getKategoriTest();
+        yield TestLoaded(Tests: getirilenTest);
+      } catch (_) {
+        yield TestError();
+      }
     }
-
+    else if (event is FetchSonucEvent) {
+      yield TestLoading();
+      try {
+        List<Test> getirilenTest = testRepository.getSonucTestler("uid");
+        yield TestLoaded(Tests: getirilenTest);
+      } catch (_) {
+        yield TestError();
+      }
+    }
   }
 }

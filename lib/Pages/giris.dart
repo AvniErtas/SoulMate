@@ -8,10 +8,14 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet.dart';
-import 'package:soulmate/Pages/sonuc_inceleme.dart';
+import 'package:soulmate/Pages/Sonuclar/sonuclarTestler.dart';
+import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
+import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
+import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
 
@@ -89,8 +93,9 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
-    final _testBloc = BlocProvider.of<TestBloc>(context);
-    _testBloc.add(FetchPopulerEvent());
+    final _anaSayfaBloc = BlocProvider.of<AnaSayfaBloc>(context);
+    _anaSayfaBloc.add(FetchAnaSayfaEvent());
+
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -126,21 +131,21 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),
                       testisecsonucincelekesfet(),
-                      BlocBuilder<TestBloc,TestState>(
-                          bloc: _testBloc,
-                          builder: (context, TestState state) {
-                            if (state is TestUninitialized) {
+                      BlocBuilder<AnaSayfaBloc,AnaSayfaState>(
+                          bloc: _anaSayfaBloc,
+                          builder: (context, AnaSayfaState state) {
+                            if (state is AnaSayfaUninitialized) {
                               return Text("UNINIT");
-                            } else if (state is TestLoading) {
+                            } else if (state is AnaSayfaLoading) {
                               return new Center(
                                 child: new CircularProgressIndicator(),
                               );
-                            } else if (state is TestLoaded) {
+                            } else if (state is AnaSayfaLoaded) {
                               return cardDesingTests(
-                                  testler: state.Tests,
+                                  testler: state.Tests[0],
                                   onClick: (itemIndex) =>
                                       onClickTest(itemIndex));
-                            } else if (state is TestError) {
+                            } else if (state is AnaSayfaError) {
                               return Text("İnternet yok amk");
                             }else {
 
@@ -152,12 +157,34 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                         child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              "Popüler Kişiler",
+                              "En Çok Çözülenler",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             )),
                       ),
-                      profileCardDesign(height * 0.20, width * 0.35),
+                      BlocBuilder<AnaSayfaBloc,AnaSayfaState>(
+                          bloc: _anaSayfaBloc,
+                          builder: (context, AnaSayfaState state) {
+                            if (state is AnaSayfaUninitialized) {
+                              return Text("UNINIT");
+                            } else if (state is AnaSayfaLoading) {
+                              return new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                            } else if (state is AnaSayfaLoaded) {
+                              return cardDesingTests(
+                                  testler: state.Tests[1],
+                                  onClick: (itemIndex) =>
+                                      onClickTest(itemIndex));
+                            } else if (state is AnaSayfaError) {
+                              return Text("İnternet yok amk");
+                            }else {
+
+                              return Text("state");
+                            }
+                          }),
+//                      profileCardDesign(height * 0.20, width * 0.35),  //Popüler kişiler
+
                     ],
                   ),
                 ),
@@ -218,7 +245,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             child: circleImages("sonucincele"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SonucInceleme()));
+                  MaterialPageRoute(builder: (context) => SonuclarTestler()));
             },
           ),
         ),
@@ -256,4 +283,5 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
+
 }

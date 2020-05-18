@@ -113,7 +113,10 @@ class GradientColors {
     Color(0xfff20BDFF),
     Color(0xffA5FECB),
   ]);
-
+  static LinearGradient yesil = buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xff98ff98),
+    Color(0xff98ff98),
+  ]);
   static LinearGradient deepSpace = buildGradient(_beginAlignment, _endAlignment, const [
     Color(0xff000000),
     Color(0xff434343),
@@ -394,7 +397,11 @@ class GradientColors {
     Color(0xff6DC8F3),
     Color(0xff73A1F9),
   ]);
-
+  static LinearGradient red =
+  buildGradient(_beginAlignment, _endAlignment, const [
+    Color(0xffd30000),
+    Color(0xffd30000),
+  ]);
   
 }
 
