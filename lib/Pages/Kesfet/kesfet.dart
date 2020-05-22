@@ -3,6 +3,7 @@ import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kesfet/filterchip.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 
 class Kesfet extends StatelessWidget {
@@ -13,59 +14,57 @@ class Kesfet extends StatelessWidget {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Colors.blue,
-      appBar: appBarTasarim("title"),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Align(
-              child: InkWell(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) => Material(
-                        type: MaterialType.transparency,
-                        child: Center( // Aligns the container to center
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: FilterChipDisplay(),
-                          ),
+    return appBarWithScaffold(kesfetTasarim(context), GradientColors.Background1, "Keşfet");
+  }
+  Widget kesfetTasarim(BuildContext context) {
+    return   Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          Align(
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (_) => Material(
+                      type: MaterialType.transparency,
+                      child: Center( // Aligns the container to center
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: FilterChipDisplay(),
                         ),
-                      )
-                  );
-                },
-                child: Icon(
-                  Icons.filter_list,
-                  size: 30,
-                ),
-              ),
-              alignment: Alignment.centerRight,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    primary: true,
-                    itemCount: 10,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return CardDesign();
-                    }),
+                      ),
+                    )
+                );
+              },
+              child: Icon(
+                Icons.filter_list,
+                size: 30,
               ),
             ),
-          ],
-        ),
+            alignment: Alignment.centerRight,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: GridView.builder(
+                  shrinkWrap: true,
+                  primary: true,
+                  itemCount: 10,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return CardDesign();
+                  }),
+            ),
+          ),
+        ],
       ),
     );
   }
-
   Widget CardDesign() {
     return GradientCard(
       gradient: GradientColors.listGradient,

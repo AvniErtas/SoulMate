@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
+import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 
 class KategoriBolumu extends StatefulWidget {
@@ -18,35 +20,34 @@ class _KategoriBolumuState extends State<KategoriBolumu> {
 
 Widget kategoriler() {
 
-    return Scaffold(
-      appBar: appBarTasarim(""),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: GradientColors.Background1,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-              itemCount: kategoriIsmi.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.5,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return kategoriView(
-                  context,
-                  kategoriIsmi[index],
-                  kategoriImageURL[index],
-                  index,
-                );
-              }),
-        ),
+    return appBarWithScaffold(kategoriTasarim(), GradientColors.Background2, "Kategoriler");
+  }
+  Widget kategoriTasarim() {
+    return Container(
+      /*decoration: BoxDecoration(
+                  gradient: GradientColors.Background1,
+                ),*/
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+            itemCount: kategoriIsmi.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.5,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return kategoriView(
+                context,
+                kategoriIsmi[index],
+                kategoriImageURL[index],
+                index,
+              );
+            }),
       ),
     );
   }
-
   Widget kategoriView(
     BuildContext context,
     String kategoriIsim,

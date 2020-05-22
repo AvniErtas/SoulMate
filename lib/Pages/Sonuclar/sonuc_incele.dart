@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
+import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/circleimage.dart';
 import 'package:soulmate/model/paylasilan.dart';
@@ -112,7 +113,7 @@ class _SonucInceleState extends State<SonucIncele>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: appBarTasarim2("Sonuçları İncele"),
       backgroundColor: animation.value,
       body: Container(
         child: testevethayirBolumu(),

@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 
 Widget appBarTasarim(String title) {
   return AppBar(
-    title: Center(
-        child: Text(
+    title: Text(
       title,
       style: TextStyle(color: Colors.white),
-    )),
+    ),
     flexibleSpace: Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
             colors: [
-              const Color(0xFF3366FF),
-              const Color(0xFF00CCFF),
+              const Color(0xFF1CD4D1),
+              const Color(0xFF1CD4D1),
             ],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(1.0, 0.0),
@@ -20,5 +19,23 @@ Widget appBarTasarim(String title) {
             tileMode: TileMode.clamp),
       ),
     ),
+  );
+}
+
+Widget appBarTasarim2(String title) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          ),
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(30),
+      ),
+    ),
+    iconTheme: IconThemeData(color: Colors.white),
   );
 }
