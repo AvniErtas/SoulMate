@@ -1,11 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:soulmate/Pages/evethayir.dart';
-import 'package:soulmate/Pages/profile.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/model/test.dart';
-
-import 'circleimage.dart';
 
 CarouselSlider cardDesingTests({@required List<Test> testler,Function onClick,Function pageChanged}) {
 

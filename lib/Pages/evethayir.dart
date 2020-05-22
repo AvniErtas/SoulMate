@@ -64,11 +64,41 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     soru_tipler[3] = 2;
     soru_tipler[4] = 2;
 
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 1 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 2 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 3 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 4 ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test sorusudur 5 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 1 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 2 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 3 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 4 ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: '22.02.2020',
+        testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -82,7 +112,9 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.testAdi),),
+      appBar: AppBar(
+        title: Text(widget.testAdi),
+      ),
       backgroundColor: animation.value,
       body: Container(
         child: testevethayirBolumu(),
@@ -95,13 +127,14 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         buttonDemo(),
-       soruSecimleri(soru_tipler[soruNo]),
+        soruSecimleri(soru_tipler[soruNo]),
         bitir_buton(),
       ],
     );
   }
+
   Widget soruSecimleri(int index) {
-    switch(index) {
+    switch (index) {
       case 0:
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +204,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         );
         break;
       case 1:
-       return  abcdSiklari();
+        return abcdSiklari();
 //    altProfilBolumu(),
         break;
       case 2:
@@ -179,10 +212,13 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         break;
     }
   }
+
   Widget buttonDemo() {
-    carouselSlider = cardDesingTests(testler: testler,pageChanged: (index) {
-      onPageChanged(index);
-    });
+    carouselSlider = cardDesingTests(
+        testler: testler,
+        pageChanged: (index) {
+          onPageChanged(index);
+        });
 
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -238,20 +274,19 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         ]);
   }
 
-  Function onPageChanged(int index){
+  Function onPageChanged(int index) {
     setState(() {
 //          this.soruNo = soru_tipler[index];
       soruNo = index;
       animatedContainerSize[0] = 100.0;
       animatedContainerSize[1] = 100.0;
       if (siklar[index] != null) {
-        if(soru_tipler[index]==0)
+        if (soru_tipler[index] == 0)
           animatedContainerSize[siklar[index]] = 150.0;
-        if(soru_tipler[index]==1)
+        if (soru_tipler[index] == 1)
           border[siklar[index]] = Border.all(width: 5);
         debugPrint(siklar[index].toString());
       }
-
     });
   }
 
@@ -263,7 +298,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
           height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.12,
           decoration: BoxDecoration(
-            color: siklar[soruNo]==null ? Colors.indigo : Colors.green,
+            color: siklar[soruNo] == null ? Colors.indigo : Colors.green,
             borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: Text(
@@ -288,6 +323,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       ],
     );
   }
+
   Widget abcdSiklari() {
     return ListView.builder(
         itemCount: 4,
@@ -316,20 +352,20 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                 })
               },
               child: Container(
-
                 height: heightMedia * 0.075,
                 margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
                   /* gradient: renkler[index + 12].gradient, */
                   gradient: GradientColors.purplewhite,
                   borderRadius: BorderRadius.circular(15.0),
-                  border: /*border[soruNo] == null ? null : Border.all(width: 5) ,*/ border[index],
+                  border: /*border[soruNo] == null ? null : Border.all(width: 5) ,*/ border[
+                      index],
                 ),
                 child: Center(
                     child: Text(
-                      "Bu bir şıktır",
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  "Bu bir şıktır",
+                  style: TextStyle(color: Colors.white),
+                )),
               ),
             ),
           );
@@ -338,22 +374,18 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   Widget bitir_buton() {
     bool hasNull = false;
-   return Align(
-     alignment: Alignment.centerRight,
-     child: Padding(
-       padding: const EdgeInsets.only(right: 10),
-       child: ButtonTheme(
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: ButtonTheme(
           height: 25.0,
           child: FlatButton(
             onPressed: () => {
               siklar.forEach((element) {
-                if(element == null)
-                  hasNull = true;
+                if (element == null) hasNull = true;
               }),
-             if(hasNull)
-               showEmptyDialog()
-              else showBitirmeDialog()
-
+              if (hasNull) showEmptyDialog() else showBitirmeDialog()
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.0),
@@ -378,8 +410,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
             ),
           ),
         ),
-     ),
-   );
+      ),
+    );
   }
 
   showEmptyDialog() {
@@ -400,6 +432,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       },
     );
   }
+
   showBitirmeDialog() {
     showDialog(
       context: context,
@@ -417,15 +450,14 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
               child: new Text("Evet"),
               onPressed: () {
                 // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
-                Paylasilan paylasilan = new Paylasilan("paylasimID", "paylasilanUid", siklar);
+                Paylasilan paylasilan =
+                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
                 Navigator.of(context).pop();
               },
             ),
-
           ],
         );
       },
     );
   }
 }
-
