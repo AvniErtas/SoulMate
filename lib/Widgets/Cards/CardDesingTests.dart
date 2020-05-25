@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/model/test.dart';
 
-CarouselSlider cardDesingTests({@required List<Test> testler,Function onClick,Function pageChanged}) {
-
+CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged}) {
   return  CarouselSlider.builder(
-    itemCount: testler.length,
+    itemCount: testVeSorular.length,
     onPageChanged: (index) => pageChanged(index),
 
     itemBuilder: (BuildContext context, int itemIndex) => Padding(
@@ -57,7 +56,7 @@ CarouselSlider cardDesingTests({@required List<Test> testler,Function onClick,Fu
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      testler[itemIndex].testAdi,
+                      testVeSorular[itemIndex],
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
@@ -70,7 +69,7 @@ CarouselSlider cardDesingTests({@required List<Test> testler,Function onClick,Fu
                     Padding(
                       padding: const EdgeInsets.only(right: 20, bottom: 20),
                       child: Text(
-                        '${itemIndex + 1}/${testler.length}',
+                        '${itemIndex + 1}/${testVeSorular.length}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

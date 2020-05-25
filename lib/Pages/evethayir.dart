@@ -1,10 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
+import 'package:soulmate/blocs/TestBloc/test_event.dart';
+import 'package:soulmate/blocs/TestBloc/test_state.dart';
 import 'package:soulmate/model/paylasilan.dart';
 import 'package:soulmate/model/paylasim.dart';
 import 'package:soulmate/model/test.dart';
@@ -24,15 +28,13 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   int _current = 0;
   int soruNo = 0;
   double rating = 50;
-  List<int> siklar = new List<int>(5);
+  List<int> siklar = new List<int>(4);
   List<Border> border = new List<Border>(4);
   double heightMedia;
   double widthMedia;
   List<double> animatedContainerSize = new List<double>(2);
-  List<int> soru_tipler = new List<int>(5);
   CarouselSlider carouselSlider;
-  List<Test> testler = new List<Test>();
-
+  Test test;
   @override
   void initState() {
     animatedContainerSize[0] = 100.0;
@@ -57,48 +59,6 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         }
       },
     );
-
-    soru_tipler[0] = 0;
-    soru_tipler[1] = 0;
-    soru_tipler[2] = 1;
-    soru_tipler[3] = 2;
-    soru_tipler[4] = 2;
-
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
-        testAdi: 'Bu bir test sorusudur 1 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
-        testAdi: 'Bu bir test sorusudur 2 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
-        testAdi: 'Bu bir test sorusudur 3 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
-        testAdi: 'Bu bir test sorusudur 4 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
-        testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -109,6 +69,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   @override
   Widget build(BuildContext context) {
+
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -123,11 +84,30 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   }
 
   Widget testevethayirBolumu() {
+    final _testBloc = BlocProvider.of<TestBloc>(context);
+    _testBloc.add(FetchTestFromIdEvent());
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        buttonDemo(),
-        soruSecimleri(soru_tipler[soruNo]),
+        BlocBuilder<TestBloc,TestState>(
+            bloc: _testBloc,
+            builder: (context, TestState state) {
+              if (state is TestUninitialized) {
+                return Text("UNINIT");
+              } else if (state is TestLoading) {
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
+              } else if (state is TestLoaded) {
+                return  soruWidget(state.Tests);
+              } else if (state is TestError) {
+                return Text("İnternet yok amk");
+              }else {
+
+                return Text("state");
+              }
+            }),
+        test != null ? soruSecimleri(test.sorular[soruNo].soruTipi) : Container(),
         bitir_buton(),
       ],
     );
@@ -213,9 +193,14 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     }
   }
 
-  Widget buttonDemo() {
+  Widget soruWidget(List<Test> tests) {
+    test = tests[0];
+    List<String> soruAdi = new List<String>();
+    for(Sorular sorular in  tests[0].sorular){
+      soruAdi.add(sorular.soru);
+    }
     carouselSlider = cardDesingTests(
-        testler: testler,
+        testVeSorular: soruAdi,
         pageChanged: (index) {
           onPageChanged(index);
         });
@@ -226,51 +211,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         mainAxisSize: MainAxisSize.min,
         children: [
           carouselSlider,
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Flexible(
-              child: InkWell(
-                onTap: () {
-                  carouselSlider.previousPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.linear);
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.050,
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("images/digericonlar/onceki.png"),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Flexible(
-              child: InkWell(
-                onTap: () {
-//                  setState(() {
-//                    index++;
-//                  });
-                  carouselSlider.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.linear);
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.050,
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("images/digericonlar/sonraki.png"),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ]),
+          ileriGeriButtons(),
         ]);
   }
 
@@ -281,9 +222,9 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       animatedContainerSize[0] = 100.0;
       animatedContainerSize[1] = 100.0;
       if (siklar[index] != null) {
-        if (soru_tipler[index] == 0)
+        if (test.sorular[index].soruTipi == 0)
           animatedContainerSize[siklar[index]] = 150.0;
-        if (soru_tipler[index] == 1)
+        if (test.sorular[index].soruTipi == 1)
           border[siklar[index]] = Border.all(width: 5);
         debugPrint(siklar[index].toString());
       }
@@ -452,12 +393,67 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                 // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
                 Paylasilan paylasilan =
                     new Paylasilan("paylasimID", "paylasilanUid", siklar);
+
+
                 Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                          ));
               },
             ),
           ],
         );
       },
     );
+  }
+
+  Widget ileriGeriButtons() {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Flexible(
+        child: InkWell(
+          onTap: () {
+            carouselSlider.previousPage(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.linear);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.050,
+            width: MediaQuery.of(context).size.width * 0.25,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/digericonlar/onceki.png"),
+              ),
+            ),
+          ),
+        ),
+      ),
+      Flexible(
+        child: InkWell(
+          onTap: () {
+//                  setState(() {
+//                    index++;
+//                  });
+            carouselSlider.nextPage(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.linear);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.050,
+            width: MediaQuery.of(context).size.width * 0.25,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/digericonlar/sonraki.png"),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ]);
   }
 }

@@ -10,3 +10,7 @@ class FetchPopulerEvent extends TestEvent {}
 class FetchKategoriEvent extends TestEvent {}
 
 class FetchSonucEvent extends TestEvent {}
+
+class FetchKesfetEvent extends TestEvent {}
+
+class FetchTestFromIdEvent extends TestEvent {}

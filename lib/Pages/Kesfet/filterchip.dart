@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
 
 class FilterChipDisplay extends StatefulWidget {
+  Function callback;
+
+  FilterChipDisplay({Key key,this.callback}) : super(key: key);
   @override
   _FilterChipDisplayState createState() => _FilterChipDisplayState();
 }
@@ -12,7 +15,6 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -37,7 +39,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: _titleContainer("Kategori ?"),
+              child: _titleContainer("Kategori seçiniz"),
             ),
           ),
           Padding(
@@ -50,7 +52,11 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                 runSpacing: 3.0,
                 children: <Widget>[
                   for(int i=0 ; i<kategoriIsmi.length ; i++)
-                  filterChip(kategoriIsmi[i],i),
+                    filterChipWidget(chipName: kategoriIsmi[i],index: i,callback: (index,isSelected) {
+                      if(isSelected)
+                        secilenler.add(index);
+                      else secilenler.remove(index);
+                    },),
                 ],
               )),
             ),
@@ -60,7 +66,8 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
             child: RaisedButton(
               onPressed: () {
                 debugPrint(secilenler.toString());
-
+                widget.callback(secilenler);
+                Navigator.pop(context);
               },
               color: Colors.green,
               child: Text(
@@ -76,8 +83,8 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
         ],
       ),
     );
-  }
 
+  }
   Widget filterChip (String chipName,int index) {
     var _isSelected = false;
 
@@ -117,8 +124,10 @@ Widget _titleContainer(String myTitle) {
 
 class filterChipWidget extends StatefulWidget {
   final String chipName;
+  int index;
+  Function callback;
 
-  filterChipWidget({Key key, this.chipName}) : super(key: key);
+  filterChipWidget({Key key, this.chipName, this.index,this.callback}) : super(key: key);
 
   @override
   _filterChipWidgetState createState() => _filterChipWidgetState();
@@ -143,6 +152,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
+          widget.callback(widget.index,isSelected);
         });
       },
       selectedColor: Color(0xffeadffd),

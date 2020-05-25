@@ -6,9 +6,7 @@ import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
-import 'package:soulmate/Widgets/Cards/circleimage.dart';
-import 'package:soulmate/model/paylasilan.dart';
-import 'package:soulmate/model/paylasim.dart';
+import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/model/test.dart';
 
 class SonucIncele extends StatefulWidget {
@@ -112,13 +110,8 @@ class _SonucInceleState extends State<SonucIncele>
   Widget build(BuildContext context) {
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: appBarTasarim2("Sonuçları İncele"),
-      backgroundColor: animation.value,
-      body: Container(
-        child: testevethayirBolumu(),
-      ),
-    );
+
+    return appBarWithScaffold(testevethayirBolumu(), GradientColors.Background1, "Sonuç İncele");
   }
 
   Widget testevethayirBolumu() {
@@ -244,8 +237,12 @@ class _SonucInceleState extends State<SonucIncele>
   }
 
   Widget buttonDemo() {
+    List<String> testAdi = new List<String>();
+    for(Test test in  testler){
+      testAdi.add(test.testAdi);
+    }
     carouselSlider = cardDesingTests(
-        testler: testler,
+        testVeSorular: testAdi,
         pageChanged: (index) {
           onPageChanged(index);
         });

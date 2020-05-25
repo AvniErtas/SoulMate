@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kesfet/filterchip.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:flutter/widgets.dart';
 import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/blocs/TestBloc/bloc.dart';
+import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 
 class Kesfet extends StatelessWidget {
   double height;
@@ -12,11 +15,15 @@ class Kesfet extends StatelessWidget {
  //TODO bloc yapısını hazırla
   @override
   Widget build(BuildContext context) {
+
+    
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return appBarWithScaffold(kesfetTasarim(context), GradientColors.Background1, "Keşfet");
   }
   Widget kesfetTasarim(BuildContext context) {
+    final _testBloc = BlocProvider.of<TestBloc>(context);
+    _testBloc.add(FetchKesfetEvent());
     return   Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -44,23 +51,41 @@ class Kesfet extends StatelessWidget {
             ),
             alignment: Alignment.centerRight,
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  primary: true,
-                  itemCount: 10,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 10,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return CardDesign();
-                  }),
-            ),
-          ),
+          BlocBuilder<TestBloc,TestState>(
+              bloc: _testBloc,
+              builder: (context, TestState state) {
+                if (state is TestUninitialized) {
+                  return Text("UNINIT");
+                } else if (state is TestLoading) {
+                  return new Center(
+                    child: new CircularProgressIndicator(),
+                  );
+                } else if (state is TestLoaded) {
+                  return     Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: GridView.builder(
+                          shrinkWrap: true,
+                          primary: true,
+                          itemCount: 10,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 10,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return CardDesign();
+                          }),
+                    ),
+                  );
+                } else if (state is TestError) {
+                  return Text("İnternet yok amk");
+                }else {
+
+                  return Text("state");
+                }
+              }),
+
         ],
       ),
     );

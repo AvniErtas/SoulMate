@@ -252,6 +252,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
   @override
   Widget build(BuildContext context) {
+    List<String> testAdi = new List<String>();
+    for(Test test in  testler){
+      testAdi.add(test.testAdi);
+    }
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -286,7 +290,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         )),
                   ),
                   SizedBox(height: 8.0),
-                 cardDesingTests(testler: testler),
+                 cardDesingTests(testVeSorular: testAdi),
                 ],
               ),
             ),

@@ -16,8 +16,8 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   Stream<TestState> mapEventToState(
     TestEvent event,
   ) async* {
+    yield TestLoading();
     if (event is FetchPopulerEvent) {
-      yield TestLoading();
       try {
         List<Test> getirilenTest = testRepository.getPopulerTest();
         yield TestLoaded(Tests: getirilenTest);
@@ -25,7 +25,6 @@ class TestBloc extends Bloc<TestEvent, TestState> {
         yield TestError();
       }
     } else if (event is FetchKategoriEvent) {
-      yield TestLoading();
       try {
         List<Test> getirilenTest = testRepository.getKategoriTest();
         yield TestLoaded(Tests: getirilenTest);
@@ -34,9 +33,24 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       }
     }
     else if (event is FetchSonucEvent) {
-      yield TestLoading();
       try {
         List<Test> getirilenTest = testRepository.getSonucTestler("uid");
+        yield TestLoaded(Tests: getirilenTest);
+      } catch (_) {
+        yield TestError();
+      }
+    }
+    else if (event is FetchKesfetEvent) {
+      try {
+        List<Test> getirilenTest = testRepository.getKesfetTestler();
+        yield TestLoaded(Tests: getirilenTest);
+      } catch (_) {
+        yield TestError();
+      }
+    }
+    else if (event is FetchTestFromIdEvent) {
+      try {
+        List<Test> getirilenTest = testRepository.getTestFromId("id");
         yield TestLoaded(Tests: getirilenTest);
       } catch (_) {
         yield TestError();

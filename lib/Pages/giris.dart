@@ -141,8 +141,12 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                                 child: new CircularProgressIndicator(),
                               );
                             } else if (state is AnaSayfaLoaded) {
+                              List<String> testAdi = new List<String>();
+                              for(Test test in  state.Tests[0]){
+                                testAdi.add(test.testAdi);
+                              }
                               return cardDesingTests(
-                                  testler: state.Tests[0],
+                                  testVeSorular: testAdi,
                                   onClick: (itemIndex) =>
                                       onClickTest(itemIndex));
                             } else if (state is AnaSayfaError) {
@@ -172,8 +176,12 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                                 child: new CircularProgressIndicator(),
                               );
                             } else if (state is AnaSayfaLoaded) {
+                              List<String> testAdi = new List<String>();
+                              for(Test test in  state.Tests[1]){
+                                testAdi.add(test.testAdi);
+                              }
                               return cardDesingTests(
-                                  testler: state.Tests[1],
+                                  testVeSorular: testAdi,
                                   onClick: (itemIndex) =>
                                       onClickTest(itemIndex));
                             } else if (state is AnaSayfaError) {

@@ -22,6 +22,11 @@ class Testler extends StatefulWidget {
 class _TestlerState extends State<Testler> {
   //String _selection;
   WhyFarther _selection;
+  String dropdownValue = '1';
+
+  List <String> spinnerItems = [
+    "1","2","3"
+  ] ;
   @override
   Widget build(BuildContext context) {
 
@@ -47,15 +52,22 @@ class _TestlerState extends State<Testler> {
                     child: Center( // Aligns the container to center
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: FilterChipDisplay(),
+                        child: FilterChipDisplay(callback: (secilenler) {
+                          ///TODO sayfayı filtrele
+                          /// _testBloc.add(FetchFiltreleEvent(kategoriAdi));
+                        },),
                       ),
                     ),
                   )
               );
             },
-            child: Icon(
-              Icons.filter_list,
-              size: 30,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Icon(
+                Icons.filter_list,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ),
           alignment: Alignment.centerRight,
@@ -122,6 +134,31 @@ class _TestlerState extends State<Testler> {
                 }
               }),
         ),
+        Column(children: <Widget>[
+
+          DropdownButton<String>(
+            value: dropdownValue,
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(color: Colors.black, fontSize: 15),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
+            ),
+            onChanged: (String data) {
+              setState(() {
+                dropdownValue = data;
+              });
+            },
+            items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value,style: TextStyle(color: Colors.black),),
+              );
+            }).toList(),
+          ),
+        ]),
       ],
     );
   }
