@@ -6,6 +6,7 @@ import 'package:soulmate/Pages/profile.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 
 import '../giris.dart';
+import 'home.dart';
 
 typedef T Constructor<T>();
 
@@ -19,7 +20,7 @@ class ClassBuilder {
   static void registerClasses() {
     register<GirisSayfasi>(() => GirisSayfasi());
     register<KategoriBolumu>(() => KategoriBolumu());
-    register<RecentChats>(() => RecentChats());
+    register<HomeScreen>(() => HomeScreen());
     register<UserProfilePage>(() => UserProfilePage());
 
   }

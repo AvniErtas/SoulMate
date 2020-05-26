@@ -10,6 +10,7 @@ import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet_eski.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclarTestler.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
+import 'package:soulmate/Pages/message/recent_chats.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
@@ -19,6 +20,7 @@ import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
 
+import 'Drawer/home.dart';
 import 'evethayir.dart';
 
 class GirisSayfasi extends KFDrawerContent {
@@ -243,7 +245,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             child: circleImages("testsec"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => KategoriBolumu()));
+                  MaterialPageRoute(builder: (context) => HomeScreen()));
             },
           ),
         ),
