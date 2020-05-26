@@ -2,11 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 
-CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged}) {
+CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged,double size}) {
+
   return  CarouselSlider.builder(
     itemCount: testVeSorular.length,
     onPageChanged: (index) => pageChanged(index),
-
+    aspectRatio: size == null ? 16/9 : size,
     itemBuilder: (BuildContext context, int itemIndex) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(

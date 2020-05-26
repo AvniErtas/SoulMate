@@ -64,7 +64,7 @@ class _TestlerState extends State<Testler> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          gradient: GradientColors.anasayfaswiper,
+                          gradient: GradientColors.cardProfile,
                           child: Center(
                             child: ListTile(
                               leading: ClipRRect(
@@ -79,7 +79,7 @@ class _TestlerState extends State<Testler> {
                               ),
                               title: Text(
                                 state.Tests[index].testAdi,
-                                style: TextStyle(fontSize: 14, color: Colors.white),
+                                style: TextStyle(fontSize: 14, color: Colors.black),
                               ),
                               subtitle: Padding(
                                 padding: const EdgeInsets.only(top: 5),
@@ -87,7 +87,7 @@ class _TestlerState extends State<Testler> {
 //                                      state.Tests[index].sorular.length.toString(),
                                   5.toString(),
                                   textAlign: TextAlign.end,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               trailing: popUp(),

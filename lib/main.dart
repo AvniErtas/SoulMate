@@ -63,8 +63,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     super.initState();
     tumSayfalar = [
       "GirisSayfasi",
-      "CalendarPage",
-      "SettingsOnePage",
+      "KategoriBolumu",
+      "RecentChats",
       "UserProfilePage",
     ];
   //  _drawerController = drawerController();
@@ -184,7 +184,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       height: 50.0,
       items: <Widget>[
         Icon(Icons.home, size: 30,color: Colors.white,),
-        Icon(Icons.send, size: 30,color: Colors.white,),
+        Icon(Icons.category, size: 30,color: Colors.white,),
         Icon(Icons.message, size: 30,color: Colors.white,),
         Icon(Icons.account_circle, size: 30,color: Colors.white,),
       ],

@@ -202,8 +202,8 @@ class GradientColors {
   ]);
 
    static LinearGradient cardProfile = buildGradient(_beginverticalAlignment, _endverticalAlignment, const [
-    Colors.blueAccent,
     Colors.white,
+    Colors.white70,
   ]);
 
   static LinearGradient listGradient =

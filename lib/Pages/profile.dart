@@ -34,7 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
-      height: screenSize.height / 2.6,
+      height: screenSize.height / 4,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/backg.jpg'),
@@ -45,12 +45,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget _buildProfileImage() {
+
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return Center(
       child: Stack(
         children: <Widget>[
           Container(
-            width: 140.0,
-            height: 140.0,
+            width: width*0.3,
+            height: width*0.3,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/profile.jpeg'),
@@ -59,11 +63,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
               borderRadius: BorderRadius.circular(80.0),
               border: Border.all(
                 color: Colors.white,
-                width: 10.0,
+                width: width*0.01,
               ),
             ),
           ),
-          InkWell(child: Icon(Icons.edit),onTap: (){},),
+          InkWell(child: Icon(Icons.edit,size: 18,),onTap: (){},),
         ],
       ),
     );
@@ -73,7 +77,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     TextStyle _nameTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
-      fontSize: 28.0,
+      fontSize: 18.0,
       fontWeight: FontWeight.w600,
     );
 
@@ -95,7 +99,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         style: TextStyle(
           fontFamily: 'Spectral',
           color: Colors.black,
-          fontSize: 20.0,
+          fontSize: 15.0,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -106,14 +110,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
     TextStyle _statLabelTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
-      fontSize: 16.0,
+      fontSize: 15.0,
       fontWeight: FontWeight.w400,
     );
 
     TextStyle _statCountTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
-      fontSize: 24.0,
+      fontSize: 15.0,
       fontWeight: FontWeight.w600,
     );
 
@@ -134,7 +138,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   Widget _buildStatContainer() {
     return Container(
-      height: 60.0,
+      height: 50,
       margin: EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
         color: Color(0xFFEFF4F7),
@@ -191,6 +195,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget _buildButtons() {
+    // TODO Butonlar değiştirilecek
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
@@ -199,7 +207,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: InkWell(
               onTap: () => print("followed"),
               child: Container(
-                height: 40.0,
+                height: height*0.05,
                 decoration: BoxDecoration(
                   border: Border.all(),
                   color: Color(0xFF404A5C),
@@ -210,6 +218,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
+                      fontSize: 13,
                     ),
                   ),
                 ),
@@ -221,7 +230,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: InkWell(
               onTap: () => print("Message"),
               child: Container(
-                height: 40.0,
+                height: height*0.05,
                 decoration: BoxDecoration(
                   border: Border.all(),
                 ),
@@ -230,7 +239,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     padding: EdgeInsets.all(10.0),
                     child: Text(
                       "MESAJ GÖNDER",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,),
                     ),
                   ),
                 ),
@@ -259,7 +268,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: appBarTasarim(""), //appbar'ın en sağına ayarlar simgesi konulacak
+
 
       body: Stack(
         children: <Widget>[
@@ -268,15 +277,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: screenSize.height / 6.4),
+                  SizedBox(height: screenSize.height / 10),
                   _buildProfileImage(),
                   _buildFullName(),
                   _buildStatus(context),
                   _buildStatContainer(),
-                  _buildBio(context),
+                  // _buildBio(context),
                   _buildSeparator(screenSize),
                   SizedBox(height: 10.0),
-                  _buildGetInTouch(context),
+                  //_buildGetInTouch(context),
                   SizedBox(height: 8.0),
                   _buildButtons(),
                   SizedBox(height: 8.0),
@@ -290,7 +299,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         )),
                   ),
                   SizedBox(height: 8.0),
-                 cardDesingTests(testVeSorular: testAdi),
+                 cardDesingTests(testVeSorular: testAdi,size: heightMedia/280),
                 ],
               ),
             ),

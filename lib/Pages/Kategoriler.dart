@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/appbar.dart';
@@ -7,7 +8,7 @@ import 'package:soulmate/Tools/kategoriResimleri.dart';
 import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 
-class KategoriBolumu extends StatefulWidget {
+class KategoriBolumu extends KFDrawerContent {
   @override
   _KategoriBolumuState createState() => _KategoriBolumuState();
 }

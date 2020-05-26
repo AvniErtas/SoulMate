@@ -90,7 +90,7 @@ class _KesfetState extends State<Kesfet> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          gradient: GradientColors.anasayfaswiper,
+                          gradient: GradientColors.cardProfile,
                           child: Center(
                             child: ListTile(
                               leading: ClipRRect(

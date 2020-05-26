@@ -58,7 +58,7 @@ class _SonuclarTestlerState extends State<SonuclarTestler> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(30)),
                             ),
-                            gradient: GradientColors.anasayfaswiper,
+                            gradient: GradientColors.cardProfile,
                             child: Center(
                               child: ListTile(
                                 leading: ClipRRect(
@@ -73,7 +73,7 @@ class _SonuclarTestlerState extends State<SonuclarTestler> {
                                 ),
                                 title: Text(
                                   state.Tests[index].testAdi,
-                                  style: TextStyle(fontSize: 14, color: Colors.white),
+                                  style: TextStyle(fontSize: 14, color: Colors.black),
                                 ),
                                 trailing: popUp(),
                               ),

@@ -1,5 +1,7 @@
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/mainpage.dart';
+import 'package:soulmate/Pages/Kategoriler.dart';
+import 'package:soulmate/Pages/message/recent_chats.dart';
 import 'package:soulmate/Pages/profile.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 
@@ -16,8 +18,8 @@ void register<T>(Constructor<T> constructor) {
 class ClassBuilder {
   static void registerClasses() {
     register<GirisSayfasi>(() => GirisSayfasi());
-    register<CalendarPage>(() => CalendarPage());
-    register<SettingsOnePage>(() => SettingsOnePage());
+    register<KategoriBolumu>(() => KategoriBolumu());
+    register<RecentChats>(() => RecentChats());
     register<UserProfilePage>(() => UserProfilePage());
 
   }

@@ -381,7 +381,7 @@ class _SonucInceleState extends State<SonucIncele>
                 child: Center(
                     child: Text(
                   "Bu bir şıktır",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 )),
               ),
             ),
@@ -412,7 +412,7 @@ class _SonucInceleState extends State<SonucIncele>
       ),
       child: Text(
         "${puan}",
-        style: TextStyle(fontSize: 20, color: Colors.white),
+        style: TextStyle(fontSize: 20, color: Colors.black),
       ),
     );
   }
