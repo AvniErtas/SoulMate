@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
-import 'package:tanismauygulamasi/Sayfalar/appbar.dart';
-import 'package:tanismauygulamasi/Sayfalar/gradientcard.dart';
-import 'package:tanismauygulamasi/onur_pages/gradient.dart';
+import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 
 class PaylasmaSonrasi extends StatelessWidget {
   @override
@@ -29,7 +28,7 @@ class PaylasmaSonrasi extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
-              gradient: GradientColors2.bourbon,
+              gradient: GradientColors.bourbon,
               child: Center(
                 child: ListTile(
                   title: Text(

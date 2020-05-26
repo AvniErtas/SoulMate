@@ -21,7 +21,7 @@ Widget appBarWithScaffold (Widget safeAreaWidget,LinearGradient color,String tit
             clipper: DiagonalPathClipperOne(),
             child: Container(
               height: 200,
-              color: Colors.indigo,
+              color: Colors.cyan,
             ),
           ),
           SafeArea(

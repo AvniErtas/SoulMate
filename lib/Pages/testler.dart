@@ -12,8 +12,8 @@ import 'Kesfet/filterchip.dart';
 enum WhyFarther { favoritest, sonracoz, paylas }
 
 class Testler extends StatefulWidget {
-  bool _isKesfet;
-  Testler(this._isKesfet);
+
+
 
   @override
   _TestlerState createState() => _TestlerState();
@@ -42,36 +42,7 @@ class _TestlerState extends State<Testler> {
     double cardHeight = height * 0.15;
     return Column(
       children: <Widget>[
-        Align(
-          child: InkWell(
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (_) => Material(
-                    type: MaterialType.transparency,
-                    child: Center( // Aligns the container to center
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: FilterChipDisplay(callback: (secilenler) {
-                          ///TODO sayfayı filtrele
-                          /// _testBloc.add(FetchFiltreleEvent(kategoriAdi));
-                        },),
-                      ),
-                    ),
-                  )
-              );
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Icon(
-                Icons.filter_list,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          ),
-          alignment: Alignment.centerRight,
-        ),
+        SizedBox(height: 10),
         Expanded(
           child : BlocBuilder<TestBloc,TestState>(
               bloc: _testBloc,

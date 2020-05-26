@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
-import 'package:soulmate/model/test.dart';
 
 CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged}) {
   return  CarouselSlider.builder(

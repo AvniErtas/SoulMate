@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
+import 'package:soulmate/Pages/paylasmabolumu.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
+import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_event.dart';
@@ -73,9 +75,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.testAdi),
-      ),
+      appBar: appBarTasarim2(widget.testAdi),
       backgroundColor: animation.value,
       body: Container(
         child: testevethayirBolumu(),
@@ -400,7 +400,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                          ));
+                        PaylasmaBolumu() ));
               },
             ),
           ],

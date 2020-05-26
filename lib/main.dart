@@ -80,25 +80,26 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Widget drawer() {
     return KFDrawer(
 
+
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
 //        menuPadding: EdgeInsets.all(0.0),
 //        scrollable: true,
       controller: drawerController(),
-      header: Align(
-        alignment: Alignment.centerLeft,
+     /* header: Align(
+        alignment: Alignment.bottomCenter,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.3,
           child: Image.asset(
             'assets/logo.png',
             alignment: Alignment.centerLeft,
           ),
         ),
-      ),
+      ),*/
       footer: KFDrawerItem(
         text: Text(
-          'SIGN IN',
+          'GİRİŞ YAP',
           style: TextStyle(color: Colors.white),
         ),
         icon: Icon(
@@ -118,7 +119,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color.fromRGBO(255, 255, 255, 1.0), Color.fromRGBO(44, 72, 171, 1.0)],
+          colors: [Colors.greenAccent, Colors.indigo],
           tileMode: TileMode.repeated,
         ),
       ),
@@ -139,7 +140,31 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             'SORU HAZIRLA',
             style: TextStyle(color: Colors.white),
           ),
-          icon: Icon(Icons.calendar_today, color: Colors.white),
+          icon: Icon(Icons.add_circle_outline, color: Colors.white),
+          page: SoruSecmeVeHazirlama(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Text(
+            'BİLDİRİMLER',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: Icon(Icons.notifications_active, color: Colors.white),
+          page: SoruSecmeVeHazirlama(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Text(
+            'MESAJLAR',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: Icon(Icons.message, color: Colors.white),
+          page: SoruSecmeVeHazirlama(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Text(
+            'YARDIM',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: Icon(Icons.help, color: Colors.white),
           page: SoruSecmeVeHazirlama(),
         ),
         KFDrawerItem.initWithPage(

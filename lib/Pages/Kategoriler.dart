@@ -20,7 +20,7 @@ class _KategoriBolumuState extends State<KategoriBolumu> {
 
 Widget kategoriler() {
 
-    return appBarWithScaffold(kategoriTasarim(), GradientColors.Background2, "Kategoriler");
+    return appBarWithScaffold(kategoriTasarim(), GradientColors.Background1, "Kategoriler");
   }
   Widget kategoriTasarim() {
     return Container(
@@ -59,7 +59,7 @@ Widget kategoriler() {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Testler(false)));
+                builder: (context) => Testler()));
       },
       child: GradientCard(
         margin: EdgeInsets.fromLTRB(25, 10, 25, 10),

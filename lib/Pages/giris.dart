@@ -7,7 +7,7 @@ import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
-import 'package:soulmate/Pages/Kesfet/kesfet.dart';
+import 'package:soulmate/Pages/Kesfet/kesfet_eski.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclarTestler.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
 import 'package:soulmate/Pages/testler.dart';
@@ -122,7 +122,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                               child: IconButton(
                                 icon: Icon(
                                   Icons.menu,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                                 onPressed: widget.onMenuPressed,
                               ),
@@ -263,7 +263,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             child: circleImages("kesfet"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Testler(true)));
+                  MaterialPageRoute(builder: (context) => Testler()));
             },
           ),
         ),

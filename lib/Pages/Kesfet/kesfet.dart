@@ -1,57 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
-import 'package:soulmate/Pages/Kesfet/filterchip.dart';
-import 'package:soulmate/Tools/appbar.dart';
-import 'package:flutter/widgets.dart';
+import 'package:soulmate/Tools/kategoriResimleri.dart';
 import 'package:soulmate/Widgets/AppBarWithScaffold.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
+import 'filterchip.dart';
 
-class Kesfet extends StatelessWidget {
-  double height;
-  double width;
- //TODO bloc yapısını hazırla
+enum WhyFarther { favoritest, sonracoz, paylas }
+
+class Kesfet extends StatefulWidget {
+
+  @override
+  _KesfetState createState() => _KesfetState();
+}
+
+class _KesfetState extends State<Kesfet> {
+  //String _selection;
+  WhyFarther _selection;
+  String dropdownValue = '1';
+
+  List <String> spinnerItems = [
+    "1","2","3"
+  ] ;
   @override
   Widget build(BuildContext context) {
 
-    
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
-    return appBarWithScaffold(kesfetTasarim(context), GradientColors.Background1, "Keşfet");
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    return appBarWithScaffold(testlerTasarim(width,height), GradientColors.Background1, "Kesfet");
   }
-  Widget kesfetTasarim(BuildContext context) {
+  Widget testlerTasarim (double width,double height) {
     final _testBloc = BlocProvider.of<TestBloc>(context);
     _testBloc.add(FetchKesfetEvent());
-    return   Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          Align(
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (_) => Material(
-                      type: MaterialType.transparency,
-                      child: Center( // Aligns the container to center
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: FilterChipDisplay(),
-                        ),
+    double cardWidth = width * 0.2;
+    double cardHeight = height * 0.15;
+    return Column(
+      children: <Widget>[
+        Align(
+          child: InkWell(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (_) => Material(
+                    type: MaterialType.transparency,
+                    child: Center( // Aligns the container to center
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: FilterChipDisplay(callback: (secilenler) {
+                          ///TODO sayfayı filtrele
+                          /// _testBloc.add(FetchFiltreleEvent(kategoriAdi));
+                        },),
                       ),
-                    )
-                );
-              },
+                    ),
+                  )
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Icon(
                 Icons.filter_list,
+                color: Colors.white,
                 size: 30,
               ),
             ),
-            alignment: Alignment.centerRight,
           ),
-          BlocBuilder<TestBloc,TestState>(
+          alignment: Alignment.centerRight,
+        ),
+        Expanded(
+          child : BlocBuilder<TestBloc,TestState>(
               bloc: _testBloc,
               builder: (context, TestState state) {
                 if (state is TestUninitialized) {
@@ -61,22 +80,48 @@ class Kesfet extends StatelessWidget {
                     child: new CircularProgressIndicator(),
                   );
                 } else if (state is TestLoaded) {
-                  return     Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: GridView.builder(
-                          shrinkWrap: true,
-                          primary: true,
-                          itemCount: 10,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 10,
+                  return  ListView.builder(
+                    itemCount: state.Tests.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: cardHeight,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: GradientCard(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          itemBuilder: (BuildContext context, int index) {
-                            return CardDesign();
-                          }),
-                    ),
+                          gradient: GradientColors.anasayfaswiper,
+                          child: Center(
+                            child: ListTile(
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: width * 0.2,
+                                  height: height * 0.08,
+                                  child: Image.asset(kategoriImageURL[index],
+                                      fit: BoxFit.contain),
+                                ),
+                              ),
+                              title: Text(
+                                state.Tests[index].testAdi,
+                                style: TextStyle(fontSize: 14, color: Colors.white),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Text(
+//                                      state.Tests[index].sorular.length.toString(),
+                                  5.toString(),
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              trailing: popUp(),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 } else if (state is TestError) {
                   return Text("İnternet yok amk");
@@ -85,55 +130,70 @@ class Kesfet extends StatelessWidget {
                   return Text("state");
                 }
               }),
+        ),
+        Column(children: <Widget>[
 
-        ],
-      ),
+          DropdownButton<String>(
+            value: dropdownValue,
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(color: Colors.black, fontSize: 15),
+            underline: Container(
+              height: 2,
+              color: Colors.transparent,
+            ),
+            onChanged: (String data) {
+              setState(() {
+                dropdownValue = data;
+              });
+            },
+            items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value,style: TextStyle(color: Colors.black),),
+              );
+            }).toList(),
+          ),
+        ]),
+      ],
     );
   }
-  Widget CardDesign() {
-    return GradientCard(
-      gradient: GradientColors.listGradient,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+  Widget popUp() {
+    return PopupMenuButton<WhyFarther>(
+      elevation: 4,
+      icon: Icon(
+        Icons.more_vert,
+        color: Colors.black,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ClipOval(
-                child: FadeInImage(
-                  image: NetworkImage("imageurl"),
-                  fit: BoxFit.cover,
-                  width: width/6,
-                  height: height/10,
-                  placeholder: AssetImage("assets/profile.jpeg"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Text(
-                  "Eum perferendis voluptatibus qui illo. Nemo quos voluptatum reiciendluptatibus labore ab odioum reiciendluptatibus labore ab odio.",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: TextStyle(fontSize: 14,color: Colors.white),
-                ),
-              )
-            ],
+      onSelected: (WhyFarther result) {
+        setState(() {
+          _selection = result;
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.favoritest,
+          child: Text("Favorilerime Ekle",
+              style: TextStyle(
+                fontSize: 15,
+              )),
+        ),
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.sonracoz,
+          child: Text(
+            "Daha sonra çöz",
+            style: TextStyle(fontSize: 15),
           ),
         ),
-      ),
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.paylas,
+          child: Text(
+            "Paylaş",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+      ],
     );
   }
-}
-
-class MyFlutterApp {
-  MyFlutterApp._();
-
-  static const _kFontFam = 'MyFlutterApp';
-  static const _kFontPkg = '';
-
-  static const IconData filter =
-      const IconData(0xf0b0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
