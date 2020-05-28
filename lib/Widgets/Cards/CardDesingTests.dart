@@ -12,7 +12,7 @@ CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function on
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          onClick(itemIndex);
+          onClick != null ? onClick(itemIndex) : {};
         },
         child: Stack(
           children: <Widget>[

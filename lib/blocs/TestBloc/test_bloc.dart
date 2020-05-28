@@ -19,7 +19,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     yield TestLoading();
     if (event is FetchPopulerEvent) {
       try {
-        List<Test> getirilenTest = testRepository.getPopulerTest();
+        List<Test> getirilenTest = await testRepository.getPopulerTest();
         yield TestLoaded(Tests: getirilenTest);
       } catch (_) {
         yield TestError();

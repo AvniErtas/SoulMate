@@ -20,9 +20,10 @@ class AnaSayfaBloc extends Bloc<AnaSayfaEvent, AnaSayfaState> {
     if (event is FetchAnaSayfaEvent) {
       yield AnaSayfaLoading();
       try {
-        List<List<Test>>  getirilenTest = anaSayfaRepository.getAnaSayfaTest();
+        List<List<Test>>  getirilenTest = await anaSayfaRepository.getAnaSayfaTest(0);
         yield AnaSayfaLoaded(Tests: getirilenTest);
-      } catch (_) {
+      } catch (e) {
+        print(e);
         yield AnaSayfaError();
       }
     }

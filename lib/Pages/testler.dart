@@ -12,8 +12,8 @@ import 'Kesfet/filterchip.dart';
 enum WhyFarther { favoritest, sonracoz, paylas }
 
 class Testler extends StatefulWidget {
-
-
+  var kategori;
+  Testler(this.kategori);
 
   @override
   _TestlerState createState() => _TestlerState();
@@ -33,7 +33,7 @@ class _TestlerState extends State<Testler> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return appBarWithScaffold(testlerTasarim(width,height), GradientColors.Background1, "Kesfet");
+    return appBarWithScaffold(testlerTasarim(width,height), GradientColors.Background1, widget.kategori);
   }
   Widget testlerTasarim (double width,double height) {
     final _testBloc = BlocProvider.of<TestBloc>(context);

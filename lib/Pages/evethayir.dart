@@ -1,19 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:ui' as ui;
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
-import 'package:soulmate/Pages/paylasmabolumu.dart';
-import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Tools/appbar.dart';
+import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_event.dart';
 import 'package:soulmate/blocs/TestBloc/test_state.dart';
-import 'package:soulmate/model/paylasilan.dart';
 import 'package:soulmate/model/paylasim.dart';
 import 'package:soulmate/model/test.dart';
+import 'package:http/http.dart' as http;
 
 class EvetHayirBolumu extends StatefulWidget {
   String testAdi;
@@ -37,6 +35,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   List<double> animatedContainerSize = new List<double>(2);
   CarouselSlider carouselSlider;
   Test test;
+  ProgressDialog pr;
   @override
   void initState() {
     animatedContainerSize[0] = 100.0;
@@ -71,7 +70,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   @override
   Widget build(BuildContext context) {
-
+    pr = ProgressDialog(context);
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -196,7 +195,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   Widget soruWidget(List<Test> tests) {
     test = tests[0];
     List<String> soruAdi = new List<String>();
-    for(Sorular sorular in  tests[0].sorular){
+    for(Sorular sorular in  test.sorular){
       soruAdi.add(sorular.soru);
     }
     carouselSlider = cardDesingTests(
@@ -391,16 +390,12 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
               child: new Text("Evet"),
               onPressed: () {
                 // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
-                Paylasilan paylasilan =
-                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
-
-
+//                Paylasilan paylasilan =
+//                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
+                Paylasim paylasim = new Paylasim(testID: test.id,paylasanUid: "123",paylasanAdi: "onur",paylasanCevaplari: siklar);
                 Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        PaylasmaBolumu() ));
+                _dataKaydet(paylasim);
+
               },
             ),
           ],
@@ -455,5 +450,42 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         ),
       ),
     ]);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
+  //Çözülen testin kaydedileceği yer
+  Future<void> _dataKaydet(Paylasim paylasim) async {
+    pr = ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+        message: 'Kaydediliyor...',
+        borderRadius: 10.0,
+        backgroundColor: Colors.white,
+        progressWidget: CircularProgressIndicator(),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
+    );
+    await pr.show();
+    var response =
+    await http.post(Domain().getDomainApi() + "/paylasim/save",
+        headers:{ "Content-type": "application/json" },
+        body: paylasim.toRawJson());
+    if (response.statusCode == 200) {
+      debugPrint(response.body.toString());
+      pr.hide().then((isHidden) {
+        nextPage();
+      });
+      // return Gonderi.fromJsonMap(json.decode(response.body));
+//      return DegerlendirmeIcerigi.fromRawJson(response.body);
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
+  }
+
+  void nextPage() {
+    Navigator.pushReplacementNamed(context, '/PaylasmaBolumu');
   }
 }

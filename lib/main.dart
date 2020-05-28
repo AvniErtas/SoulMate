@@ -6,11 +6,15 @@ import 'package:kf_drawer/kf_drawer.dart';
 import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
+import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
 import 'package:soulmate/blocs/locator.dart';
+import 'Pages/Sonuclar/sonuclar.dart';
+import 'Pages/Sonuclar/sonuclarTestler.dart';
 import 'Pages/giris.dart';
+import 'Pages/paylasmabolumu.dart';
 import 'blocs/TestBloc/test_bloc.dart';
 
 void main() {
@@ -18,6 +22,8 @@ void main() {
   setupLocator();
   runApp(MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
 
@@ -40,6 +46,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        routes: {
+          '/Kategoriler' : (context) => KategoriBolumu(),
+          '/SonuclarTumTestler' : (context) => SonuclarTestler(),
+          '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
+        },
         home: MainWidget(),
       ),
     );

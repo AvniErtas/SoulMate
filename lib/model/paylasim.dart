@@ -4,21 +4,23 @@
 
 import 'dart:convert';
 
+import 'package:soulmate/model/paylasilan.dart';
+
 class Paylasim {
   String id;
+  String testID;
   String paylasanAdi;
   String paylasanUid;
-  String paylasilanUid;
-  List<String> paylasanCevaplari;
-  List<String> paylasilanCevaplari;
+  List<int> paylasanCevaplari;
+  List<Paylasilan> paylasilan;
 
   Paylasim({
     this.id,
+    this.testID,
     this.paylasanAdi,
     this.paylasanUid,
-    this.paylasilanUid,
     this.paylasanCevaplari,
-    this.paylasilanCevaplari,
+    this.paylasilan,
   });
 
   factory Paylasim.fromRawJson(String str) => Paylasim.fromJson(json.decode(str));
@@ -27,19 +29,19 @@ class Paylasim {
 
   factory Paylasim.fromJson(Map<String, dynamic> json) => Paylasim(
     id: json["id"],
+    testID: json["testID"],
     paylasanAdi: json["paylasanAdi"],
     paylasanUid: json["paylasanUid"],
-    paylasilanUid: json["paylasilanUid"],
-    paylasanCevaplari: List<String>.from(json["paylasanCevaplari"].map((x) => x)),
-    paylasilanCevaplari: List<String>.from(json["paylasilanCevaplari"].map((x) => x)),
+    paylasanCevaplari: List<int>.from(json["paylasanCevaplari"].map((x) => x)),
+    paylasilan: List<Paylasilan>.from(json["paylasilan"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "testID": testID,
     "paylasanAdi": paylasanAdi,
     "paylasanUid": paylasanUid,
-    "paylasilanUid": paylasilanUid,
     "paylasanCevaplari": List<dynamic>.from(paylasanCevaplari.map((x) => x)),
-    "paylasilanCevaplari": List<dynamic>.from(paylasilanCevaplari.map((x) => x)),
+    "paylasilan": paylasilan == null ? null : List<dynamic>.from(paylasilan.map((x) => x)),
   };
 }

@@ -11,7 +11,7 @@ class Test {
   String image;
   String olusturanUid;
   String olusturanTipi;
-  String olusturmaTarihi;
+  int olusturmaTarihi;
   List<Sorular> sorular;
 
   Test({
@@ -24,7 +24,7 @@ class Test {
     this.olusturmaTarihi,
     this.sorular,
   });
-
+  //static DateTime _fromJson(int int) => DateTime.fromMillisecondsSinceEpoch(int);
   factory Test.fromRawJson(String str) => Test.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());

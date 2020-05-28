@@ -10,7 +10,6 @@ import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet_eski.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclarTestler.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
-import 'package:soulmate/Pages/message/recent_chats.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
@@ -20,7 +19,7 @@ import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
 
-import 'Drawer/home.dart';
+import 'Kesfet/kesfet.dart';
 import 'evethayir.dart';
 
 class GirisSayfasi extends KFDrawerContent {
@@ -55,35 +54,35 @@ class _GirisSayfasiState extends State<GirisSayfasi>
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
+        olusturmaTarihi: 11111,
         testAdi: 'Bu bir test başlığıdır 1 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
+        olusturmaTarihi: 11111,
         testAdi: 'Bu bir test sorusudur 2 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
+        olusturmaTarihi: 11111,
         testAdi: 'Bu bir test sorusudur 3 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
+        olusturmaTarihi: 11111,
         testAdi: 'Bu bir test sorusudur 4 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: '22.02.2020',
+        olusturmaTarihi: 11111,
         testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
@@ -245,7 +244,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             child: circleImages("testsec"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+                  MaterialPageRoute(builder: (context) => KategoriBolumu()));
             },
           ),
         ),
@@ -265,7 +264,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
             child: circleImages("kesfet"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Testler()));
+                  MaterialPageRoute(builder: (context) => Kesfet()));
             },
           ),
         ),
