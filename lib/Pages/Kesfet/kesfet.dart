@@ -105,7 +105,7 @@ class _KesfetState extends State<Kesfet> {
                               ),
                               title: Text(
                                 state.Tests[index].testAdi,
-                                style: TextStyle(fontSize: 14, color: Colors.white),
+                                style: TextStyle(fontSize: 14, color: Colors.black),
                               ),
                               subtitle: Padding(
                                 padding: const EdgeInsets.only(top: 5),
@@ -113,7 +113,7 @@ class _KesfetState extends State<Kesfet> {
 //                                      state.Tests[index].sorular.length.toString(),
                                   5.toString(),
                                   textAlign: TextAlign.end,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               trailing: popUp(),
@@ -133,31 +133,36 @@ class _KesfetState extends State<Kesfet> {
         ),
         Column(children: <Widget>[
 
-          DropdownButton<String>(
-            value: dropdownValue,
-            icon: Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 16,
-            style: TextStyle(color: Colors.black, fontSize: 15),
-            underline: Container(
-              height: 2,
-              color: Colors.transparent,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 30, 10),
+              child: Theme(
+                data: Theme.of(context).copyWith(brightness: Brightness.dark),
+                child: DropdownButton(
+                  underline: Container( height: 2,color: Colors.blueAccent,),
+                  style: TextStyle(color: Colors.blue, decorationColor: Colors.black),
+                  items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,style: TextStyle(color: Colors.black),),
+                    );
+                  }).toList(),
+                  value: null,
+                  hint: Text(dropdownValue, style: TextStyle(color: Colors.white)),
+                  onChanged: (String data) {
+                    setState(() {
+                      dropdownValue = data;
+                    });
+                  },
+                ),
+              ),
             ),
-            onChanged: (String data) {
-              setState(() {
-                dropdownValue = data;
-              });
-            },
-            items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value,style: TextStyle(color: Colors.black),),
-              );
-            }).toList(),
           ),
         ]),
       ],
     );
+
   }
   Widget popUp() {
     return PopupMenuButton<WhyFarther>(
