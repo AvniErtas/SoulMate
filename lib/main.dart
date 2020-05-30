@@ -83,6 +83,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       bottomNavigationBar: bottomBarDesign(),
       body: drawer(),
     );

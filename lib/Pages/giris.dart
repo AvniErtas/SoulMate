@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:kf_drawer/kf_drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet_eski.dart';
@@ -18,6 +19,11 @@ import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
+import 'package:tutorial_coach_mark/animated_focus_light.dart';
+import 'package:tutorial_coach_mark/content_target.dart';
+import 'package:tutorial_coach_mark/target_focus.dart';
+import 'package:tutorial_coach_mark/target_position.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'Kesfet/kesfet.dart';
 import 'evethayir.dart';
@@ -29,6 +35,14 @@ class GirisSayfasi extends KFDrawerContent {
 
 class _GirisSayfasiState extends State<GirisSayfasi>
     with SingleTickerProviderStateMixin {
+  List<TargetFocus> targets = List();
+  List<TargetPosition> targetsPosition = List();
+
+  GlobalKey keyButton = GlobalKey();
+  GlobalKey keyButton2 = GlobalKey();
+  GlobalKey keyButton3 = GlobalKey();
+  GlobalKey keyButton4 = GlobalKey();
+
   double width;
   double height;
   Duration myDuration = Duration(seconds: 1);
@@ -42,6 +56,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   @override
   void initState() {
     super.initState();
+    initTargets();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
     _controller = AnimationController(
       vsync: this,
       duration: myDuration,
@@ -133,6 +149,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                       ),
                       testisecsonucincelekesfet(),
                       BlocBuilder<AnaSayfaBloc,AnaSayfaState>(
+                        key: keyButton4,
                           bloc: _anaSayfaBloc,
                           builder: (context, AnaSayfaState state) {
                             if (state is AnaSayfaUninitialized) {
@@ -239,8 +256,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
           height: height * 0.55,
         ),
         Transform.translate(
+
           offset: Offset(siralianimasyon["translate1"].value, 0),
           child: InkWell(
+
             child: circleImages("testsec"),
             onTap: () {
               Navigator.push(context,
@@ -281,7 +300,14 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   }
 
   Widget circleImages(String title) {
+    GlobalKey keyButtonCircle = GlobalKey();
+    if(title=="testsec")
+      keyButtonCircle = keyButton;
+    else if(title=="sonucincele")
+      keyButtonCircle = keyButton2;
+    else keyButtonCircle = keyButton3;
     return Container(
+      key: keyButtonCircle,
       height: height * 0.25,
       width: width * 0.4,
       decoration: new BoxDecoration(
@@ -293,4 +319,171 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
   }
 
+  void initTargets() {
+    targets.add(TargetFocus(
+      //target 1
+      identify: "Target 1",
+      keyTarget: keyButton,
+      contents: [
+        ContentTarget(
+            align: AlignContent.bottom,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Nasılım ? \n ",
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 25.0),
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "Bir çok konuda fikir almak çok kolay,fikir almak istediğin bölümü seç, uzman ekibimize veya arkadaşlarına danış",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            ))
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+    targets.add(TargetFocus(
+      //target 2
+      identify: "Target 2",
+      keyTarget: keyButton2,
+      contents: [
+        ContentTarget(
+            align: AlignContent.bottom,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Giyim konusunda danışmak ister misin?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0),
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            )),
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+    targets.add(TargetFocus(
+      //target 2
+      identify: "Target 2ek",
+      keyTarget: keyButton3,
+      contents: [
+        ContentTarget(
+            align: AlignContent.bottom,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Satın almak istediğin ürün ile ilgili görüşe mi ihtiyacın var ?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0),
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "Sana uygun kategoriyi seçip hemen fikir alabilirsin",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            )),
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+    targets.add(TargetFocus(
+      identify: "Target 4",
+      keyTarget: keyButton4,
+      contents: [
+        ContentTarget(
+            align: AlignContent.top,
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Satın almak istediğin ürün ile ilgili görüşe mi ihtiyacın var ?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0),
+                    textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "Sana uygun kategoriyi seçip hemen fikir alabilirsin",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+            )),
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+  }
+  void showTutorial() {
+    //yardım ekranı başlaması için bu fonksiyon çağırılıyor
+    TutorialCoachMark(keyButton.currentContext,
+        targets: targets,
+        colorShadow: Colors.transparent,
+        textSkip: "BİTİR",
+        paddingFocus: 2,
+        opacityShadow: 0.8, finish: () {
+          print("finish");
+        }, clickTarget: (target) {
+          print(target);
+        }, clickSkip: () {
+          print("skip");
+        })
+      ..show();
+  }
+  void _afterLayout(_) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirst = (prefs.getBool('isFirst') ?? true);
+    if(isFirst) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        showTutorial();
+      });
+      await prefs.setBool('isFirst', false);
+    }
+    /*Future.delayed(Duration(milliseconds: 550), () {
+      showTutorial();
+    });*/
+  }
 }

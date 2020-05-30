@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 
-CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged,double size}) {
+CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function onClick,Function pageChanged,double size,GlobalKey keyButton}) {
 
   return  CarouselSlider.builder(
     itemCount: testVeSorular.length,
@@ -11,6 +11,7 @@ CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function on
     itemBuilder: (BuildContext context, int itemIndex) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
+        key: keyButton,
         onTap: () {
           onClick != null ? onClick(itemIndex) : {};
         },
@@ -57,7 +58,7 @@ CarouselSlider cardDesingTests({@required List<String> testVeSorular,Function on
                   children: <Widget>[
                     Text(
                       testVeSorular[itemIndex],
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white,fontFamily: 'Cantarell',fontSize: 17,fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

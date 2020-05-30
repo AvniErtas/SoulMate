@@ -35,6 +35,8 @@ dependencies:
   flutter_custom_clippers: ^1.1.0
   http: ^0.12.1
   progress_dialog: ^1.2.3
+  tutorial_coach_mark: ^0.3.0
+  shared_preferences: ^0.5.7+3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,7 +61,16 @@ flutter:
     - images/digericonlar/
     - assets/
     - assets/images/
-
+  fonts:
+      - family: Proxima
+        fonts:
+          - asset: assets/fonts/Proxima.ttf
+      - family: Oswald
+        fonts:
+              - asset: assets/fonts/Oswald-Regular.ttf
+      - family: Cantarell
+        fonts:
+          - asset: assets/fonts/Cantarell-Italic.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
