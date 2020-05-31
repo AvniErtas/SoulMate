@@ -29,12 +29,15 @@ import 'Kesfet/kesfet.dart';
 import 'evethayir.dart';
 
 class GirisSayfasi extends KFDrawerContent {
+//  GirisSayfasi(Key k) : super(: k);
+
   @override
   _GirisSayfasiState createState() => _GirisSayfasiState();
 }
 
 class _GirisSayfasiState extends State<GirisSayfasi>
     with SingleTickerProviderStateMixin {
+
   List<TargetFocus> targets = List();
   List<TargetPosition> targetsPosition = List();
 

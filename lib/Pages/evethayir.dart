@@ -394,7 +394,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 //                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
                 Paylasim paylasim = new Paylasim(testID: test.id,paylasanUid: "123",paylasanAdi: "onur",paylasanCevaplari: siklar);
                 Navigator.of(context).pop();
-                _dataKaydet(paylasim);
+                nextPage();
+//                _dataKaydet(paylasim);
 
               },
             ),

@@ -7,6 +7,7 @@ import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
+import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
@@ -26,6 +27,7 @@ void main() {
 
 
 class MyApp extends StatelessWidget {
+  MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class MyApp extends StatelessWidget {
           '/Kategoriler' : (context) => KategoriBolumu(),
           '/SonuclarTumTestler' : (context) => SonuclarTestler(),
           '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
+          '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
         },
         home: MainWidget(),
       ),
@@ -66,6 +69,8 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
+  var keyAnaSayfa = PageStorageKey("key_anasayfa");
+
   KFDrawerController _drawerController;
   List<String> tumSayfalar;
   int selectedIndex = 0;
@@ -91,7 +96,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
   Widget drawer() {
     return KFDrawer(
-
 
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
@@ -185,7 +189,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             style: TextStyle(color: Colors.white),
           ),
           icon: Icon(Icons.settings, color: Colors.white),
-          page: ClassBuilder.fromString('HomeScreen'),
+          page: ClassBuilder.fromString('SettingsOnePage'),
         ),
       ],
     );

@@ -21,7 +21,9 @@ class ClassBuilder {
     register<GirisSayfasi>(() => GirisSayfasi());
     register<KategoriBolumu>(() => KategoriBolumu());
     register<HomeScreen>(() => HomeScreen());
+
     register<UserProfilePage>(() => UserProfilePage());
+    register<SettingsOnePage>(() => SettingsOnePage());
 
   }
 

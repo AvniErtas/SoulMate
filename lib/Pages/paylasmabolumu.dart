@@ -13,6 +13,7 @@ class PaylasmaBolumu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            bitir_buton(context),
             InkWell(child: circleImages("arkilepaylas")),
             InkWell(child: circleImages("KesfettePaylas")),
             InkWell(
@@ -60,7 +61,44 @@ class PaylasmaBolumu extends StatelessWidget {
       ),
     );
   }
-
+  Widget bitir_buton(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: ButtonTheme(
+          height: 25.0,
+          child: FlatButton(
+            onPressed: () => {
+                Navigator.pushNamed(context, 'PaylasmaSonrasi'),
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            color: Colors.white,
+            child: Row(
+              // Replace with a Row for horizontal icon + text
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 6),
+                  child: Icon(
+                    Icons.navigate_next,
+                    size: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  "Devam et",
+                  style: TextStyle(fontSize: 12,color: Colors.black),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
   Widget circleImages(String title) {
     return Container(
       height: height * 0.25,
