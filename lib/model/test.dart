@@ -4,16 +4,11 @@
 
 import 'dart:convert';
 
-class Test {
-  String id;
-  String testAdi;
-  String kategori;
-  String image;
-  String olusturanUid;
-  String olusturanTipi;
-  int olusturmaTarihi;
-  List<Sorular> sorular;
+Test testFromJson(String str) => Test.fromJson(json.decode(str));
 
+String testToJson(Test data) => json.encode(data.toJson());
+
+class Test {
   Test({
     this.id,
     this.testAdi,
@@ -24,58 +19,59 @@ class Test {
     this.olusturmaTarihi,
     this.sorular,
   });
-  //static DateTime _fromJson(int int) => DateTime.fromMillisecondsSinceEpoch(int);
-  factory Test.fromRawJson(String str) => Test.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+  String id;
+  String testAdi;
+  String kategori;
+  String image;
+  String olusturanUid;
+  String olusturanTipi;
+  String olusturmaTarihi;
+  List<Sorular> sorular;
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
-    id: json["id"],
-    testAdi: json["testAdi"],
-    kategori: json["kategori"],
-    image: json["image"],
-    olusturanUid: json["olusturanUid"],
-    olusturanTipi: json["olusturanTipi"],
-    olusturmaTarihi: json["olusturmaTarihi"],
-    sorular: List<Sorular>.from(json["sorular"].map((x) => Sorular.fromJson(x))),
+    id: json["id"] == null ? null : json["id"],
+    testAdi: json["testAdi"] == null ? null : json["testAdi"],
+    kategori: json["kategori"] == null ? null : json["kategori"],
+    image: json["image"] == null ? null : json["image"],
+    olusturanUid: json["olusturanUid"] == null ? null : json["olusturanUid"],
+    olusturanTipi: json["olusturanTipi"] == null ? null : json["olusturanTipi"],
+    olusturmaTarihi: json["olusturmaTarihi"] == null ? null : json["olusturmaTarihi"],
+    sorular: json["sorular"] == null ? null : List<Sorular>.from(json["sorular"].map((x) => Sorular.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "testAdi": testAdi,
-    "kategori": kategori,
-    "image": image,
-    "olusturanUid": olusturanUid,
-    "olusturanTipi": olusturanTipi,
-    "olusturmaTarihi": olusturmaTarihi,
-    "sorular": List<dynamic>.from(sorular.map((x) => x.toJson())),
+    "id": id == null ? null : id,
+    "testAdi": testAdi == null ? null : testAdi,
+    "kategori": kategori == null ? null : kategori,
+    "image": image == null ? null : image,
+    "olusturanUid": olusturanUid == null ? null : olusturanUid,
+    "olusturanTipi": olusturanTipi == null ? null : olusturanTipi,
+    "olusturmaTarihi": olusturmaTarihi == null ? null : olusturmaTarihi,
+    "sorular": sorular == null ? null : List<dynamic>.from(sorular.map((x) => x.toJson())),
   };
 }
 
 class Sorular {
-  int soruTipi;
-  String soru;
-  List<String> siklar;
-
   Sorular({
     this.soruTipi,
     this.soru,
     this.siklar,
   });
 
-  factory Sorular.fromRawJson(String str) => Sorular.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
+  int soruTipi;
+  String soru;
+  List<String> siklar;
 
   factory Sorular.fromJson(Map<String, dynamic> json) => Sorular(
-    soruTipi: json["soruTipi"],
-    soru: json["soru"],
+    soruTipi: json["soruTipi"] == null ? null : json["soruTipi"],
+    soru: json["soru"] == null ? null : json["soru"],
     siklar: json["siklar"] == null ? null : List<String>.from(json["siklar"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
-    "soruTipi": soruTipi,
-    "soru": soru,
+    "soruTipi": soruTipi == null ? null : soruTipi,
+    "soru": soru == null ? null : soru,
     "siklar": siklar == null ? null : List<dynamic>.from(siklar.map((x) => x)),
   };
 }

@@ -11,10 +11,10 @@ class AnaSayfaRepository {
     List< List<Test>> anasayfaTestler = new List< List<Test>>();
     List<Test> testlerPopuler = new List<Test>();
     List<Test> testlerEnCok = new List<Test>();
-/*
-    var response =
+
+    /*var response =
         await http.post(Domain().getDomainApi() + "/test/popular", body: {
-      "page": page,
+      "page": page.toString(),
     });
     if (response.statusCode == 200) {
       debugPrint(response.body.toString());
@@ -23,13 +23,12 @@ class AnaSayfaRepository {
           .toList();
     } else {
       debugPrint(response.statusCode.toString());
-    }
-*/
-    var response2 =
+    }*/
+/*    var response2 =
     await http.post("https://ucretsizkitapindir.com/test/enCokCozulen", body: {
       "page": page.toString(),
     });
-  /*  if (response2.statusCode == 200) {
+    if (response2.statusCode == 200) {
       debugPrint(response2.body.toString());
     *//*  testlerEnCok = (json.decode(response2.body) as List)
           .map((tekGonderiMap) => Test.fromJson(tekGonderiMap))
@@ -37,13 +36,14 @@ class AnaSayfaRepository {
     } else {
       debugPrint(response2.statusCode.toString());
     }*/
-  testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Ailene ne kadar düşkünsün?'));
-       testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Aldatmaya ne kadar meyillisin?'));
-    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Kitap kurdu musunuz?'));
-    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Aşk oyunlarını sever misin ?'));
-    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Yaşam tarzın nasıl?'));
 
-    testlerEnCok.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 1,testAdi: 'Bu bir test kategorisd 1 ???'));
+  testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Sevdiğin kişi ölümsüzlük iksiri içmiş biri ama sen bir fanisin. Onunla sonsuza dek birlikte olmak istiyorsun. Önünde iki seçenek var. Ya ölene kadar onunla birlikte olacaksın ya da ölümsüzlük iksirini içip onunla sonsuza dek mutlu olacaksın. Ama bu ölümsüzlük iksiri yüzünden de sevgilin dışında tüm sevdiklerinin ölümünü göreceksin. Ne yaparsın?'));
+       testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Aldatmaya ne kadar meyillisin?'));
+    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Kitap kurdu musunuz?'));
+    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Aşk oyunlarını sever misin ?'));
+    testlerPopuler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Yaşam tarzın nasıl?'));
+
+    testlerEnCok.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "1",testAdi: 'Bu bir test kategorisd 1 ???'));
 //    testlerEnCok.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test axsx 2 ???'));
 //    testlerEnCok.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test xasaa 3 ???'));
 //    testlerEnCok.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: '22.02.2020',testAdi: 'Bu bir test aaaa 4 ???'));

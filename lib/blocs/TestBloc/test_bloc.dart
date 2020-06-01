@@ -49,10 +49,12 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       }
     }
     else if (event is FetchTestFromIdEvent) {
+      yield TestLoading();
       try {
-        List<Test> getirilenTest = testRepository.getTestFromId("id");
-        yield TestLoaded(Tests: getirilenTest);
-      } catch (_) {
+        Test getirilenTest = await testRepository.getTestFromId(event.testId);
+        yield TestLoaded(test: getirilenTest);
+      } catch (e) {
+        print(e);
         yield TestError();
       }
     }

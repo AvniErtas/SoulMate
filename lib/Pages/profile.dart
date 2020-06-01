@@ -252,11 +252,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
   @override
   void initState() {
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 11111,testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 11111,testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 11111,testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 11111,testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: 11111,testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
     super.initState();
   }
   @override

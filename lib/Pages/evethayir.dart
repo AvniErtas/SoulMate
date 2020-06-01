@@ -15,7 +15,8 @@ import 'package:http/http.dart' as http;
 
 class EvetHayirBolumu extends StatefulWidget {
   String testAdi;
-  EvetHayirBolumu(this.testAdi);
+  String id;
+  EvetHayirBolumu(this.testAdi,this.id);
 
   @override
   _EvetHayirBolumuState createState() => _EvetHayirBolumuState();
@@ -84,7 +85,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   Widget testevethayirBolumu() {
     final _testBloc = BlocProvider.of<TestBloc>(context);
-    _testBloc.add(FetchTestFromIdEvent());
+    _testBloc.add(FetchTestFromIdEvent(widget.id));
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -98,7 +99,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                   child: new CircularProgressIndicator(),
                 );
               } else if (state is TestLoaded) {
-                return  soruWidget(state.Tests);
+                test = state.test;
+                return  soruWidget();
               } else if (state is TestError) {
                 return Text("İnternet yok amk");
               }else {
@@ -192,8 +194,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     }
   }
 
-  Widget soruWidget(List<Test> tests) {
-    test = tests[0];
+  Widget soruWidget() {
     List<String> soruAdi = new List<String>();
     for(Sorular sorular in  test.sorular){
       soruAdi.add(sorular.soru);
@@ -394,8 +395,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 //                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
                 Paylasim paylasim = new Paylasim(testID: test.id,paylasanUid: "123",paylasanAdi: "onur",paylasanCevaplari: siklar);
                 Navigator.of(context).pop();
-                nextPage();
-//                _dataKaydet(paylasim);
+//                nextPage();
+                _dataKaydet(paylasim);
 
               },
             ),

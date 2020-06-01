@@ -68,35 +68,35 @@ class _SonucInceleState extends State<SonucIncele>
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: 11111,
+        olusturmaTarihi: "11111",
         testAdi: 'Bu bir test sorusudur 1 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: 11111,
+        olusturmaTarihi: "11111",
         testAdi: 'Bu bir test sorusudur 2 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: 11111,
+        olusturmaTarihi: "11111",
         testAdi: 'Bu bir test sorusudur 3 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: 11111,
+        olusturmaTarihi: "11111",
         testAdi: 'Bu bir test sorusudur 4 ???'));
     testler.add(new Test(
         id: '123',
         olusturanUid: '124',
         olusturanTipi: 'Ekip',
         kategori: 'Aşk',
-        olusturmaTarihi: 11111,
+        olusturmaTarihi: "11111",
         testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 

@@ -14,6 +14,7 @@ import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/Widgets/Cards/CardDesingTests2.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
@@ -68,41 +69,6 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     siralianimasyon = sequenceAnimation();
     _controller.forward();
 
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: 11111,
-        testAdi: 'Bu bir test başlığıdır 1 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: 11111,
-        testAdi: 'Bu bir test sorusudur 2 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: 11111,
-        testAdi: 'Bu bir test sorusudur 3 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: 11111,
-        testAdi: 'Bu bir test sorusudur 4 ???'));
-    testler.add(new Test(
-        id: '123',
-        olusturanUid: '124',
-        olusturanTipi: 'Ekip',
-        kategori: 'Aşk',
-        olusturmaTarihi: 11111,
-        testAdi: 'Bu bir test sorusudur 5 ???'));
   }
 
   @override
@@ -162,14 +128,15 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                                 child: new CircularProgressIndicator(),
                               );
                             } else if (state is AnaSayfaLoaded) {
+                              testler = state.Tests[0];
                               List<String> testAdi = new List<String>();
                               for(Test test in  state.Tests[0]){
                                 testAdi.add(test.testAdi);
                               }
-                              return cardDesingTests(
-                                  testVeSorular: testAdi,
-                                  onClick: (itemIndex) =>
-                                      onClickTest(itemIndex));
+                              return cardDesingTests2(
+                                  testVeSorular: state.Tests[0],
+                                  onClick: (itemIndex,id) =>
+                                      onClickTest(itemIndex,id));
                             } else if (state is AnaSayfaError) {
                               return Text("İnternet yok amk");
                             }else {
@@ -203,8 +170,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                               }
                               return cardDesingTests(
                                   testVeSorular: testAdi,
-                                  onClick: (itemIndex) =>
-                                      onClickTest(itemIndex));
+                                  onClick: (itemIndex,id) =>
+                                      onClickTest(itemIndex,id));
                             } else if (state is AnaSayfaError) {
                               return Text("İnternet yok amk");
                             }else {
@@ -223,12 +190,12 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
   }
 
-  Function onClickTest(int secilenSoru) {
+  Function onClickTest(String soruAdi,String id) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                EvetHayirBolumu(testler[secilenSoru].testAdi)));
+                EvetHayirBolumu(soruAdi,id)));
   }
 
   SequenceAnimation sequenceAnimation() {

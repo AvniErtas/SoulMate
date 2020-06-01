@@ -13,4 +13,8 @@ class FetchSonucEvent extends TestEvent {}
 
 class FetchKesfetEvent extends TestEvent {}
 
-class FetchTestFromIdEvent extends TestEvent {}
+class FetchTestFromIdEvent extends TestEvent {
+  String testId;
+
+  FetchTestFromIdEvent(this.testId);
+}
