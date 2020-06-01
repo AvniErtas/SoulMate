@@ -41,7 +41,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
         debugShowCheckedModeBanner: false,
           home: 
                Scaffold(
-                 appBar: appBarTasarim(""),
+                 appBar: appBarTasarim2("Ayarlar"),
           backgroundColor: _dark ? null : Colors.grey.shade200,
           
           // appBar: AppBar(

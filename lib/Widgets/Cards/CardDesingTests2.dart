@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/model/test.dart';
@@ -53,15 +55,10 @@ CarouselSlider cardDesingTests2({@required List<Test> testVeSorular,Function onC
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      testVeSorular[itemIndex].testAdi,
-                      style: TextStyle(color: Colors.white,fontFamily: 'Cantarell',fontSize: 17,fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                AutoSizeText(
+                  testVeSorular[itemIndex].testAdi,
+                  style: TextStyle(color: Colors.white,fontFamily: 'Cantarell',fontSize: 17,fontWeight: FontWeight.bold),
+                  maxLines: 7,
                 ),
                 Spacer(),
                 Row(

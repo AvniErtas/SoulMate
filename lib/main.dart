@@ -8,6 +8,7 @@ import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
+import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           '/SonuclarTumTestler' : (context) => SonuclarTestler(),
           '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
           '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
+          '/Ayarlar' : (context) => SettingsOnePage(),
         },
         home: MainWidget(),
       ),
@@ -96,7 +98,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
   Widget drawer() {
     return KFDrawer(
-
+    items: listss(),
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
 //        menuPadding: EdgeInsets.all(0.0),
@@ -140,6 +142,27 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+  List<KFDrawerItem> listss() {
+    List<KFDrawerItem> list = new List<KFDrawerItem>();
+    list.add(KFDrawerItem(
+      text: Text(
+        'GİRİŞ YAP',
+        style: TextStyle(color: Colors.white),
+      ),
+      icon: Icon(
+        Icons.input,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        Navigator.of(context).push(CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (BuildContext context) {
+            return AuthPage();
+          },
+        ));
+      },
+    ),);
   }
   KFDrawerController drawerController() {
     return  KFDrawerController(
@@ -190,9 +213,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           ),
           icon: Icon(Icons.settings, color: Colors.white),
           page: ClassBuilder.fromString('SettingsOnePage'),
+
         ),
       ],
     );
+  }
+  Function onClickAyarlar(){
+    Navigator.pushReplacementNamed(context, '/Ayarlar');
   }
   bottomBarDesign() {
     return CurvedNavigationBar(
