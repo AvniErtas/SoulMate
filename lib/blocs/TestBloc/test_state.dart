@@ -43,7 +43,7 @@ class TestLoaded extends TestState {
   }
 
   @override
-  List<Object> get props => [Tests, hasReachedMax];
+  List<Object> get props => [Tests, test,hasReachedMax];
 
   @override
   String toString() =>

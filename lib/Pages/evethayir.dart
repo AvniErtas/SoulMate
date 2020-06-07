@@ -10,13 +10,14 @@ import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_event.dart';
 import 'package:soulmate/blocs/TestBloc/test_state.dart';
 import 'package:soulmate/model/paylasim.dart';
+import 'package:soulmate/model/sorular.dart';
 import 'package:soulmate/model/test.dart';
 import 'package:http/http.dart' as http;
 
 class EvetHayirBolumu extends StatefulWidget {
   String testAdi;
   String id;
-  EvetHayirBolumu(this.testAdi,this.id);
+  EvetHayirBolumu(this.testAdi, this.id);
 
   @override
   _EvetHayirBolumuState createState() => _EvetHayirBolumuState();
@@ -29,14 +30,16 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   int _current = 0;
   int soruNo = 0;
   double rating = 50;
-  List<int> siklar = new List<int>(4);
-  List<Border> border = new List<Border>(4);
+  List<int> siklar = new List<int>(20);
+  List<Border> border = new List<Border>(20);
   double heightMedia;
   double widthMedia;
   List<double> animatedContainerSize = new List<double>(2);
   CarouselSlider carouselSlider;
   Test test;
   ProgressDialog pr;
+  TestBloc _testBloc;
+  bool isLoaded = false;
   @override
   void initState() {
     animatedContainerSize[0] = 100.0;
@@ -61,6 +64,9 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         }
       },
     );
+
+    _testBloc = BlocProvider.of<TestBloc>(context);
+    _testBloc.add(FetchTestFromIdEvent(widget.id));
   }
 
   @override
@@ -84,12 +90,10 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   }
 
   Widget testevethayirBolumu() {
-    final _testBloc = BlocProvider.of<TestBloc>(context);
-    _testBloc.add(FetchTestFromIdEvent(widget.id));
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        BlocBuilder<TestBloc,TestState>(
+        BlocBuilder<TestBloc, TestState>(
             bloc: _testBloc,
             builder: (context, TestState state) {
               if (state is TestUninitialized) {
@@ -100,15 +104,23 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                 );
               } else if (state is TestLoaded) {
                 test = state.test;
-                return  soruWidget();
+                if(!isLoaded) {
+                  siklar = new List<int>(test.sorular.length);
+                  border = new List<Border>(test.sorular.length);
+                }
+                isLoaded = true;
+
+                return soruWidget();
+//              return Container();
               } else if (state is TestError) {
                 return Text("İnternet yok amk");
-              }else {
-
+              } else {
                 return Text("state");
               }
             }),
-        test != null ? soruSecimleri(test.sorular[soruNo].soruTipi) : Container(),
+        test != null
+            ? soruSecimleri(test.sorular[soruNo].soruTipi)
+            : Container(),
         bitir_buton(),
       ],
     );
@@ -117,76 +129,10 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   Widget soruSecimleri(int index) {
     switch (index) {
       case 0:
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                setState(() {
-                  siklar[soruNo] = 0;
-                  animatedContainerSize[0] = 150.0;
-                });
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  setState(() {
-                    animatedContainerSize[0] = 100.0;
-                  });
-                });
-
-                carouselSlider.nextPage(
-                    duration: Duration(milliseconds: 600),
-                    curve: Curves.linear);
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.fastLinearToSlowEaseIn,
-                height: animatedContainerSize[0],
-                width: animatedContainerSize[0],
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  //       border: border[0],
-                  image: DecorationImage(
-                    image: AssetImage("images/digericonlar/evet.png"),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  siklar[soruNo] = 1;
-                  animatedContainerSize[1] = 150;
-                });
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  setState(() {
-                    animatedContainerSize[1] = 100;
-                  });
-                });
-
-                carouselSlider.nextPage(
-                    duration: Duration(milliseconds: 600),
-                    curve: Curves.linear);
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.fastLinearToSlowEaseIn,
-                height: animatedContainerSize[1],
-                width: animatedContainerSize[1],
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/digericonlar/hayir.png"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
+        return evetHayirTasarim();
         break;
       case 1:
         return abcdSiklari();
-//    altProfilBolumu(),
         break;
       case 2:
         return sliderTasarim();
@@ -196,7 +142,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   Widget soruWidget() {
     List<String> soruAdi = new List<String>();
-    for(Sorular sorular in  test.sorular){
+    for (Sorular sorular in test.sorular) {
       soruAdi.add(sorular.soru);
     }
     carouselSlider = cardDesingTests(
@@ -221,12 +167,16 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
       soruNo = index;
       animatedContainerSize[0] = 100.0;
       animatedContainerSize[1] = 100.0;
+
+      for (int i = 0; i < border.length; i++) {
+        border[i] = null;
+      }
+
       if (siklar[index] != null) {
         if (test.sorular[index].soruTipi == 0)
           animatedContainerSize[siklar[index]] = 150.0;
         if (test.sorular[index].soruTipi == 1)
           border[siklar[index]] = Border.all(width: 5);
-        debugPrint(siklar[index].toString());
       }
     });
   }
@@ -285,11 +235,11 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                   carouselSlider.nextPage(
                       duration: Duration(milliseconds: 300),
                       curve: Curves.linear);
-                  Future.delayed(const Duration(milliseconds: 500), () {
+                  /* Future.delayed(const Duration(milliseconds: 500), () {
                     setState(() {
                       border[index] = null;
                     });
-                  });
+                  });*/
                 })
               },
               child: Container(
@@ -304,13 +254,82 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                 ),
                 child: Center(
                     child: Text(
-                  "Bu bir şıktır",
+                  test.sorular[soruNo].siklar[index],
                   style: TextStyle(color: Colors.white),
                 )),
               ),
             ),
           );
         });
+  }
+
+  Widget evetHayirTasarim() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        InkWell(
+          onTap: () {
+            setState(() {
+              siklar[soruNo] = 0;
+              animatedContainerSize[0] = 150.0;
+            });
+            Future.delayed(const Duration(milliseconds: 500), () {
+              setState(() {
+                animatedContainerSize[0] = 100.0;
+              });
+            });
+
+            carouselSlider.nextPage(
+                duration: Duration(milliseconds: 600),
+                curve: Curves.linear);
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.fastLinearToSlowEaseIn,
+            height: animatedContainerSize[0],
+            width: animatedContainerSize[0],
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              //       border: border[0],
+              image: DecorationImage(
+                image: AssetImage("images/digericonlar/evet.png"),
+              ),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            setState(() {
+              siklar[soruNo] = 1;
+              animatedContainerSize[1] = 150;
+            });
+            Future.delayed(const Duration(milliseconds: 500), () {
+              setState(() {
+                animatedContainerSize[1] = 100;
+              });
+            });
+
+            carouselSlider.nextPage(
+                duration: Duration(milliseconds: 600),
+                curve: Curves.linear);
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.fastLinearToSlowEaseIn,
+            height: animatedContainerSize[1],
+            width: animatedContainerSize[1],
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/digericonlar/hayir.png"),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget bitir_buton() {
@@ -393,11 +412,14 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                 // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
 //                Paylasilan paylasilan =
 //                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
-                Paylasim paylasim = new Paylasim(testID: test.id,paylasanUid: "123",paylasanAdi: "onur",paylasanCevaplari: siklar);
+                Paylasim paylasim = new Paylasim(
+                    testID: test.id,
+                    paylasanUid: "123",
+                    paylasanAdi: "onur",
+                    paylasanCevaplari: siklar);
                 Navigator.of(context).pop();
 //                nextPage();
                 _dataKaydet(paylasim);
-
               },
             ),
           ],
@@ -412,8 +434,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         child: InkWell(
           onTap: () {
             carouselSlider.previousPage(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.linear);
+                duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
           child: Container(
             height: MediaQuery.of(context).size.height * 0.050,
@@ -435,8 +456,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 //                    index++;
 //                  });
             carouselSlider.nextPage(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.linear);
+                duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
           child: Container(
             height: MediaQuery.of(context).size.height * 0.050,
@@ -457,7 +477,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   //Çözülen testin kaydedileceği yer
   Future<void> _dataKaydet(Paylasim paylasim) async {
-    pr = ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr = ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
     pr.style(
         message: 'Kaydediliyor...',
         borderRadius: 10.0,
@@ -468,12 +489,10 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
         progressTextStyle: TextStyle(
             color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
         messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
-    );
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600));
     await pr.show();
-    var response =
-    await http.post(Domain().getDomainApi() + "/paylasim/save",
-        headers:{ "Content-type": "application/json" },
+    var response = await http.post(Domain().getDomainApi() + "/paylasim/save",
+        headers: {"Content-type": "application/json"},
         body: paylasim.toRawJson());
     if (response.statusCode == 200) {
       debugPrint(response.body.toString());

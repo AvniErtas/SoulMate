@@ -11,6 +11,7 @@ import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet_eski.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclarTestler.dart';
 import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
+import 'package:soulmate/Pages/login/login_screen.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
@@ -28,21 +29,25 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'Kesfet/kesfet.dart';
 import 'evethayir.dart';
+import 'login/firebaseauth_provider.dart';
 
-class GirisSayfasi extends KFDrawerContent {
-//  GirisSayfasi(Key k) : super(: k);
+class GirisSayfasi extends StatefulWidget {
+  VoidCallback menuStart;
+
+  GirisSayfasi(Key k,this.menuStart) : super(key: k);
+
 
   @override
-  _GirisSayfasiState createState() => _GirisSayfasiState();
+  GirisSayfasiState createState() => GirisSayfasiState();
 }
 
-class _GirisSayfasiState extends State<GirisSayfasi>
+class GirisSayfasiState extends State<GirisSayfasi>
     with SingleTickerProviderStateMixin {
 
-  List<TargetFocus> targets = List();
+  static List<TargetFocus> targets = List();
   List<TargetPosition> targetsPosition = List();
 
-  GlobalKey keyButton = GlobalKey();
+ static GlobalKey keyButton = GlobalKey();
   GlobalKey keyButton2 = GlobalKey();
   GlobalKey keyButton3 = GlobalKey();
   GlobalKey keyButton4 = GlobalKey();
@@ -56,6 +61,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   SequenceAnimation siralianimasyon;
 
   List<Test> testler = new List<Test>();
+  AnaSayfaBloc _anaSayfaBloc;
 
   @override
   void initState() {
@@ -68,7 +74,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
     );
     siralianimasyon = sequenceAnimation();
     _controller.forward();
-
+    _anaSayfaBloc = BlocProvider.of<AnaSayfaBloc>(context);
+    _anaSayfaBloc.add(FetchAnaSayfaEvent());
   }
 
   @override
@@ -79,21 +86,20 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
-    final _anaSayfaBloc = BlocProvider.of<AnaSayfaBloc>(context);
-    _anaSayfaBloc.add(FetchAnaSayfaEvent());
+
 
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: AnimatedBuilder(
-            animation: _controller,
-            builder: (BuildContext context, Widget child) {
-              return Container(
-                decoration: BoxDecoration(
-                  gradient: GradientColors.Background1,
-                ),
-                child: Padding(
+    return Container(
+      height: double.infinity,
+      decoration: BoxDecoration(
+        gradient: GradientColors.Background1,
+      ),
+      child: SingleChildScrollView(
+          child: AnimatedBuilder(
+              animation: _controller,
+              builder: (BuildContext context, Widget child) {
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
@@ -110,7 +116,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                                   Icons.menu,
                                   color: Colors.white,
                                 ),
-                                onPressed: widget.onMenuPressed,
+                                onPressed: widget.menuStart,
                               ),
                             ),
                           ),
@@ -183,11 +189,11 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
                     ],
                   ),
-                ),
-              );
-            }),
-      ),
+                );
+              }),
+        ),
     );
+
   }
 
   Function onClickTest(String soruAdi,String id) {
@@ -232,8 +238,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
 
             child: circleImages("testsec"),
             onTap: () {
+             /* Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => KategoriBolumu()));*/
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => KategoriBolumu()));
+                  MaterialPageRoute(builder: (context) => ProviderwithFirebaseAuth()));
             },
           ),
         ),
@@ -292,7 +300,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
   void initTargets() {
     targets.add(TargetFocus(
       //target 1
-      identify: "Target 1",
+      identify: "Testi Seç",
       keyTarget: keyButton,
       contents: [
         ContentTarget(
@@ -314,7 +322,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Bir çok konuda fikir almak çok kolay,fikir almak istediğin bölümü seç, uzman ekibimize veya arkadaşlarına danış",
+                      "Birbirinden farklı kategorilerdeki testlerden sana uygun olanı seç ve bu testleri çözerek kendini ifade et",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
@@ -338,7 +346,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Giyim konusunda danışmak ister misin?",
+                    "Çözdüğün testlerin sonuçlarını diğer insanlarla karşılaştır ve uyumunu gör",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -371,18 +379,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Satın almak istediğin ürün ile ilgili görüşe mi ihtiyacın var ?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20.0),
-                    textAlign: TextAlign.center,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Sana uygun kategoriyi seçip hemen fikir alabilirsin",
+                      "Senin için uygun olan testleri incele ve sana uyumlu kişileri keşfet",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
@@ -404,18 +404,10 @@ class _GirisSayfasiState extends State<GirisSayfasi>
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Satın almak istediğin ürün ile ilgili görüşe mi ihtiyacın var ?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20.0),
-                    textAlign: TextAlign.center,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Sana uygun kategoriyi seçip hemen fikir alabilirsin",
+                      "Popüler testlere ulaşmak için buraya tıklaman yeterli",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
@@ -427,7 +419,7 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       shape: ShapeLightFocus.Circle,
     ));
   }
-  void showTutorial() {
+  static void showTutorial() {
     //yardım ekranı başlaması için bu fonksiyon çağırılıyor
     TutorialCoachMark(keyButton.currentContext,
         targets: targets,
@@ -452,7 +444,8 @@ class _GirisSayfasiState extends State<GirisSayfasi>
       });
       await prefs.setBool('isFirst', false);
     }
-    /*Future.delayed(Duration(milliseconds: 550), () {
+
+   /* Future.delayed(Duration(milliseconds: 550), () {
       showTutorial();
     });*/
   }

@@ -5,7 +5,7 @@ import 'package:soulmate/model/test.dart';
 import 'bloc.dart';
 import '../locator.dart';
 
-class TestBloc extends Bloc<TestEvent, TestState> {
+class TestBloc extends Bloc<TestTekEvent, TestState> {
   final TestRepository testRepository = locator<TestRepository>();
 
   @override
@@ -14,7 +14,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   @override
   Stream<TestState> mapEventToState(
-    TestEvent event,
+    TestTekEvent event,
   ) async* {
     yield TestLoading();
     if (event is FetchPopulerEvent) {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "139618811219",
+    "firebase_url": "https://testapp-60f4f.firebaseio.com",
+    "project_id": "testapp-60f4f",
+    "storage_bucket": "testapp-60f4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139618811219:android:5f6b6f59cd5715ff5235a6",
+        "android_client_info": {
+          "package_name": "com.test.soulmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139618811219-n5g854v75scpvhk198vt6kctgj25s92h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.test.soulmate",
+            "certificate_hash": "039b73ebde6f5cef4c7b2fb7b0c74dc41456692d"
+          }
+        },
+        {
+          "client_id": "139618811219-92vumd4lh101tq43rol6r4ujgmduubnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw4PY6JEXojMsWUGgN1H7FEEpDh45bnY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139618811219-92vumd4lh101tq43rol6r4ujgmduubnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

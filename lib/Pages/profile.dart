@@ -1,13 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
+import 'package:provider/provider.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 
-class UserProfilePage  extends KFDrawerContent {
+class UserProfilePage  extends StatefulWidget {
+  VoidCallback _returnMainWidget;
+  UserProfilePage(Key k,this._returnMainWidget) : super(key: k);
+
   @override
   _UserProfilePageState createState() => _UserProfilePageState();
 }
@@ -68,6 +73,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
           ),
           InkWell(child: Icon(Icons.edit,size: 18,),onTap: (){},),
+
         ],
       ),
     );
@@ -268,45 +274,108 @@ class _UserProfilePageState extends State<UserProfilePage> {
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-
-
       body: Stack(
+
         children: <Widget>[
           _buildCoverImage(screenSize),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: screenSize.height / 10),
-                  _buildProfileImage(),
-                  _buildFullName(),
-                  _buildStatus(context),
-                  _buildStatContainer(),
-                  // _buildBio(context),
-                  _buildSeparator(screenSize),
-                  SizedBox(height: 10.0),
-                  //_buildGetInTouch(context),
-                  SizedBox(height: 8.0),
-                  _buildButtons(),
-                  SizedBox(height: 8.0),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Son Çözülen Testler",
-                          style: TextStyle(fontSize: 17,fontFamily: 'Roboto',fontWeight: FontWeight.w500),
-                        )),
-                  ),
-                  SizedBox(height: 8.0),
-                 cardDesingTests(testVeSorular: testAdi,size: heightMedia/280),
-                ],
+            child: Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    SizedBox(height: screenSize.height / 10),
+                    _buildProfileImage(),
+                    _buildFullName(),
+                    _buildStatus(context),
+                    _buildStatContainer(),
+                    // _buildBio(context),
+                    _buildSeparator(screenSize),
+                    SizedBox(height: 10.0),
+                    //_buildGetInTouch(context),
+                    SizedBox(height: 8.0),
+                    _buildButtons(),
+                    SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Son Çözülen Testler",
+                            style: TextStyle(fontSize: 17,fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+                          )),
+                    ),
+                    SizedBox(height: 8.0),
+                   cardDesingTests(testVeSorular: testAdi,size: heightMedia/280),
+
+                  ],
+                ),
               ),
+            ),
+          ),
+          
+          Positioned(
+            bottom: -20,
+            left: -20,
+            child: Container(
+              width: 80,
+              height: 80,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Color(0xff5287f7),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 00,
+            left: 00,
+            child: IconButton(
+              icon: Icon(
+                Icons.power_settings_new,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _showDialogExit();
+              },
             ),
           ),
         ],
       ),
     );
   }
+  void _showDialogExit() {
 
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Çıkmak istediğinize emin misiniz ?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                //Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+            new FlatButton(
+              child: new Text("Evet"),
+              onPressed: () {
+                var userRepo = Provider.of<UserRepository>(context,listen: false);
+                userRepo.signOut();
+                Navigator.of(context).pop();
+                widget._returnMainWidget();
+                // _signOut();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

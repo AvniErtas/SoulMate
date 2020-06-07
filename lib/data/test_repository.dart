@@ -48,18 +48,31 @@ class TestRepository {
   }
 
   Future <Test> getTestFromId(String id) async{
+    int i=0;
     var response =
     await http.post(Domain().getDomainApi() + "/test/id", body: {
       "id": id,
     });
     if (response.statusCode == 200) {
-      debugPrint(response.body.toString());
+//      final gelenJson = jsonDecode(response.body);
+      debugPrint(response.body);
       return testFromJson((response.body));
+//      return Test.fromJson(gelenJson);
     } else {
       debugPrint(response.statusCode.toString());
       throw Exception('Failed to load post');
     }
+   /* Test test = new Test();
+    List<Sorular> sorular = new List<Sorular>();
+    sorular.add(new Sorular(soruTipi: 0,soru: 'Soru 111'));
+    sorular.add(new Sorular(soruTipi: 0,soru: 'Soru 222'));
+    sorular.add(new Sorular(soruTipi: 1,soru: 'Soru 333'));
+    sorular.add(new Sorular(soruTipi: 2,soru: 'Soru 444'));
+    test = new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Sonuçççç',sorular: sorular);
+*/
 
+  debugPrint('girdi');
+//  return test;
 
   }
 

@@ -38,10 +38,10 @@ Widget profileCardDesign(double yukseklik, double genislik) {
               child: InkWell(
                 child: circleImages(""),
                 onTap: () {
-                  Navigator.push(
+                  /*Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UserProfilePage()));
+                          builder: (context) => UserProfilePage()));*/
                 },
               ),
             ),

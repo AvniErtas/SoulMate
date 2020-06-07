@@ -18,11 +18,11 @@ void register<T>(Constructor<T> constructor) {
 
 class ClassBuilder {
   static void registerClasses() {
-    register<GirisSayfasi>(() => GirisSayfasi());
+//    register<GirisSayfasi>(() => GirisSayfasi());
     register<KategoriBolumu>(() => KategoriBolumu());
     register<HomeScreen>(() => HomeScreen());
 
-    register<UserProfilePage>(() => UserProfilePage());
+//    register<UserProfilePage>(() => UserProfilePage());
     register<SettingsOnePage>(() => SettingsOnePage());
 
   }

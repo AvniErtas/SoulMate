@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
 
-abstract class TestEvent extends Equatable {
+abstract class TestTekEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class FetchPopulerEvent extends TestEvent {}
+class FetchPopulerEvent extends TestTekEvent {}
 
-class FetchKategoriEvent extends TestEvent {}
+class FetchKategoriEvent extends TestTekEvent {}
 
-class FetchSonucEvent extends TestEvent {}
+class FetchSonucEvent extends TestTekEvent {}
 
-class FetchKesfetEvent extends TestEvent {}
+class FetchKesfetEvent extends TestTekEvent {}
 
-class FetchTestFromIdEvent extends TestEvent {
+class FetchTestFromIdEvent extends TestTekEvent {
   String testId;
 
   FetchTestFromIdEvent(this.testId);
