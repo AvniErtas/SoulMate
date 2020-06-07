@@ -34,8 +34,7 @@ import 'login/firebaseauth_provider.dart';
 class GirisSayfasi extends StatefulWidget {
   VoidCallback menuStart;
 
-  GirisSayfasi(Key k,this.menuStart) : super(key: k);
-
+  GirisSayfasi(Key k, this.menuStart) : super(key: k);
 
   @override
   GirisSayfasiState createState() => GirisSayfasiState();
@@ -43,14 +42,13 @@ class GirisSayfasi extends StatefulWidget {
 
 class GirisSayfasiState extends State<GirisSayfasi>
     with SingleTickerProviderStateMixin {
-
   static List<TargetFocus> targets = List();
   List<TargetPosition> targetsPosition = List();
 
- static GlobalKey keyButton = GlobalKey();
-  GlobalKey keyButton2 = GlobalKey();
-  GlobalKey keyButton3 = GlobalKey();
-  GlobalKey keyButton4 = GlobalKey();
+  static GlobalKey keyButton = GlobalKey();
+  static GlobalKey keyButton2 = GlobalKey();
+  static GlobalKey keyButton3 = GlobalKey();
+  static GlobalKey keyButton4 = GlobalKey();
 
   double width;
   double height;
@@ -67,7 +65,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
   void initState() {
     super.initState();
     initTargets();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
+    WidgetsBinding.instance.addPostFrameCallback(
+        _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
     _controller = AnimationController(
       vsync: this,
       duration: myDuration,
@@ -86,8 +85,6 @@ class GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
-
-
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Container(
@@ -96,14 +93,14 @@ class GirisSayfasiState extends State<GirisSayfasi>
         gradient: GradientColors.Background1,
       ),
       child: SingleChildScrollView(
-          child: AnimatedBuilder(
-              animation: _controller,
-              builder: (BuildContext context, Widget child) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
+        child: AnimatedBuilder(
+            animation: _controller,
+            builder: (BuildContext context, Widget child) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    /*Row(
                         children: <Widget>[
                           ClipRRect(
                             borderRadius:
@@ -121,87 +118,79 @@ class GirisSayfasiState extends State<GirisSayfasi>
                             ),
                           ),
                         ],
-                      ),
-                      testisecsonucincelekesfet(),
-                      BlocBuilder<AnaSayfaBloc,AnaSayfaState>(
+                      ),*/
+                    testisecsonucincelekesfet(),
+                    BlocBuilder<AnaSayfaBloc, AnaSayfaState>(
                         key: keyButton4,
-                          bloc: _anaSayfaBloc,
-                          builder: (context, AnaSayfaState state) {
-                            if (state is AnaSayfaUninitialized) {
-                              return Text("UNINIT");
-                            } else if (state is AnaSayfaLoading) {
-                              return new Center(
-                                child: new CircularProgressIndicator(),
-                              );
-                            } else if (state is AnaSayfaLoaded) {
-                              testler = state.Tests[0];
-                              List<String> testAdi = new List<String>();
-                              for(Test test in  state.Tests[0]){
-                                testAdi.add(test.testAdi);
-                              }
-                              return cardDesingTests2(
-                                  testVeSorular: state.Tests[0],
-                                  onClick: (itemIndex,id) =>
-                                      onClickTest(itemIndex,id));
-                            } else if (state is AnaSayfaError) {
-                              return Text("İnternet yok amk");
-                            }else {
-
-                              return Text("state");
+                        bloc: _anaSayfaBloc,
+                        builder: (context, AnaSayfaState state) {
+                          if (state is AnaSayfaUninitialized) {
+                            return Text("UNINIT");
+                          } else if (state is AnaSayfaLoading) {
+                            return new Center(
+                              child: new CircularProgressIndicator(),
+                            );
+                          } else if (state is AnaSayfaLoaded) {
+                            testler = state.Tests[0];
+                            List<String> testAdi = new List<String>();
+                            for (Test test in state.Tests[0]) {
+                              testAdi.add(test.testAdi);
                             }
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "En Çok Çözülenler",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            )),
-                      ),
-                      BlocBuilder<AnaSayfaBloc,AnaSayfaState>(
-                          bloc: _anaSayfaBloc,
-                          builder: (context, AnaSayfaState state) {
-                            if (state is AnaSayfaUninitialized) {
-                              return Text("UNINIT");
-                            } else if (state is AnaSayfaLoading) {
-                              return new Center(
-                                child: new CircularProgressIndicator(),
-                              );
-                            } else if (state is AnaSayfaLoaded) {
-                              List<String> testAdi = new List<String>();
-                              for(Test test in  state.Tests[1]){
-                                testAdi.add(test.testAdi);
-                              }
-                              return cardDesingTests(
-                                  testVeSorular: testAdi,
-                                  onClick: (itemIndex,id) =>
-                                      onClickTest(itemIndex,id));
-                            } else if (state is AnaSayfaError) {
-                              return Text("İnternet yok amk");
-                            }else {
-
-                              return Text("state");
+                            return cardDesingTests2(
+                                testVeSorular: state.Tests[0],
+                                onClick: (itemIndex, id) =>
+                                    onClickTest(itemIndex, id));
+                          } else if (state is AnaSayfaError) {
+                            return Text("İnternet yok amk");
+                          } else {
+                            return Text("state");
+                          }
+                        }),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "En Çok Çözülenler",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )),
+                    ),
+                    BlocBuilder<AnaSayfaBloc, AnaSayfaState>(
+                        bloc: _anaSayfaBloc,
+                        builder: (context, AnaSayfaState state) {
+                          if (state is AnaSayfaUninitialized) {
+                            return Text("UNINIT");
+                          } else if (state is AnaSayfaLoading) {
+                            return new Center(
+                              child: new CircularProgressIndicator(),
+                            );
+                          } else if (state is AnaSayfaLoaded) {
+                            List<String> testAdi = new List<String>();
+                            for (Test test in state.Tests[1]) {
+                              testAdi.add(test.testAdi);
                             }
-                          }),
+                            return cardDesingTests(
+                                testVeSorular: testAdi,
+                                onClick: (itemIndex, id) =>
+                                    onClickTest(itemIndex, id));
+                          } else if (state is AnaSayfaError) {
+                            return Text("İnternet yok amk");
+                          } else {
+                            return Text("state");
+                          }
+                        }),
 //                      profileCardDesign(height * 0.20, width * 0.35),  //Popüler kişiler
-
-                    ],
-                  ),
-                );
-              }),
-        ),
+                  ],
+                ),
+              );
+            }),
+      ),
     );
-
   }
 
-  Function onClickTest(String soruAdi,String id) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                EvetHayirBolumu(soruAdi,id)));
+  Function onClickTest(String soruAdi, String id) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => EvetHayirBolumu(soruAdi, id)));
   }
 
   SequenceAnimation sequenceAnimation() {
@@ -232,16 +221,16 @@ class GirisSayfasiState extends State<GirisSayfasi>
           height: height * 0.55,
         ),
         Transform.translate(
-
           offset: Offset(siralianimasyon["translate1"].value, 0),
           child: InkWell(
-
             child: circleImages("testsec"),
             onTap: () {
-             /* Navigator.push(context,
+              /* Navigator.push(context,
                   MaterialPageRoute(builder: (context) => KategoriBolumu()));*/
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProviderwithFirebaseAuth()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProviderwithFirebaseAuth()));
             },
           ),
         ),
@@ -260,8 +249,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
           child: InkWell(
             child: circleImages("kesfet"),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Kesfet()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Kesfet()));
             },
           ),
         ),
@@ -279,11 +268,12 @@ class GirisSayfasiState extends State<GirisSayfasi>
 
   Widget circleImages(String title) {
     GlobalKey keyButtonCircle = GlobalKey();
-    if(title=="testsec")
+    if (title == "testsec")
       keyButtonCircle = keyButton;
-    else if(title=="sonucincele")
+    else if (title == "sonucincele")
       keyButtonCircle = keyButton2;
-    else keyButtonCircle = keyButton3;
+    else
+      keyButtonCircle = keyButton3;
     return Container(
       key: keyButtonCircle,
       height: height * 0.25,
@@ -300,7 +290,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
   void initTargets() {
     targets.add(TargetFocus(
       //target 1
-      identify: "Testi Seç",
+      identify: "Target 1",
       keyTarget: keyButton,
       contents: [
         ContentTarget(
@@ -419,6 +409,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
       shape: ShapeLightFocus.Circle,
     ));
   }
+
   static void showTutorial() {
     //yardım ekranı başlaması için bu fonksiyon çağırılıyor
     TutorialCoachMark(keyButton.currentContext,
@@ -427,25 +418,26 @@ class GirisSayfasiState extends State<GirisSayfasi>
         textSkip: "BİTİR",
         paddingFocus: 2,
         opacityShadow: 0.8, finish: () {
-          print("finish");
-        }, clickTarget: (target) {
-          print(target);
-        }, clickSkip: () {
-          print("skip");
-        })
+      print("finish");
+    }, clickTarget: (target) {
+      print(target);
+    }, clickSkip: () {
+      print("skip");
+    })
       ..show();
   }
+
   void _afterLayout(_) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirst = (prefs.getBool('isFirst') ?? true);
-    if(isFirst) {
+    if (isFirst) {
       Future.delayed(Duration(milliseconds: 100), () {
         showTutorial();
       });
       await prefs.setBool('isFirst', false);
     }
 
-   /* Future.delayed(Duration(milliseconds: 550), () {
+    /* Future.delayed(Duration(milliseconds: 550), () {
       showTutorial();
     });*/
   }

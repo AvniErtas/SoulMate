@@ -24,6 +24,7 @@ Widget appBarTasarim(String title) {
 
 Widget appBarTasarim2(String title) {
   return AppBar(
+    backgroundColor: Colors.indigo,
     title: Text(
       title,
       style: TextStyle(

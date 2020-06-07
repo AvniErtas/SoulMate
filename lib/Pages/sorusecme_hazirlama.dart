@@ -26,7 +26,10 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   List<TextEditingController> _soru_controller =
       List.generate(5, (i) => TextEditingController());
   List<List<String>> _soru_siklari = new List(5);
+  String dropdownValue = 'Kategori Seçiniz';
 
+  List <String> spinnerItems = [
+    'Kategori Seçiniz',"Eğlence",'Kitap','İş','Film-Dizi','Gezi','Aile','Teknoloji','Yaşam Tarzı','Aşk','Yemek','Ahlaki İkiliem','Diğer'];
   @override
   void initState() {
     super.initState();
@@ -43,181 +46,167 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
 
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: GradientColors.Background1,
-          ),
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: 15,
-                  left: 15,
-                  child: InkWell(onTap: () {
-//                    Navigator.pop(context);
-                  },child: Icon(Icons.arrow_back,size: 30,))
-              ),
-              Positioned(
-                  top: 15,
-                  right: 15,
-                  child: InkWell(onTap: () {
-                    showDialog(
+    return Scaffold(
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: GradientColors.Background1,
+        ),
+        child:  Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20,70,20,0),
+                  child: SizedBox(
+                    height: height*0.07,
+                    width: width*0.75,
+                    child: TextFormField(
+                      decoration: new InputDecoration(
 
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: new Text("Hazırlamayı bitirmek istiyor musunuz?"),
-                          actions: <Widget>[
-                            new FlatButton(
-                              child: new Text("Kapat"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
+                        labelStyle: TextStyle(color: Colors.white),
+                        labelText: "Test adı giriniz",
+                        fillColor: Colors.white,
+                        focusColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(20.0),
+                          borderSide: new BorderSide(
+                            color: Colors.white,
+                            width: 1.0,
+                          ),
+                        ),
+
+                        //fillColor: Colors.green
+                      ),
+                      validator: (val) {
+                        if (val.length == 0) {
+                          return "Kullanıcı adı boş olamaz!";
+                        } else {
+                          return null;
+                        }
                       },
-                    );
-                  },child: Icon(Icons.info_outline,size: 30,))
-              ),
-              Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "İstediğin Soru Tipini Seç",
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                      keyboardType: TextInputType.text,
+                      style: new TextStyle(
+                        fontFamily: "Poppins",
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: height * 0.10 * 1.5,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: InkWell(
-                                child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 1000),
-                                  curve: Curves.fastLinearToSlowEaseIn,
-                                  height: height * 0.10 * animatedContainerSize[0],
-                                  width: height * 0.10 * animatedContainerSize[0],
-                                  decoration: new BoxDecoration(
-                                    image: DecorationImage(
-                                      image: new AssetImage(
-                                          'images/digericonlar/percent.png'),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    animatedContainerSize[0] = 1.5;
-                                    animatedContainerSize[1] = 1;
-                                    animatedContainerSize[2] = 1;
-                                    secilenSoruTipi[soruNo] = 0;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: InkWell(
-                                child: //circleImages("abcd", "png"),
-                                    AnimatedContainer(
-                                  duration: Duration(milliseconds: 1000),
-                                  curve: Curves.fastLinearToSlowEaseIn,
-                                  height: height * 0.10 * animatedContainerSize[1],
-                                  width: height * 0.10 * animatedContainerSize[1],
-                                  decoration: new BoxDecoration(
-                                    image: DecorationImage(
-                                      image: new AssetImage(
-                                          'images/digericonlar/abcd.png'),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    animatedContainerSize[1] = 1.5;
-                                    animatedContainerSize[0] = 1;
-                                    animatedContainerSize[2] = 1;
-                                    secilenSoruTipi[soruNo] = 1;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    animatedContainerSize[2] = 1.5;
-                                    animatedContainerSize[0] = 1;
-                                    animatedContainerSize[1] = 1;
-                                    secilenSoruTipi[soruNo] = 2;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 1000),
-                                  curve: Curves.fastLinearToSlowEaseIn,
-                                  height: height * 0.10 * animatedContainerSize[2],
-                                  width: height * 0.10 * animatedContainerSize[2],
-                                  decoration: new BoxDecoration(
-                                    image: DecorationImage(
-                                      image: new AssetImage(
-                                          'images/digericonlar/evethayir3d.png'),
-                                      fit: BoxFit.contain,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Sorunu Hazirla",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      Slider(),
+                    ),
+                  ),
+                ),
+                DropdownButton<String>(
 
-                      ileriGeriButtons(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          kaydet();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Hazırlamayı Bitir",
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.white,
+                  ),
+                  onChanged: (String data) {
+                    setState(() {
+                      dropdownValue = data;
+                    });
+                  },
+                  items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,style: TextStyle(color: Colors.black),),
+                    );
+                  }).toList(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "İstediğin Soru Tipini Seç",
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: height * 0.10 * 1.5,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: InkWell(
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            height: height * 0.10 * animatedContainerSize[0],
+                            width: height * 0.10 * animatedContainerSize[0],
+                            decoration: new BoxDecoration(
+                              image: DecorationImage(
+                                image: new AssetImage(
+                                    'images/digericonlar/percent.png'),
+                                fit: BoxFit.contain,
+                              ),
+                              shape: BoxShape.circle,
                             ),
-                            height: height * 0.06,
-                            width: width * 0.50,
-                            decoration: BoxDecoration(
-                              gradient: GradientColors.anasayfaswiper,
-                              borderRadius: BorderRadius.circular(15),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              animatedContainerSize[0] = 1.5;
+                              animatedContainerSize[1] = 1;
+                              animatedContainerSize[2] = 1;
+                              secilenSoruTipi[soruNo] = 0;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          child: //circleImages("abcd", "png"),
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            height: height * 0.10 * animatedContainerSize[1],
+                            width: height * 0.10 * animatedContainerSize[1],
+                            decoration: new BoxDecoration(
+                              image: DecorationImage(
+                                image: new AssetImage(
+                                    'images/digericonlar/abcd.png'),
+                                fit: BoxFit.contain,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              animatedContainerSize[1] = 1.5;
+                              animatedContainerSize[0] = 1;
+                              animatedContainerSize[2] = 1;
+                              secilenSoruTipi[soruNo] = 1;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              animatedContainerSize[2] = 1.5;
+                              animatedContainerSize[0] = 1;
+                              animatedContainerSize[1] = 1;
+                              secilenSoruTipi[soruNo] = 2;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            height: height * 0.10 * animatedContainerSize[2],
+                            width: height * 0.10 * animatedContainerSize[2],
+                            decoration: new BoxDecoration(
+                              image: DecorationImage(
+                                image: new AssetImage(
+                                    'images/digericonlar/evethayir3d.png'),
+                                fit: BoxFit.contain,
+                              ),
+                              shape: BoxShape.circle,
                             ),
                           ),
                         ),
@@ -225,8 +214,45 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                     ],
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Sorunu Hazirla",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                Slider(),
+
+                ileriGeriButtons(),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    kaydet();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Hazırlamayı Bitir",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      height: height * 0.06,
+                      width: width * 0.50,
+                      decoration: BoxDecoration(
+                        gradient: GradientColors.anasayfaswiper,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

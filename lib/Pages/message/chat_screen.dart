@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Row(
       children: <Widget>[
         msg,
-        IconButton(
+        /*IconButton(
           icon: message.isLiked
               ? Icon(Icons.favorite)
               : Icon(Icons.favorite_border),
@@ -76,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ? Theme.of(context).primaryColor
               : Colors.blueGrey,
           onPressed: () {},
-        )
+        )*/
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
+import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
 import 'package:soulmate/blocs/locator.dart';
@@ -22,11 +24,16 @@ import 'Pages/animatedPage.dart';
 import 'Pages/giris.dart';
 import 'Pages/paylasmabolumu.dart';
 import 'Pages/profile.dart';
+import 'Widgets/drawer.dart';
 import 'blocs/TestBloc/test_bloc.dart';
 
 void main() {
 //  ClassBuilder.registerClasses();
   setupLocator();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(MyApp());
 }
 
@@ -106,6 +113,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       SoruSecmeVeHazirlama(),
       HomeScreen(),
       UserProfilePage(keyProfile,returnMainWidget),
+      SettingsOnePage(),
     ];
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
@@ -129,30 +137,15 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     });
 
 
-    return Scaffold(
-      bottomNavigationBar: bottomBarDesign(),
-      body: Stack(
-        children: <Widget>[
-          menu(context),
-          AnimatedPositioned(
-              duration: duration,
-              top: isCollapsed ? 0 : 0.2*screenHeight,
-              bottom: isCollapsed ? 0 : 0.2*screenHeight,
-              left: isCollapsed ? 0 : 0.5 * screenWidth,
-              right: isCollapsed ? 0 : -0.2 * screenWidth,
-              child: ScaleTransition( scale: _scaleAnimation,child: Material(
-                  animationDuration: duration,
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
-                  elevation: 8,
-                  child: GestureDetector(
-                      onPanUpdate: (details) {
-                        //on swiping left
-                        if (details.delta.dx < -6) {
-                          menuStart();
-                        }
-                      },
-                      child: tumSayfalar[selectedIndex] )))),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: appBarTasarim2("Test App"),
+        drawer: DrawerPage(onPageChange: (index) {
+          pageChanger(index);
+        },),
+          extendBodyBehindAppBar: true,
+          bottomNavigationBar: bottomBarDesign(),
+        body: tumSayfalar[selectedIndex]
       ),
     );
 //    MenuDashboard();
@@ -354,7 +347,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
   Function returnMainWidget() {
     setState(() {
-      selectedIndex = 0;
+      selectedIndex = 1;
+    });
+  }
+
+  Function pageChanger  (int index) {
+    debugPrint('girdi$index');
+    setState(() {
+      selectedIndex = index;
     });
   }
 }
