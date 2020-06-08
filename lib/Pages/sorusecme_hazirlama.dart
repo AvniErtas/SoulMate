@@ -26,6 +26,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   List<TextEditingController> _soru_controller =
       List.generate(5, (i) => TextEditingController());
   List<List<String>> _soru_siklari = new List(5);
+  TextEditingController testAdiController = new TextEditingController();
   String dropdownValue = 'Kategori Seçiniz';
 
   List <String> spinnerItems = [
@@ -56,39 +57,36 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20,70,20,0),
-                  child: SizedBox(
-                    height: height*0.07,
-                    width: width*0.75,
-                    child: TextFormField(
-                      decoration: new InputDecoration(
-
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: "Test adı giriniz",
-                        fillColor: Colors.white,
-                        focusColor: Colors.white,
-                        border: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(20.0),
-                          borderSide: new BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          ),
+                SizedBox(
+                  height: height*0.07,
+                  width: width*0.75,
+                  child: TextFormField(
+                    controller: testAdiController,
+                    decoration: new InputDecoration(
+                      labelStyle: TextStyle(color: Colors.white,fontStyle: FontStyle.italic),
+                      labelText: "Test adı giriniz",
+                      fillColor: Colors.white,
+                      focusColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                        borderSide: new BorderSide(
+                          color: Colors.white,
+                          width: 1.0,
                         ),
+                      ),
 
-                        //fillColor: Colors.green
-                      ),
-                      validator: (val) {
-                        if (val.length == 0) {
-                          return "Kullanıcı adı boş olamaz!";
-                        } else {
-                          return null;
-                        }
-                      },
-                      keyboardType: TextInputType.text,
-                      style: new TextStyle(
-                        fontFamily: "Poppins",
-                      ),
+                      //fillColor: Colors.green
+                    ),
+                    validator: (val) {
+                      if (val.length == 0) {
+                        return "Kullanıcı adı boş olamaz!";
+                      } else {
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.text,
+                    style: new TextStyle(
+                      fontFamily: "Poppins",
                     ),
                   ),
                 ),
@@ -227,9 +225,6 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                 Slider(),
 
                 ileriGeriButtons(),
-                SizedBox(
-                  height: 10,
-                ),
                 InkWell(
                   onTap: () {
                     kaydet();
@@ -557,59 +552,28 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   }
 
   void kaydet() {
-    bool hasNull = false;
+    if(testAdiController.text.isNotEmpty) {
+      if(dropdownValue != spinnerItems[0]) {
+        bool hasNull = false;
 
-    for(int i=0;i<_soru_controller.length;i++){
-      if(_soru_controller[i].text.isNotEmpty){
-        if(secilenSoruTipi[i]==1)
-       if(_soru_siklari[i]==null) {
-         showEmptyDialog(i);
-         hasNull = true;
-         break;
-       }
-      }
-    }
-
-    if (!hasNull)
-      showBitirmeDialog();
-
-    /* for (int i = 0; i < soru_sayisi; i++) {
-      if(_soru_controller[i].text.isNotEmpty) {
-        String soru;
-        List<String> siklar;
-        int soru_tipi = secilenSoruTipi[i];
-        if(soru_tipi == 1) {
-          if(_soru_siklari[i] != null){
-            soru = _soru_controller[i].text;
-            siklar = _soru_siklari[i];
-            ///soru,şıklar ve soru tipi alındı model oluşturup sunucuya kaydet
-          }else {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: new Text("Şıklı soru tipindeki sorularda şıklar boş olamaz (${i+1}.soru)"),
-                  actions: <Widget>[
-                    new FlatButton(
-                      child: new Text("Tamam"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-            break;
+        for (int i = 0; i < _soru_controller.length; i++) {
+          if (_soru_controller[i].text.isNotEmpty) {
+            if (secilenSoruTipi[i] == 1)
+              if (_soru_siklari[i] == null) {
+                showEmptyDialog(i);
+                hasNull = true;
+                break;
+              }
           }
-        }else {
-          soru = _soru_controller[i].text;
-          ///soru,şıklar ve soru tipi alındı model oluşturup sunucuya kaydet
         }
 
+        if (!hasNull)
+          showBitirmeDialog();
       }
-
-    }*/
+      else
+        snackbarOlustur('Kategori seçmelisiniz',Colors.black);
+    } else
+      snackbarOlustur('Test adı girmelisiniz',Colors.black);
   }
 
   showEmptyDialog(int index) {
@@ -702,7 +666,12 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
     else
       return Container();
   }
-
+  void snackbarOlustur(String text,Color color) {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(text, style: TextStyle(fontSize: 15.0, fontWeight:
+          FontWeight.bold),), duration: Duration(seconds: 2),backgroundColor: color,)
+    );
+  }
   void klavyeKapat() {
     FocusScope.of(context).requestFocus(FocusNode());
   }

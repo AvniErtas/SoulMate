@@ -139,7 +139,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
     return SafeArea(
       child: Scaffold(
-        appBar: appBarTasarim2("Test App"),
+        appBar: selectedIndex == 1 ? null : appBarTasarim2("Test App"),
         drawer: DrawerPage(onPageChange: (index) {
           pageChanger(index);
         },),
