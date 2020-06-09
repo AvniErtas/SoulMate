@@ -9,6 +9,7 @@ import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
+import 'package:soulmate/Pages/Kesfet/kesfet.dart';
 import 'package:soulmate/Pages/login/login_screen.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
@@ -31,11 +32,11 @@ import 'blocs/TestBloc/test_bloc.dart';
 void main() {
 //  ClassBuilder.registerClasses();
   setupLocator();
+  runApp(MyApp());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
-  runApp(MyApp());
 }
 
 
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
             '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
             '/Ayarlar' : (context) => SettingsOnePage(),
             '/Login' : (context) => LoginScreen(),
-
+            '/Kesfet' : (context) => Kesfet(),
           },
           home: MainWidget(),
         ),
@@ -205,53 +206,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     });
 
 }
-//  Widget drawer() {
-//    return KFDrawer(
-//    items: listss(),
-////        borderRadius: 0.0,
-////        shadowBorderRadius: 0.0,
-////        menuPadding: EdgeInsets.all(0.0),
-////        scrollable: true,
-//      controller: drawerController(),
-//     /* header: Align(
-//        alignment: Alignment.bottomCenter,
-//        child: Container(
-//          padding: EdgeInsets.symmetric(horizontal: 16.0),
-//          width: MediaQuery.of(context).size.width * 0.3,
-//          child: Image.asset(
-//            'assets/logo.png',
-//            alignment: Alignment.centerLeft,
-//          ),
-//        ),
-//      ),*/
-//      footer: KFDrawerItem(
-//        text: Text(
-//          'GİRİŞ YAP',
-//          style: TextStyle(color: Colors.white),
-//        ),
-//        icon: Icon(
-//          Icons.input,
-//          color: Colors.white,
-//        ),
-//        onPressed: () {
-//          Navigator.of(context).push(CupertinoPageRoute(
-//            fullscreenDialog: true,
-//            builder: (BuildContext context) {
-//              return AuthPage();
-//            },
-//          ));
-//        },
-//      ),
-//      decoration: BoxDecoration(
-//        gradient: LinearGradient(
-//          begin: Alignment.topLeft,
-//          end: Alignment.bottomRight,
-//          colors: [Colors.greenAccent, Colors.indigo],
-//          tileMode: TileMode.repeated,
-//        ),
-//      ),
-//    );
-//  }
   List<KFDrawerItem> listss() {
     List<KFDrawerItem> list = new List<KFDrawerItem>();
     list.add(KFDrawerItem(
@@ -273,65 +227,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       },
     ),);
   }
-//  KFDrawerController drawerController() {
-//    return  KFDrawerController(
-//
-//      initialPage: ClassBuilder.fromString(tumSayfalar[selectedIndex]),
-//      items: [
-//        KFDrawerItem.initWithPage(
-//          text: Text('ANASAYFA', style: TextStyle(color: Colors.white)),
-//          icon: Icon(Icons.home, color: Colors.white),
-////          page: GirisSayfasi(),
-//        ),
-//        KFDrawerItem.initWithPage(
-//          text: Text(
-//            'SORU HAZIRLA',
-//            style: TextStyle(color: Colors.white),
-//          ),
-//          icon: Icon(Icons.add_circle_outline, color: Colors.white),
-//          page: SoruSecmeVeHazirlama(),
-//        ),
-//        KFDrawerItem.initWithPage(
-//          text: Text(
-//            'BİLDİRİMLER',
-//            style: TextStyle(color: Colors.white),
-//          ),
-//          icon: Icon(Icons.notifications_active, color: Colors.white),
-//          page: SoruSecmeVeHazirlama(),
-//        ),
-//        KFDrawerItem.initWithPage(
-//          text: Text(
-//            'MESAJLAR',
-//            style: TextStyle(color: Colors.white),
-//          ),
-//          icon: Icon(Icons.message, color: Colors.white),
-//          page: SoruSecmeVeHazirlama(),
-//        ),
-//        KFDrawerItem.initWithPage(
-//          text: Text(
-//            'YARDIM',
-//            style: TextStyle(color: Colors.white),
-//          ),
-//          icon: Icon(Icons.help, color: Colors.white),
-////         page: GirisSayfasi(),
-//          onPressed: () {
-//            Navigator.pop(context);
-//            GirisSayfasiState.showTutorial();
-//          },
-//
-//        ),
-//        KFDrawerItem.initWithPage(
-//          text: Text(
-//            'AYARLAR',
-//            style: TextStyle(color: Colors.white),
-//          ),
-//          icon: Icon(Icons.settings, color: Colors.white),
-//          page: ClassBuilder.fromString('SettingsOnePage'),
-//
-//        ),
-//      ],
-//    );
-//  }
   Function onClickAyarlar(){
     Navigator.pushReplacementNamed(context, '/Ayarlar');
   }
@@ -351,11 +246,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 600),
       onTap: (index) {
-        if(userRepo.durum == UserDurumu.OturumAcik)
+        //if(userRepo.durum == UserDurumu.OturumAcik)
         setState(() {
           selectedIndex = index;
         });
-        else Navigator.pushNamed(context, '/Login');
+        //else Navigator.pushNamed(context, '/Login');
       },
     );
   }

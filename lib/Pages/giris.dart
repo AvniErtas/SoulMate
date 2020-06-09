@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests2.dart';
+import 'package:soulmate/Widgets/circleCategory.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
@@ -66,8 +68,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
   void initState() {
     super.initState();
     initTargets();
-    WidgetsBinding.instance.addPostFrameCallback(
-        _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
     _controller = AnimationController(
       vsync: this,
       duration: myDuration,
@@ -121,19 +123,35 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),*/
 //                    testisecsonucincelekesfet(),
-                  SizedBox(height: height*0.08,),
+                    SizedBox(
+                      height: height * 0.08,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: _buildWikiCategory(Icons.sentiment_neutral,
-                                "Testini Seç", Colors.deepOrange.withOpacity(0.7)),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/Kategoriler');
+                              },
+                              child: _buildWikiCategory(
+                                  Icons.star_border,
+                                  "Testini Seç",
+                                  Colors.deepPurple.withOpacity(0.8)),
+                            ),
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
-                            child: _buildWikiCategory(Icons.add_circle,
-                                "Sonuçları İncele", Colors.blue.withOpacity(0.6)),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/SonuclarTumTestler');
+                              },
+                              child: _buildWikiCategory(
+                                  Icons.touch_app,
+                                  "Sonuçları İncele",
+                                  Colors.blue.withOpacity(0.8)),
+                            ),
                           ),
                         ],
                       ),
@@ -144,15 +162,67 @@ class GirisSayfasiState extends State<GirisSayfasi>
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: _buildWikiCategory(Icons.email,
-                                "Keşfet", Colors.indigo.withOpacity(0.7)),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/Kesfet');
+                              },
+                              child: _buildWikiCategory(Icons.search, "Keşfet",
+                                  Colors.indigo.withOpacity(0.8)),
+                            ),
                           ),
                           const SizedBox(width: 16.0),
                           Expanded(
-                            child: _buildWikiCategory(
-                                Icons.account_balance, "Testlerim", Colors.greenAccent),
+                            child: InkWell(
+                              onTap: (){
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => Material(
+                                      type: MaterialType.transparency,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Center( // Aligns the container to center
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: height*0.25,
+                                            child: Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: AssetImage("asset/giphy.gif"),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                );
+                              },
+                              child: _buildWikiCategory(Icons.person, "Testlerim",
+                                  Colors.green.withOpacity(0.8)),
+                            ),
                           ),
                         ],
+                      ),
+                    ),
+                    CategoryChooser(
+                      onTap: (category) => Navigator.pushNamed(
+                          context, 'category_bikes',
+                          arguments: category),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Popüler Testler",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ),
                     Padding(
@@ -225,6 +295,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
+
   Stack _buildWikiCategory(IconData icon, String label, Color color) {
     return Stack(
       children: <Widget>[
@@ -267,6 +338,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
       ],
     );
   }
+
   Function onClickTest(String soruAdi, String id) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => EvetHayirBolumu(soruAdi, id)));
@@ -520,4 +592,23 @@ class GirisSayfasiState extends State<GirisSayfasi>
       showTutorial();
     });*/
   }
+
+  /*void showGifyDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => NetworkGiffyDialog(
+          image: Image.network(
+            "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF%27s/gif14.gif",
+            fit: BoxFit.cover,
+          ),
+          entryAnimation: EntryAnimation.TOP_LEFT,
+          title: Text(""),
+          buttonOkText: Text("Çözdüğüm Testler"),
+          buttonCancelText: Text("Test İsteklerim"),
+          buttonOkColor: Colors.green,
+          buttonCancelColor: Colors.red,
+          onOkButtonPressed: () {},
+
+        ));
+  }*/
 }

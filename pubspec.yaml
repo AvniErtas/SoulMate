@@ -75,6 +75,7 @@ flutter:
     - images/digericonlar/
     - assets/
     - assets/images/
+    - asset/
   fonts:
       - family: Proxima
         fonts:
