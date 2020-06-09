@@ -3,15 +3,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Tools/domain.dart';
+import 'package:soulmate/Tools/progressDialog.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/soru_hazirlama.dart';
 import 'package:soulmate/model/sorular.dart';
 import 'package:soulmate/model/test.dart';
+import 'package:http/http.dart' as http;
 
-class SoruSecmeVeHazirlama extends KFDrawerContent {
+class SoruSecmeVeHazirlama extends StatefulWidget {
+  SoruSecmeVeHazirlama(Key k) : super(key: k);
   @override
   _SoruSecmeVeHazirlamaState createState() => _SoruSecmeVeHazirlamaState();
 }
@@ -21,13 +27,15 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   double height;
   List<double> animatedContainerSize = new List<double>(3);
   CarouselSlider slider;
-  List<int> secilenSoruTipi =  List.generate(5, (i) => i+1);
+  List<int> secilenSoruTipi =  List.generate(5, (i) => 1);
   int soruNo = 0;
   List<TextEditingController> _soru_controller =
       List.generate(5, (i) => TextEditingController());
   List<List<String>> _soru_siklari = new List(5);
   TextEditingController testAdiController = new TextEditingController();
   String dropdownValue = 'Kategori Seçiniz';
+  ProgressDialog pr;
+  var userRepo;
 
   List <String> spinnerItems = [
     'Kategori Seçiniz',"Eğlence",'Kitap','İş','Film-Dizi','Gezi','Aile','Teknoloji','Yaşam Tarzı','Aşk','Yemek','Ahlaki İkiliem','Diğer'];
@@ -46,6 +54,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+    userRepo = Provider.of<UserRepository>(context);
 
     return Scaffold(
       body: Container(
@@ -520,11 +529,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                   });
                   Navigator.of(context_alert).pop();
                   klavyeKapat();
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("Şıklar kaydedildi",
-                        textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0, fontWeight:
-                        FontWeight.bold),), duration: Duration(seconds: 2), backgroundColor: Colors.blueAccent,)
-                  );
+                 snackbarOlustur("Şıklar Kaydedildi", Colors.blueAccent);
 //                  Navigator.of(context_alert).popUntil((route) => route.isFirst);
                 }
               },
@@ -611,39 +616,44 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
             ),
             new FlatButton(
                 child: new Text("Evet"),
-                onPressed: () {
+                onPressed: () async {
+
                   List<Sorular> sorularList = new List<Sorular>();
                   // TODO soruHazirlama objesini sunucuya kaydet
                   for(int i=0;i<_soru_controller.length;i++){
                     if(_soru_controller[i].text.isNotEmpty)
                     sorularList.add(new Sorular(soru: _soru_controller[i].text,siklar: _soru_siklari[i],soruTipi: secilenSoruTipi[i]));
                   }
-                  Test test = new Test(kategori: 'ask',olusturanTipi: 'Uye',olusturanUid: 'uid_test',testAdi: 'test_adix',sorular: sorularList);
+                  Test test = new Test(kategori: dropdownValue,olusturanTipi: 'Uye',olusturanUid: userRepo.user.uid,testAdi: testAdiController.text,sorular: sorularList);
 
                   sorularList.forEach((item){
                       debugPrint(item.toString());
                   });
-                  uploadTest(test);
-                  Navigator.of(context).pop();
-                  klavyeKapat();
+                  _dataKaydet(test);
+
                 }),
           ],
         );
       },
     );
   }
-  void uploadTest(Test test) async {
-  /*  var dio = Dio();
-    FormData formData = FormData.fromMap({
-      "fromID": testToJson(test),
-      "file": await MultipartFile.fromFile(widget.image.path),
-    });
-    Response response = await dio.post(
-      Domain().getDomainApi() + "/post/uploadFile",
-      data: formData,
-   
-    );
-    debugPrint(response.toString());*/
+  
+  Future<void> _dataKaydet(Test test) async {
+    pr = progressDialog(context);
+    await pr.show();
+    var response = await http.post(Domain().getDomainApi() + "/test/save",
+        headers: {"Content-type": "application/json"},
+        body: testToJson(test));
+    if (response.statusCode == 200) {
+      debugPrint(response.body.toString());
+      pr.hide().then((isHidden) {
+        debugPrint('success');
+        Navigator.of(context).pop();
+        klavyeKapat();
+      });
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
   }
 
   sikButton() {

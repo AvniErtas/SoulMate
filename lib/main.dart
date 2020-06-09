@@ -9,6 +9,7 @@ import 'package:soulmate/Pages/Drawer/auto.dart';
 import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
+import 'package:soulmate/Pages/login/login_screen.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
             '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
             '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
             '/Ayarlar' : (context) => SettingsOnePage(),
-            '/SoruHazirlama' : (context) => SoruSecmeVeHazirlama(),
+            '/Login' : (context) => LoginScreen(),
 
           },
           home: MainWidget(),
@@ -90,6 +91,8 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   var keyAnaSayfa = PageStorageKey("key_anasayfa");
+  var keySoruHazirlama = PageStorageKey("key_soruhazirlama");
+
   var keyProfile = PageStorageKey("key_profile");
   final PageStorageBucket _bucket = new PageStorageBucket();
   KFDrawerController _drawerController;
@@ -103,14 +106,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Animation<double> _scaleAnimation;
   Animation<double> _menuScaleAnimation;
   Animation<Offset> _slideAnimation;
-
+  var userRepo;
 
   @override
   void initState() {
     super.initState();
     tumSayfalar = [
       GirisSayfasi(keyAnaSayfa,menuStart),
-      SoruSecmeVeHazirlama(),
+      SoruSecmeVeHazirlama(keySoruHazirlama),
       HomeScreen(),
       UserProfilePage(keyProfile,returnMainWidget),
       SettingsOnePage(),
@@ -129,6 +132,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   }
   @override
   Widget build(BuildContext context) {
+    userRepo = Provider.of<UserRepository>(context);
     Size size = MediaQuery.of(context).size;
 
     setState(() {
@@ -145,7 +149,16 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         },),
           extendBodyBehindAppBar: true,
           bottomNavigationBar: bottomBarDesign(),
-        body: tumSayfalar[selectedIndex]
+        body: IndexedStack(
+          index: selectedIndex,
+          children: <Widget>[
+            GirisSayfasi(keyAnaSayfa,menuStart),
+            SoruSecmeVeHazirlama(keySoruHazirlama),
+            HomeScreen(),
+            UserProfilePage(keyProfile,returnMainWidget),
+            SettingsOnePage(),
+          ],
+        )
       ),
     );
 //    MenuDashboard();
@@ -338,16 +351,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 600),
       onTap: (index) {
+        if(userRepo.durum == UserDurumu.OturumAcik)
         setState(() {
           selectedIndex = index;
         });
+        else Navigator.pushNamed(context, '/Login');
       },
     );
   }
 
   Function returnMainWidget() {
     setState(() {
-      selectedIndex = 1;
+      selectedIndex = 0;
     });
   }
 

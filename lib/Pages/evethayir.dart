@@ -5,6 +5,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Tools/domain.dart';
+import 'package:soulmate/Tools/progressDialog.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_event.dart';
@@ -30,8 +31,8 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   int _current = 0;
   int soruNo = 0;
   double rating = 50;
-  List<int> siklar = new List<int>(20);
-  List<Border> border = new List<Border>(20);
+  List<int> siklar;
+  List<Border> border;
   double heightMedia;
   double widthMedia;
   List<double> animatedContainerSize = new List<double>(2);
@@ -477,19 +478,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   //Çözülen testin kaydedileceği yer
   Future<void> _dataKaydet(Paylasim paylasim) async {
-    pr = ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
-    pr.style(
-        message: 'Kaydediliyor...',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: CircularProgressIndicator(),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600));
+    pr = progressDialog(context);
     await pr.show();
     var response = await http.post(Domain().getDomainApi() + "/paylasim/save",
         headers: {"Content-type": "application/json"},

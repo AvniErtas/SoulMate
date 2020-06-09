@@ -70,7 +70,7 @@ class PaylasmaBolumu extends StatelessWidget {
           height: 25.0,
           child: FlatButton(
             onPressed: () => {
-                Navigator.pushNamed(context, 'PaylasmaSonrasi'),
+                Navigator.pushNamed(context, '/PaylasmaSonrasi'),
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.0),

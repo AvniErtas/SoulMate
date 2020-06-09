@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
@@ -119,33 +120,70 @@ class GirisSayfasiState extends State<GirisSayfasi>
                           ),
                         ],
                       ),*/
-                    testisecsonucincelekesfet(),
-                    BlocBuilder<AnaSayfaBloc, AnaSayfaState>(
-                        key: keyButton4,
-                        bloc: _anaSayfaBloc,
-                        builder: (context, AnaSayfaState state) {
-                          if (state is AnaSayfaUninitialized) {
-                            return Text("UNINIT");
-                          } else if (state is AnaSayfaLoading) {
-                            return new Center(
-                              child: new CircularProgressIndicator(),
-                            );
-                          } else if (state is AnaSayfaLoaded) {
-                            testler = state.Tests[0];
-                            List<String> testAdi = new List<String>();
-                            for (Test test in state.Tests[0]) {
-                              testAdi.add(test.testAdi);
+//                    testisecsonucincelekesfet(),
+                  SizedBox(height: height*0.08,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: _buildWikiCategory(Icons.sentiment_neutral,
+                                "Testini Seç", Colors.deepOrange.withOpacity(0.7)),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: _buildWikiCategory(Icons.add_circle,
+                                "Sonuçları İncele", Colors.blue.withOpacity(0.6)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: _buildWikiCategory(Icons.email,
+                                "Keşfet", Colors.indigo.withOpacity(0.7)),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: _buildWikiCategory(
+                                Icons.account_balance, "Testlerim", Colors.greenAccent),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: BlocBuilder<AnaSayfaBloc, AnaSayfaState>(
+                          key: keyButton4,
+                          bloc: _anaSayfaBloc,
+                          builder: (context, AnaSayfaState state) {
+                            if (state is AnaSayfaUninitialized) {
+                              return Text("UNINIT");
+                            } else if (state is AnaSayfaLoading) {
+                              return new Center(
+                                child: new CircularProgressIndicator(),
+                              );
+                            } else if (state is AnaSayfaLoaded) {
+                              testler = state.Tests[0];
+                              List<String> testAdi = new List<String>();
+                              for (Test test in state.Tests[0]) {
+                                testAdi.add(test.testAdi);
+                              }
+                              return cardDesingTests2(
+                                  testVeSorular: state.Tests[0],
+                                  onClick: (itemIndex, id) =>
+                                      onClickTest(itemIndex, id));
+                            } else if (state is AnaSayfaError) {
+                              return Text("İnternet yok amk");
+                            } else {
+                              return Text("state");
                             }
-                            return cardDesingTests2(
-                                testVeSorular: state.Tests[0],
-                                onClick: (itemIndex, id) =>
-                                    onClickTest(itemIndex, id));
-                          } else if (state is AnaSayfaError) {
-                            return Text("İnternet yok amk");
-                          } else {
-                            return Text("state");
-                          }
-                        }),
+                          }),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
@@ -187,7 +225,48 @@ class GirisSayfasiState extends State<GirisSayfasi>
       ),
     );
   }
-
+  Stack _buildWikiCategory(IconData icon, String label, Color color) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(26.0),
+          alignment: Alignment.centerRight,
+          child: Opacity(
+              opacity: 0.3,
+              child: Icon(
+                icon,
+                size: 40,
+                color: Colors.white,
+              )),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                label,
+                style: GoogleFonts.raleway(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
   Function onClickTest(String soruAdi, String id) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => EvetHayirBolumu(soruAdi, id)));
