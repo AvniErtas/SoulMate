@@ -136,8 +136,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
                             child: InkWell(
                               key: keyButton,
                               onTap: () {
-                                // Navigator.pushNamed(context, '/Kategoriler');
-                                Navigator.pushNamed(context, '/OnBoarding');
+                                Navigator.pushNamed(context, '/Kategoriler');
+                                //Navigator.pushNamed(context, '/OnBoarding');
                               },
                               child: _buildWikiCategory(
                                   Icons.star_border,

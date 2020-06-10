@@ -24,6 +24,9 @@ Widget appBarTasarim(String title) {
 
 Widget appBarTasarim2(String title) {
   return AppBar(
+    /*actions: <Widget>[
+      Icon(Icons.notifications),
+    ],*/
     backgroundColor: Colors.indigo,
     title: Text(
       title,

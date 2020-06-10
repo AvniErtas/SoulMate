@@ -578,7 +578,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
       else
         snackbarOlustur('Kategori seçmelisiniz',Colors.black);
     } else
-      snackbarOlustur('Test adı girmelisiniz',Colors.black);
+      snackbarOlustur('Test adı girmelisiniz',Colors.white);
   }
 
   showEmptyDialog(int index) {
@@ -679,7 +679,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
   void snackbarOlustur(String text,Color color) {
     Scaffold.of(context).showSnackBar(
         SnackBar(content: Text(text, style: TextStyle(fontSize: 15.0, fontWeight:
-          FontWeight.bold),), duration: Duration(seconds: 2),backgroundColor: color,)
+          FontWeight.bold,color: Colors.black),), duration: Duration(seconds: 2),backgroundColor: color,)
     );
   }
   void klavyeKapat() {
