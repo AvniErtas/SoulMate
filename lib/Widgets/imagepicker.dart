@@ -7,12 +7,14 @@ import 'package:path/path.dart' as path;
 class ImagePickerExample extends StatefulWidget {
   const ImagePickerExample({Key key, this.uid}) : super(key: key);
   final String uid;
+
   @override
   _ImagePickerExampleState createState() => _ImagePickerExampleState(uid);
 }
 
 class _ImagePickerExampleState extends State<ImagePickerExample> {
   _ImagePickerExampleState(this.uid);
+
   String uid;
   File _imageFile;
   final globalKey = GlobalKey<ScaffoldState>();
@@ -31,15 +33,14 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
   }
 
   Future<Null> _pickImageFromGallery() async {
-    final imageFile =
-        await _picker.getImage(source: ImageSource.gallery);
+    final imageFile = await _picker.getImage(source: ImageSource.gallery);
     final File file = File(imageFile.path);
     setState(() => this._imageFile = file);
   }
 
   Future<Null> _pickImageFromCamera() async {
-    final imageFile = await _picker.getImage(
-        source: ImageSource.camera, imageQuality: 85);
+    final imageFile =
+        await _picker.getImage(source: ImageSource.camera, imageQuality: 85);
     final File file = File(imageFile.path);
     setState(() => this._imageFile = file);
   }
@@ -52,12 +53,11 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
         Column(
           children: <Widget>[
             Container(
-
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   "Lütfen bilgi almak istediğiniz fotoğrafı yükleyiniz",
-                  style: TextStyle(color: Colors.white,fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
@@ -145,7 +145,7 @@ class _ImagePickerExampleState extends State<ImagePickerExample> {
                 onPressed: () => {
                   if (_imageFile != null)
                     {
-                    /*  Navigator.push(
+                      /*  Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>

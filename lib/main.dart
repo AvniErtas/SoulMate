@@ -11,6 +11,8 @@ import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet.dart';
 import 'package:soulmate/Pages/login/login_screen.dart';
+import 'package:soulmate/Pages/notificationPage.dart';
+import 'package:soulmate/Pages/onboarding.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
@@ -74,6 +76,8 @@ class MyApp extends StatelessWidget {
             '/Ayarlar' : (context) => SettingsOnePage(),
             '/Login' : (context) => LoginScreen(),
             '/Kesfet' : (context) => Kesfet(),
+            '/Bildirimler':(context)=> NotificationPage(),
+            '/OnBoarding' : (context)=> IntroSixPage(),
           },
           home: MainWidget(),
         ),

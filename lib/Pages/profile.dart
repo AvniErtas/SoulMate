@@ -6,12 +6,14 @@ import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/gradientcard.dart';
+import 'package:soulmate/Widgets/imagepicker.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 
-class UserProfilePage  extends StatefulWidget {
+class UserProfilePage extends StatefulWidget {
   VoidCallback _returnMainWidget;
-  UserProfilePage(Key k,this._returnMainWidget) : super(key: k);
+
+  UserProfilePage(Key k, this._returnMainWidget) : super(key: k);
 
   @override
   _UserProfilePageState createState() => _UserProfilePageState();
@@ -34,8 +36,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   double heightMedia;
 
   List<Test> testler = new List<Test>();
-  
-  
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -50,7 +50,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget _buildProfileImage() {
-
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -58,8 +57,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
       child: Stack(
         children: <Widget>[
           Container(
-            width: width*0.3,
-            height: width*0.3,
+            width: width * 0.3,
+            height: width * 0.3,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/profile.jpeg'),
@@ -68,12 +67,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
               borderRadius: BorderRadius.circular(80.0),
               border: Border.all(
                 color: Colors.white,
-                width: width*0.01,
+                width: width * 0.01,
               ),
             ),
           ),
-          InkWell(child: Icon(Icons.edit,size: 18,),onTap: (){},),
-
+          InkWell(
+            child: Icon(
+              Icons.edit,
+              size: 18,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ImagePickerExample()));
+            },
+          ),
         ],
       ),
     );
@@ -153,8 +162,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           _buildStatItem("Test Sayısı", _followers),
-          _buildStatItem("Takipçi", _posts),
-          _buildStatItem("Takip", _scores),
+          _buildStatItem("Arkadaş", _posts),
         ],
       ),
     );
@@ -213,7 +221,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: InkWell(
               onTap: () => print("followed"),
               child: Container(
-                height: height*0.05,
+                height: height * 0.05,
                 decoration: BoxDecoration(
                   border: Border.all(),
                   color: Color(0xFF404A5C),
@@ -236,7 +244,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: InkWell(
               onTap: () => print("Message"),
               child: Container(
-                height: height*0.05,
+                height: height * 0.05,
                 decoration: BoxDecoration(
                   border: Border.all(),
                 ),
@@ -245,7 +253,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     padding: EdgeInsets.all(10.0),
                     child: Text(
                       "MESAJ GÖNDER",
-                      style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ),
@@ -256,26 +267,57 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+
   @override
   void initState() {
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
-    testler.add(new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: "11111",
+        testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: "11111",
+        testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: "11111",
+        testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: "11111",
+        testAdi: 'Bu bir test sorusudur XX ???'));
+    testler.add(new Test(
+        id: '123',
+        olusturanUid: '124',
+        olusturanTipi: 'Ekip',
+        kategori: 'Aşk',
+        olusturmaTarihi: "11111",
+        testAdi: 'Bu bir test sorusudur XX ???'));
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     List<String> testAdi = new List<String>();
-    for(Test test in  testler){
+    for (Test test in testler) {
       testAdi.add(test.testAdi);
     }
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
-
         children: <Widget>[
           _buildCoverImage(screenSize),
           SafeArea(
@@ -303,18 +345,20 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "Son Çözülen Testler",
-                            style: TextStyle(fontSize: 17,fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500),
                           )),
                     ),
                     SizedBox(height: 8.0),
-                   cardDesingTests(testVeSorular: testAdi,size: heightMedia/280),
-
+                    cardDesingTests(
+                        testVeSorular: testAdi, size: heightMedia / 280),
                   ],
                 ),
               ),
             ),
           ),
-          
           Positioned(
             bottom: -20,
             left: -20,
@@ -345,8 +389,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
-  void _showDialogExit() {
 
+  void _showDialogExit() {
     // flutter defined function
     showDialog(
       context: context,
@@ -366,7 +410,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
             new FlatButton(
               child: new Text("Evet"),
               onPressed: () {
-                var userRepo = Provider.of<UserRepository>(context,listen: false);
+                var userRepo =
+                    Provider.of<UserRepository>(context, listen: false);
                 userRepo.signOut();
                 Navigator.of(context).pop();
                 widget._returnMainWidget();

@@ -1,9 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 /**
  * Author: Damodar Lohani
  * profile: https://github.com/lohanidamodar
-  */
+ */
 
 import 'package:flutter/material.dart';
 import 'package:kf_drawer/kf_drawer.dart';
@@ -18,7 +17,8 @@ class SettingsOnePage extends KFDrawerContent {
 
 class _SettingsOnePageState extends State<SettingsOnePage> {
   bool _dark;
-    List<String> diller = ["Türkçe","English","Rusça"];
+  List<String> diller = ["Türkçe", "English"];
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +30,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
   }
 
   GlobalKey<ScaffoldState> key = GlobalKey(debugLabel: "scaffoldKey");
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -37,184 +38,114 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
       data: ThemeData(
         brightness: _getBrightness(),
       ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-          home: 
-               Scaffold(
-                 appBar: appBarTasarim2("Ayarlar"),
-          backgroundColor: _dark ? null : Colors.grey.shade200,
-          
-          // appBar: AppBar(
-          //   elevation: 0,
-          //   brightness: _getBrightness(),
-          //   iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
-          //   backgroundColor: Colors.transparent,
-          //   title: Text(
-          //     'Ayarlar',
-          //     style: TextStyle(color: _dark ? Colors.white : Colors.black),
-          //   ),
-          //   actions: <Widget>[
-          //     IconButton(
-          //       icon: Icon(FontAwesomeIcons.moon),
-          //       onPressed: () {
-          //         setState(() {
-          //           _dark = !_dark;
-          //         });
-          //       },
-          //     )
-          //   ],
-          // ),
-          body: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Card(
-                      elevation: 4.0,
-                      margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(
-                              Icons.lock_outline,
-                              color: Colors.purple,
-                            ),
-                            title: Text("Şifre Değiştir"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              _showDialog("Yeni Şifrenizi Giriniz");
-                              //open change password
-                            },
+      child: Scaffold(
+        appBar: appBarTasarim2("Ayarlar"),
+        backgroundColor: _dark ? null : Colors.grey.shade200,
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Card(
+                    elevation: 4.0,
+                    margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(
+                            Icons.lock_outline,
+                            color: Colors.purple,
                           ),
-                          _buildDivider(),
-                          ListTile(
-                            leading: Icon(
-                              Icons.language,
-                              color: Colors.purple,
-                            ),
-                            title: Text("Dili Değiştir"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              showModalBottomSheet(
-                              
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: 200.0,
-                                        child: CupertinoPicker(
-                                            itemExtent: 32.0,
-                                            onSelectedItemChanged: (int index) {
-                                              setState(() {});
-                                            },
-                                            children: new List<Widget>.generate(diller.length,
-                                                (int index) {
-                                              return new Center(
-                                                child: new Text(diller[index]),
-                                              );
-                                            })),
-                                      );
-                                    });
-                                 key.currentState.showBottomSheet((context)=> Container(
+                          title: Text("Şifre Değiştir"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            _showDialog("Yeni Şifrenizi Giriniz");
+                            //open change password
+                          },
+                        ),
+                        _buildDivider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.language,
+                            color: Colors.purple,
+                          ),
+                          title: Text("Dili Değiştir"),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 200.0,
+                                    child: CupertinoPicker(
+                                        itemExtent: 32.0,
+                                        onSelectedItemChanged: (int index) {
+                                          setState(() {});
+                                        },
+                                        children: new List<Widget>.generate(
+                                            diller.length, (int index) {
+                                          return new Center(
+                                            child: new Text(diller[index]),
+                                          );
+                                        })),
+                                  );
+                                });
+                            key.currentState.showBottomSheet(
+                              (context) => Container(
                                 height: 100,
                                 child: CupertinoPicker(
-                                onSelectedItemChanged: (val) {
-                                  Navigator.pop(context);
-                                },
-                                itemExtent: 35,
-                                children: <Widget>[
-                                  Text("Türkçe"),
-                                  Text("English"),
-                                ],
+                                  onSelectedItemChanged: (val) {
+                                    Navigator.pop(context);
+                                  },
+                                  itemExtent: 35,
+                                  children: <Widget>[
+                                    Text("Türkçe"),
+                                    Text("English"),
+                                  ],
+                                ),
                               ),
-                              ),);
+                            );
 
-                              //open change language
-                            },
-                          ),
-                          _buildDivider(),
-                          /* ListTile(
-                            leading: Icon(
-                              Icons.location_on,
-                              color: Colors.purple,
-                            ),
-                            title: Text("Change Location"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            onTap: () {
-                              //open change location
-                            },
-                          ), */
-                        
-                        ],
-                      ),
+                            //open change language
+                          },
+                        ),
+                        _buildDivider(),
+                      ],
                     ),
-                    const SizedBox(height: 20.0),
-                    Text(
-                      "Bildirim Ayarları",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo,
-                      ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    "Bildirim Ayarları",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo,
                     ),
-                    SwitchListTile(
+                  ),
+                  SwitchListTile(
                       activeColor: Color(0xff5287f7),
                       contentPadding: const EdgeInsets.all(0),
                       value: false,
                       title: Text("Gelen Bildirimler"),
-                      onChanged: null/* (val) {} */
-                    ),
-                    /* SwitchListTile(
-                      activeColor: Colors.purple,
-                      contentPadding: const EdgeInsets.all(0),
-                      value: true,
-                      title: Text("Received Offer Notification"),
-                      onChanged: (val) {},
-                    ), */
-                    SwitchListTile(
-                      activeColor: Color(0xff5287f7),
-                      contentPadding: const EdgeInsets.all(0),
-                      value: true,
-                      title: Text("Güncelleme Bildirimleri"),
-                      onChanged: null,
-                    ),
-                    const SizedBox(height: 60.0),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: -20,
-                left: -20,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(0xff5287f7),
-                    shape: BoxShape.circle,
+                      onChanged: null /* (val) {} */
+                      ),
+                  SwitchListTile(
+                    activeColor: Color(0xff5287f7),
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Güncelleme Bildirimleri"),
+                    onChanged: null,
                   ),
-                ),
+                  const SizedBox(height: 60.0),
+                ],
               ),
-              Positioned(
-                bottom: 00,
-                left: 00,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.power_settings_new,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    debugPrint("girdi");
-                  _showDialogExit();
-                  },
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -246,7 +177,8 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
       },
     );
   }
-   void _showDialogExit() {
+
+  void _showDialogExit() {
     // flutter defined function
     showDialog(
       context: context,
@@ -263,10 +195,10 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
                 //Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
-             new FlatButton(
+            new FlatButton(
               child: new Text("Evet"),
               onPressed: () {
-               // _signOut();
+                // _signOut();
               },
             ),
           ],
@@ -285,7 +217,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
       color: Colors.grey.shade400,
     );
   }
-  /* _signOut() async{
+/* _signOut() async{
      final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     await _firebaseAuth.signOut().then((_){
 

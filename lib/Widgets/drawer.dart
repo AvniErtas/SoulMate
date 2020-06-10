@@ -106,10 +106,10 @@ class _DrawerPageState extends State<DrawerPage> {
                 // TODO geri bildirim
                 break;
               case 3:
-                // TODO bildirimler
+                Navigator.pushNamed(context, '/Bildirimler');
                 break;
               case 4:
-                widget.onPageChange(4);
+                Navigator.pushNamed(context, '/Ayarlar');
                 break;
               case 5:
                 GirisSayfasiState.showTutorial();
