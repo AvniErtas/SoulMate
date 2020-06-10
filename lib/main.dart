@@ -23,6 +23,7 @@ import 'Pages/Drawer/home.dart';
 import 'Pages/Sonuclar/sonuclar.dart';
 import 'Pages/Sonuclar/sonuclarTestler.dart';
 import 'Pages/animatedPage.dart';
+import 'Pages/arkadaslistesiPaylasim.dart';
 import 'Pages/giris.dart';
 import 'Pages/paylasmabolumu.dart';
 import 'Pages/profile.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
             '/Ayarlar' : (context) => SettingsOnePage(),
             '/Login' : (context) => LoginScreen(),
             '/Kesfet' : (context) => Kesfet(),
+            '/ArkadasListesiPaylasim' : (context) => ArkadasListesiPaylasim(),
           },
           home: MainWidget(),
         ),

@@ -220,7 +220,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
                 child: Center(
                   child: Text(
-                    "TAKİP ET",
+                    "ARKADAŞ EKLE",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,

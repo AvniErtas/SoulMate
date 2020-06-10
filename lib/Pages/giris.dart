@@ -19,6 +19,7 @@ import 'package:soulmate/Tools/CustomCardShapePainter.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests2.dart';
 import 'package:soulmate/Widgets/circleCategory.dart';
+import 'package:soulmate/Widgets/dataSearch.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
@@ -182,7 +183,10 @@ class GirisSayfasiState extends State<GirisSayfasi>
                                     dialogType: DialogType.INFO,
                                     title: 'Görmek Istediğiniz Testi Seçiniz',
                                     desc: "",
-                                    btnOkOnPress: () {},
+                                    btnOkOnPress: () {
+                                      showSearch(context: context, delegate: DataSearch());
+//                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
+                                    },
                                     btnCancelOnPress: () {},
                                     btnOkIcon: Icons.check_circle,
                                     btnOkColor: Colors.teal,
