@@ -29,7 +29,7 @@ import 'package:tutorial_coach_mark/content_target.dart';
 import 'package:tutorial_coach_mark/target_focus.dart';
 import 'package:tutorial_coach_mark/target_position.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'Kesfet/kesfet.dart';
 import 'evethayir.dart';
 import 'login/firebaseauth_provider.dart';
@@ -132,7 +132,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         children: <Widget>[
                           Expanded(
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pushNamed(context, '/Kategoriler');
                               },
                               child: _buildWikiCategory(
@@ -144,8 +144,9 @@ class GirisSayfasiState extends State<GirisSayfasi>
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: InkWell(
-                              onTap: (){
-                                Navigator.pushNamed(context, '/SonuclarTumTestler');
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, '/SonuclarTumTestler');
                               },
                               child: _buildWikiCategory(
                                   Icons.touch_app,
@@ -163,7 +164,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         children: <Widget>[
                           Expanded(
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pushNamed(context, '/Kesfet');
                               },
                               child: _buildWikiCategory(Icons.search, "Keşfet",
@@ -173,38 +174,27 @@ class GirisSayfasiState extends State<GirisSayfasi>
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: InkWell(
-                              onTap: (){
-                                showDialog(
+                              onTap: () {
+                                AwesomeDialog(
                                     context: context,
-                                    builder: (_) => Material(
-                                      type: MaterialType.transparency,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Center( // Aligns the container to center
-                                          child: Container(
-                                            color: Colors.white,
-                                            height: height*0.25,
-                                            child: Column(
-                                              children: <Widget>[
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: AssetImage("asset/giphy.gif"),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                );
+                                    animType: AnimType.LEFTSLIDE,
+                                    headerAnimationLoop: false,
+                                    dialogType: DialogType.INFO,
+                                    title: 'Görmek Istediğiniz Testi Seçiniz',
+                                    desc: "",
+                                    btnOkOnPress: () {},
+                                    btnCancelOnPress: () {},
+                                    btnOkIcon: Icons.check_circle,
+                                    btnOkColor: Colors.teal,
+                                    btnOkText: "Çözdüğüm Testler",
+                                    btnCancelIcon: Icons.details,
+                                    btnCancelText: "Test Istekleri",
+                                    btnCancelColor: Colors.green,
+                                    onDissmissCallback: () {})
+                                  ..show();
                               },
-                              child: _buildWikiCategory(Icons.person, "Testlerim",
-                                  Colors.green.withOpacity(0.8)),
+                              child: _buildWikiCategory(Icons.person,
+                                  "Testlerim", Colors.green.withOpacity(0.8)),
                             ),
                           ),
                         ],
@@ -593,7 +583,9 @@ class GirisSayfasiState extends State<GirisSayfasi>
     });*/
   }
 
-  /*void showGifyDialog() {
+  void testlerimSecim(context) {}
+
+/*void showGifyDialog() {
     showDialog(
         context: context,
         builder: (_) => NetworkGiffyDialog(
