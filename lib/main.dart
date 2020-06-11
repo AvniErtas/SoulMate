@@ -17,6 +17,7 @@ import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
+import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
 import 'package:soulmate/blocs/locator.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'Pages/Drawer/home.dart';
@@ -58,7 +59,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<SonucBloc>(
           create: (BuildContext context) => SonucBloc(),
         ),
-
+        BlocProvider<UserSearchBloc>(
+          create: (BuildContext context) => UserSearchBloc(),
+        ),
       ],
       child: ChangeNotifierProvider<UserRepository>(
         create: (context) => UserRepository(),

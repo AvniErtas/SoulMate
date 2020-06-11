@@ -24,6 +24,7 @@ import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
+import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
 import 'package:soulmate/model/test.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
 import 'package:tutorial_coach_mark/content_target.dart';
@@ -184,7 +185,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                                     title: 'Görmek Istediğiniz Testi Seçiniz',
                                     desc: "",
                                     btnOkOnPress: () {
-                                      showSearch(context: context, delegate: DataSearch());
+                                      showSearch(context: context, delegate: DataSearch(BlocProvider.of<UserSearchBloc>(context)));
 //                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
                                     },
                                     btnCancelOnPress: () {},
