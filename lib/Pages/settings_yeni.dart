@@ -132,16 +132,31 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
                       contentPadding: const EdgeInsets.all(0),
                       value: false,
                       title: Text("Gelen Bildirimler"),
-                      onChanged: null /* (val) {} */
-                      ),
+                      onChanged: (val) {},
+                  ),
                   SwitchListTile(
                     activeColor: Color(0xff5287f7),
                     contentPadding: const EdgeInsets.all(0),
                     value: true,
                     title: Text("Güncelleme Bildirimleri"),
-                    onChanged: null,
+                    onChanged: (val) {},
                   ),
                   const SizedBox(height: 60.0),
+                  Text(
+                    "Ekran Ayarları",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo,
+                    ),
+                  ),
+                  SwitchListTile(
+                      activeColor: Color(0xff5287f7),
+                      contentPadding: const EdgeInsets.all(0),
+                      value: false,
+                      title: Text("Gece Modu"),
+                      onChanged: (val) {}
+                  ),
                 ],
               ),
             ),

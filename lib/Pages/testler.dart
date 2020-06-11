@@ -98,10 +98,10 @@ class _TestlerState extends State<Testler> {
                     },
                   );
                 } else if (state is TestError) {
-                  return Text("İnternet yok amk");
+                  return Text("Lütfen internete bağlanın");
                 }else {
 
-                  return Text("state");
+                  return Text("-");
                 }
               }),
         ),
