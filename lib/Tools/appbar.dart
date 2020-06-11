@@ -24,13 +24,21 @@ Widget appBarTasarim(String title) {
 
 Widget appBarTasarim2(String title) {
   return AppBar(
+    actions: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: InkWell(child: Icon(Icons.notifications),onTap: (){
+         // Navigator.pushNamed(context, '/Bildirimler');
+        },),
+      ),
+    ],
     backgroundColor: Colors.indigo,
     title: Text(
       title,
       style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          ),
+        color: Colors.white,
+        fontSize: 18,
+      ),
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(

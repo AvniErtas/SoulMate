@@ -46,6 +46,7 @@ class CategoryChooser extends StatelessWidget {
                   type,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
+                    color: Colors.black,
                   ),
                 ),
               ],

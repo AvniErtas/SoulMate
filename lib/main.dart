@@ -10,7 +10,9 @@ import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet.dart';
+import 'package:soulmate/Pages/feedback.dart';
 import 'package:soulmate/Pages/login/login_screen.dart';
+import 'package:soulmate/Pages/notificationPage.dart';
 import 'package:soulmate/Pages/paylasmasonrasi.dart';
 import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
@@ -24,12 +26,29 @@ import 'Pages/Drawer/home.dart';
 import 'Pages/Sonuclar/sonuclar.dart';
 import 'Pages/Sonuclar/sonuclarTestler.dart';
 import 'Pages/animatedPage.dart';
-import 'Pages/arkadaslistesiPaylasim.dart';
 import 'Pages/giris.dart';
 import 'Pages/paylasmabolumu.dart';
 import 'Pages/profile.dart';
 import 'Widgets/drawer.dart';
 import 'blocs/TestBloc/test_bloc.dart';
+
+
+/*TODO lIST
+ TODO 1-AnaSayfadaki 4 butonun renkleri belirlenecek ve Kategorilere bağlantı eklenecek
+ TODO 2-AnaSayfa Bildirim ikonu yönlendirmesi ayarlanacak
+ TODO 3-AnaSayfa Popüler Testler ve En Çok Çözülenler veri tabanından getirilecek
+ TODO 4-Soru Hazırla Sayfası  yönlendirme ikonları değiştirilecek
+ TODO 5-Mesaj Sayfası ayarlanacak
+ TODO 6-Profil sayfası profil resmi değiştirme butonları aktif hale getirilecek
+ TODO 7-Scaffold altındaki renk belirlenecek
+ TODO 8-Favorilerime ekle,daha sonra çöz , paylaş butonları aktif hale getirilecek
+ TODO 9-Sonuçları incele sayfası açılan menü düzenlenecek
+ TODO 10-Keşfet sayfası açılan menü düzenlenecek
+ TODO 11-Yan Menü Bildirim kaldırılacak
+ TODO 12-Profil bölümü arkadaş ekle ve mesaj gönder butonları aktif hale getirilecek
+
+*/
+
 
 void main() {
 //  ClassBuilder.registerClasses();
@@ -78,7 +97,9 @@ class MyApp extends StatelessWidget {
             '/Ayarlar' : (context) => SettingsOnePage(),
             '/Login' : (context) => LoginScreen(),
             '/Kesfet' : (context) => Kesfet(),
-            '/ArkadasListesiPaylasim' : (context) => ArkadasListesiPaylasim(),
+            '/Bildirimler' : (context) =>NotificationPage(),
+            '/GeriBildirim' : (context) => FeedBack(),
+            '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
           },
           home: MainWidget(),
         ),
@@ -149,7 +170,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
     return SafeArea(
       child: Scaffold(
-        appBar: selectedIndex == 1 ? null : appBarTasarim2("Test App"),
+        appBar: selectedIndex == 1 ? null : appBarTasarim2("Test App",),
         drawer: DrawerPage(onPageChange: (index) {
           pageChanger(index);
         },),

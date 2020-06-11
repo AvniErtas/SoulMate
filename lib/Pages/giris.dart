@@ -54,6 +54,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
   static GlobalKey keyButton2 = GlobalKey();
   static GlobalKey keyButton3 = GlobalKey();
   static GlobalKey keyButton4 = GlobalKey();
+  static GlobalKey keyButton5 = GlobalKey();
 
   double width;
   double height;
@@ -70,8 +71,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
   void initState() {
     super.initState();
     initTargets();
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
+    //WidgetsBinding.instance.addPostFrameCallback(
+      //  _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
     _controller = AnimationController(
       vsync: this,
       duration: myDuration,
@@ -134,8 +135,10 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         children: <Widget>[
                           Expanded(
                             child: InkWell(
+                              key: keyButton,
                               onTap: () {
                                 Navigator.pushNamed(context, '/Kategoriler');
+                                //Navigator.pushNamed(context, '/OnBoarding');
                               },
                               child: _buildWikiCategory(
                                   Icons.star_border,
@@ -146,6 +149,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: InkWell(
+                              key: keyButton2,
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, '/SonuclarTumTestler');
@@ -166,6 +170,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         children: <Widget>[
                           Expanded(
                             child: InkWell(
+                              key: keyButton3,
                               onTap: () {
                                 Navigator.pushNamed(context, '/Kesfet');
                               },
@@ -176,6 +181,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: InkWell(
+                              key: keyButton4,
                               onTap: () {
                                 AwesomeDialog(
                                     context: context,
@@ -223,7 +229,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                     Padding(
                       padding: const EdgeInsets.only(top: 4.0),
                       child: BlocBuilder<AnaSayfaBloc, AnaSayfaState>(
-                          key: keyButton4,
+                          key: keyButton5,
                           bloc: _anaSayfaBloc,
                           builder: (context, AnaSayfaState state) {
                             if (state is AnaSayfaUninitialized) {
@@ -369,7 +375,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
         Transform.translate(
           offset: Offset(siralianimasyon["translate1"].value, 0),
           child: InkWell(
-            child: circleImages("testsec"),
+            //child: circleImages("testsec"),
             onTap: () {
               /* Navigator.push(context,
                   MaterialPageRoute(builder: (context) => KategoriBolumu()));*/
@@ -383,7 +389,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
         Transform.translate(
           offset: Offset(siralianimasyon["translate2"].value, height * 0.15),
           child: InkWell(
-            child: circleImages("sonucincele"),
+            //child: circleImages("sonucincele"),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SonuclarTestler()));
@@ -393,7 +399,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
         Transform.translate(
           offset: Offset(siralianimasyon["translate3"].value, height * 0.3),
           child: InkWell(
-            child: circleImages("kesfet"),
+            //child: circleImages("kesfet"),
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Kesfet()));
@@ -412,7 +418,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
     );
   }
 
-  Widget circleImages(String title) {
+  /* Widget circleImages(String title) {
     GlobalKey keyButtonCircle = GlobalKey();
     if (title == "testsec")
       keyButtonCircle = keyButton;
@@ -431,7 +437,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
         shape: BoxShape.circle,
       ),
     );
-  }
+  }*/
 
   void initTargets() {
     targets.add(TargetFocus(
@@ -529,31 +535,60 @@ class GirisSayfasiState extends State<GirisSayfasi>
       ],
       shape: ShapeLightFocus.Circle,
     ));
-    targets.add(TargetFocus(
-      identify: "Target 4",
-      keyTarget: keyButton4,
-      contents: [
-        ContentTarget(
-            align: AlignContent.top,
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "Popüler testlere ulaşmak için buraya tıklaman yeterli",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                ],
-              ),
-            )),
-      ],
-      shape: ShapeLightFocus.Circle,
-    ));
+    targets.add(
+      TargetFocus(
+        identify: "Target 4",
+        keyTarget: keyButton4,
+        contents: [
+          ContentTarget(
+              align: AlignContent.top,
+              child: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Çözdüğün veya sana gönderilen testlere buradan ulaşabilirsin",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ],
+        shape: ShapeLightFocus.Circle,
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "Target 4",
+        keyTarget: keyButton5,
+        contents: [
+          ContentTarget(
+              align: AlignContent.top,
+              child: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Popüler testlere ulaşmak için buraya tıklaman yeterli",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        ],
+        shape: ShapeLightFocus.Circle,
+      ),
+    );
   }
 
   static void showTutorial() {
@@ -574,14 +609,14 @@ class GirisSayfasiState extends State<GirisSayfasi>
   }
 
   void _afterLayout(_) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isFirst = (prefs.getBool('isFirst') ?? true);
-    if (isFirst) {
-      Future.delayed(Duration(milliseconds: 100), () {
-        showTutorial();
-      });
-      await prefs.setBool('isFirst', false);
-    }
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // bool isFirst = (prefs.getBool('isFirst') ?? true);
+    // if (isFirst) {
+    Future.delayed(Duration(milliseconds: 100), () {
+      showTutorial();
+    });
+    // await prefs.setBool('isFirst', false);
+    // }
 
     /* Future.delayed(Duration(milliseconds: 550), () {
       showTutorial();

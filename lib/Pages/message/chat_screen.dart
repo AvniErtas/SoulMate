@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:soulmate/Pages/message/message_model.dart';
 import 'package:soulmate/Pages/message/user_model.dart';
 
+enum WhyFarther { favoritest, sonracoz, paylas }
+
 class ChatScreen extends StatefulWidget {
+
+
   final User user;
 
   ChatScreen({this.user});
@@ -12,6 +16,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  WhyFarther _selection;
+
   _buildMessage(Message message, bool isMe) {
     final Container msg = Container(
       margin: isMe
@@ -132,7 +139,10 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.more_horiz),
             iconSize: 30.0,
             color: Colors.white,
-            onPressed: () {},
+            onPressed: (){
+              debugPrint("Buradayım");
+              popUp();
+            },
           ),
         ],
       ),
@@ -171,6 +181,44 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget popUp() {
+    return PopupMenuButton<WhyFarther>(
+      elevation: 4,
+      icon: Icon(
+        Icons.more_vert,
+        color: Colors.black,
+      ),
+      onSelected: (WhyFarther result) {
+        setState(() {
+          _selection = result;
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.favoritest,
+          child: Text("Favorilerime Ekle",
+              style: TextStyle(
+                fontSize: 15,
+              )),
+        ),
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.sonracoz,
+          child: Text(
+            "Daha sonra çöz",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+        const PopupMenuItem<WhyFarther>(
+          value: WhyFarther.paylas,
+          child: Text(
+            "Paylaş",
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
+      ],
     );
   }
 }
