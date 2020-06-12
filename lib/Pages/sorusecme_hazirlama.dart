@@ -271,7 +271,11 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
             slider.previousPage(
                 duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
-          child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.arrow_back_ios,size: 35,color: Colors.white,),
+          ),
+          /*Container(
             height: MediaQuery.of(context).size.height * 0.050,
             width: MediaQuery.of(context).size.width * 0.25,
             padding: EdgeInsets.all(10),
@@ -281,7 +285,7 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
                 image: AssetImage("images/digericonlar/onceki.png"),
               ),
             ),
-          ),
+          ),*/
         ),
       ),
       Flexible(
@@ -293,16 +297,9 @@ class _SoruSecmeVeHazirlamaState extends State<SoruSecmeVeHazirlama> {
             slider.nextPage(
                 duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.050,
-            width: MediaQuery.of(context).size.width * 0.25,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("images/digericonlar/sonraki.png"),
-              ),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.arrow_forward_ios,size: 35,color: Colors.white,),
           ),
         ),
       ),

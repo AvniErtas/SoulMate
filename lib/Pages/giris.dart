@@ -16,6 +16,7 @@ import 'package:soulmate/Pages/Sonuclar/sonuclar.dart';
 import 'package:soulmate/Pages/login/login_screen.dart';
 import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/CustomCardShapePainter.dart';
+import 'package:soulmate/Tools/kategoriResimleri.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests2.dart';
 import 'package:soulmate/Widgets/circleCategory.dart';
@@ -71,7 +72,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
     super.initState();
     initTargets();
     //WidgetsBinding.instance.addPostFrameCallback(
-      //  _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
+    //  _afterLayout); // Yardım ekranın uygulama ilk açıldığında başlatılması
     _controller = AnimationController(
       vsync: this,
       duration: myDuration,
@@ -190,7 +191,9 @@ class GirisSayfasiState extends State<GirisSayfasi>
                                     title: 'Görmek Istediğiniz Testi Seçiniz',
                                     desc: "",
                                     btnOkOnPress: () {
-                                      showSearch(context: context, delegate: DataSearch());
+                                      showSearch(
+                                          context: context,
+                                          delegate: DataSearch());
 //                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
                                     },
                                     btnCancelOnPress: () {},
@@ -210,11 +213,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),
                     ),
-                    CategoryChooser(
-                      onTap: (category) => Navigator.pushNamed(
-                          context, 'category_bikes',
-                          arguments: category),
-                    ),
+                    CategoryChooser(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Align(

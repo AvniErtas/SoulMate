@@ -10,6 +10,7 @@ import 'package:soulmate/Pages/Drawer/calendar.dart';
 import 'package:soulmate/Pages/Drawer/class.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
 import 'package:soulmate/Pages/Kesfet/kesfet.dart';
+import 'package:soulmate/Pages/favoritestlerim.dart';
 import 'package:soulmate/Pages/feedback.dart';
 import 'package:soulmate/Pages/login/login_screen.dart';
 import 'package:soulmate/Pages/notificationPage.dart';
@@ -19,6 +20,7 @@ import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
+import 'package:soulmate/blocs/Theme/theme.dart';
 import 'package:soulmate/blocs/locator.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'Pages/Drawer/home.dart';
@@ -33,21 +35,19 @@ import 'blocs/TestBloc/test_bloc.dart';
 
 
 /*TODO lIST
- TODO 1-AnaSayfadaki 4 butonun renkleri belirlenecek ve Kategorilere bağlantı eklenecek
- TODO 2-AnaSayfa Bildirim ikonu yönlendirmesi ayarlanacak
+ TODO 1-AnaSayfadaki 4 butonun renkleri belirlenecek ve Kategorilere bağlantı eklenecek          +
+ TODO 2-AnaSayfa Bildirim ikonu yönlendirmesi ayarlanacak                                        +
  TODO 3-AnaSayfa Popüler Testler ve En Çok Çözülenler veri tabanından getirilecek
- TODO 4-Soru Hazırla Sayfası  yönlendirme ikonları değiştirilecek
- TODO 5-Mesaj Sayfası ayarlanacak
- TODO 6-Profil sayfası profil resmi değiştirme butonları aktif hale getirilecek
- TODO 7-Scaffold altındaki renk belirlenecek
- TODO 8-Favorilerime ekle,daha sonra çöz , paylaş butonları aktif hale getirilecek
+ TODO 4-Soru Hazırla Sayfası  yönlendirme ikonları değiştirilecek                                +
+ TODO 5-Mesaj Sayfası ayarlanacak                                                                -
+ TODO 6-Profil sayfası profil resmi değiştirme butonları aktif hale getirilecek                  -
+ TODO 7-Scaffold altındaki renk belirlenecek                                                     -
+ TODO 8-Favorilerime ekle,daha sonra çöz , paylaş butonları aktif hale getirilecek               +
  TODO 9-Sonuçları incele sayfası açılan menü düzenlenecek
  TODO 10-Keşfet sayfası açılan menü düzenlenecek
  TODO 11-Yan Menü Bildirim kaldırılacak
  TODO 12-Profil bölümü arkadaş ekle ve mesaj gönder butonları aktif hale getirilecek
-
 */
-
 
 void main() {
 //  ClassBuilder.registerClasses();
@@ -62,6 +62,8 @@ void main() {
 
 
 class MyApp extends StatelessWidget {
+
+
   MyApp({Key key}) : super(key: key);
 
   @override
@@ -77,31 +79,39 @@ class MyApp extends StatelessWidget {
         BlocProvider<SonucBloc>(
           create: (BuildContext context) => SonucBloc(),
         ),
-
       ],
       child: ChangeNotifierProvider<UserRepository>(
         create: (context) => UserRepository(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          routes: {
-            '/Kategoriler' : (context) => KategoriBolumu(),
-            '/SonuclarTumTestler' : (context) => SonuclarTestler(),
-            '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
-            '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
-            '/Ayarlar' : (context) => SettingsOnePage(),
-            '/Login' : (context) => LoginScreen(),
-            '/Kesfet' : (context) => Kesfet(),
-            '/Bildirimler' : (context) =>NotificationPage(),
-            '/GeriBildirim' : (context) => FeedBack(),
-            '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
-          },
-          home: MainWidget(),
-        ),
+        child: MaterialAppWithTheme(context),
       ),
     );
+  }
+
+  MaterialApp MaterialAppWithTheme(context) {
+    
+   // final theme = Provider.of<ThemeChanger>(context);
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // theme: theme.getTheme(),
+        /*theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),*/
+        routes: {
+          '/Kategoriler' : (context) => KategoriBolumu(),
+          '/SonuclarTumTestler' : (context) => SonuclarTestler(),
+          '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
+          '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
+          '/Ayarlar' : (context) => SettingsOnePage(),
+          '/Login' : (context) => LoginScreen(),
+          '/Kesfet' : (context) => Kesfet(),
+          '/Bildirimler' : (context) =>NotificationPage(),
+          '/GeriBildirim' : (context) => FeedBack(),
+          '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
+          '/FavoriTestlerim' : (context) => FavoriTestlerim(),
+        },
+        home: MainWidget(),
+      );
   }
 }
 
@@ -135,13 +145,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tumSayfalar = [
-      GirisSayfasi(keyAnaSayfa,menuStart),
-      SoruSecmeVeHazirlama(keySoruHazirlama),
-      HomeScreen(),
-      UserProfilePage(keyProfile,returnMainWidget),
-      SettingsOnePage(),
-    ];
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
     _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
@@ -167,7 +170,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
     return SafeArea(
       child: Scaffold(
-        appBar: selectedIndex == 1 ? null : appBarTasarim2("Test App",),
+        appBar: selectedIndex == 1 ? null : appBarTasarim2(title: "Test App",context: context),
         drawer: DrawerPage(onPageChange: (index) {
           pageChanger(index);
         },),
@@ -177,7 +180,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           index: selectedIndex,
           children: <Widget>[
             GirisSayfasi(keyAnaSayfa,menuStart),
-            SoruSecmeVeHazirlama(keySoruHazirlama),
+            FavoriTestlerim(),
             HomeScreen(),
             UserProfilePage(keyProfile,returnMainWidget),
             SettingsOnePage(),
@@ -259,8 +262,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       height: 50.0,
       items: <Widget>[
         Icon(Icons.home, size: 30,color: Colors.white,),
-        Icon(Icons.add_circle, size: 30,color: Colors.white,),
-        Icon(Icons.message, size: 30,color: Colors.white,),
+        Icon(Icons.favorite, size: 30,color: Colors.white,),
+        Icon(Icons.email, size: 30,color: Colors.white,),
         Icon(Icons.account_circle, size: 30,color: Colors.white,),
       ],
       color: Colors.indigo,

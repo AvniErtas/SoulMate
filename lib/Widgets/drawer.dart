@@ -71,7 +71,6 @@ class _DrawerPageState extends State<DrawerPage> {
       'Anasayfa',
       'Soru Hazırla',
       'Geri Bildirim',
-      'Bildirimler',
       'Ayarlar',
       'Yardım'
     ];
@@ -90,7 +89,7 @@ class _DrawerPageState extends State<DrawerPage> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 6,
+      itemCount: 5,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
@@ -106,12 +105,9 @@ class _DrawerPageState extends State<DrawerPage> {
                 Navigator.pushNamed(context, '/GeriBildirim');
                 break;
               case 3:
-                Navigator.pushNamed(context, '/Bildirimler');
-                break;
-              case 4:
                 Navigator.pushNamed(context, '/Ayarlar');
                 break;
-              case 5:
+              case 4:
                 GirisSayfasiState.showTutorial();
                 break;
             }

@@ -22,14 +22,17 @@ Widget appBarTasarim(String title) {
   );
 }
 
-Widget appBarTasarim2(String title) {
+Widget appBarTasarim2({@required String title,context}) {
   return AppBar(
     actions: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: InkWell(child: Icon(Icons.notifications),onTap: (){
-         // Navigator.pushNamed(context, '/Bildirimler');
-        },),
+      Visibility(
+        visible: context != null ? true : false,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: InkWell(child: Icon(Icons.notifications),onTap: (){
+           Navigator.pushNamed(context, '/Bildirimler');
+          },),
+        ),
       ),
     ],
     backgroundColor: Colors.indigo,

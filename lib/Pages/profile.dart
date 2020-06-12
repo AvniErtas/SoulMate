@@ -91,13 +91,9 @@ class _UserProfilePageState extends State<UserProfilePage>
               child: ClipOval(
                 child: Material(
                   color: Colors.transparent, // button color
-                  child: SizedBox(
-                    width: 35,
-                    height: 35,
-                    child: Opacity(
-                      opacity: degOneTranslationAnimation.value,
-                      child: IconButton(icon: Icon(Icons.photo),onPressed:() async => await _pickImageFromGallery(),),
-                    ),
+                  child: Opacity(
+                    opacity: degOneTranslationAnimation.value,
+                    child: IconButton(icon: Icon(Icons.photo),onPressed:() async => await _pickImageFromGallery(),),
                   ),
                 ),
               ),
@@ -112,15 +108,13 @@ class _UserProfilePageState extends State<UserProfilePage>
               child: ClipOval(
                 child: Material(
                   color: Colors.transparent, // button color
-                  child: SizedBox(
-                    width: 35,
-                    height: 35,
-                    child: Opacity(
-                      opacity: degOneTranslationAnimation.value,
-                      child: IconButton(
-                        icon: Icon(Icons.photo_camera),
-                        onPressed: () async => await _pickImageFromCamera(),
-                      ),
+                  child: Opacity(
+                    opacity: degOneTranslationAnimation.value,
+                    child: IconButton(
+                      onPressed: (){
+                          debugPrint("ASDASD");
+                      },
+                      icon: Icon(Icons.photo_camera,),
                     ),
                   ),
                 ),

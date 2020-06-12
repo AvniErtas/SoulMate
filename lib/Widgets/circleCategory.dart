@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:soulmate/Pages/testler.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
 
 
 class CategoryChooser extends StatelessWidget {
-  final Function(String) onTap;
   const CategoryChooser({
     Key key,
-    this.onTap,
   }) : super(key: key);
   final List<String> types = const [
     "Eğlence",'Kitap','İş','Film-Dizi','Gezi','Aile','Teknoloji','Yaşam Tarzı','Aşk','Yemek','Ahlaki İkiliem','Diğer'
@@ -29,7 +28,12 @@ class CategoryChooser extends StatelessWidget {
         itemBuilder: (context, index) {
           String type = types[index];
           return GestureDetector(
-            onTap: onTap != null ? () => onTap(type) : null,
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Testler(types[index])));
+            },
             child: Column(
               children: <Widget>[
                 Container(

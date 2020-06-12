@@ -39,7 +39,7 @@ class _SettingsOnePageState extends State<SettingsOnePage> {
         brightness: _getBrightness(),
       ),
       child: Scaffold(
-        appBar: appBarTasarim2("Ayarlar"),
+        appBar: appBarTasarim2(title: "Ayarlar",context: context),
         backgroundColor: _dark ? null : Colors.grey.shade200,
         body: Stack(
           fit: StackFit.expand,

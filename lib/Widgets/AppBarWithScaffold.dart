@@ -13,7 +13,7 @@ Widget appBarWithScaffold (Widget safeAreaWidget,LinearGradient color,String tit
     child: Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      appBar: appBarTasarim2(title),
+      appBar: appBarTasarim2(title: title,),
       body: Stack(
         children: <Widget>[
           ClipPath(

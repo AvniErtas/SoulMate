@@ -38,7 +38,7 @@ class _ArkadasListesiPaylasimState extends State<ArkadasListesiPaylasim> {
     return MaterialApp(
       title: ArkadasListesiPaylasim._title,
       home: Scaffold(
-        appBar: appBarTasarim2(ArkadasListesiPaylasim._title),
+        appBar: appBarTasarim2(title:  ArkadasListesiPaylasim._title,context: context),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

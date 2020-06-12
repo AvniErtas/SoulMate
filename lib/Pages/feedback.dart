@@ -18,7 +18,7 @@ class _FeedBackState extends State<FeedBack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarTasarim2("Geri Bildirim"),
+      appBar: appBarTasarim2(title : "Geri Bildirim",context: context),
       body: Container(
         padding: EdgeInsets.all(15),
         child: Column(

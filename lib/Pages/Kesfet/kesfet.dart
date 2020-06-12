@@ -11,7 +11,6 @@ import 'filterchip.dart';
 enum WhyFarther { favoritest, sonracoz, paylas }
 
 class Kesfet extends StatefulWidget {
-
   @override
   _KesfetState createState() => _KesfetState();
 }
@@ -21,18 +20,18 @@ class _KesfetState extends State<Kesfet> {
   WhyFarther _selection;
   String dropdownValue = '1';
 
-  List <String> spinnerItems = [
-    "1","2","3"
-  ] ;
+  List<String> spinnerItems = ["1", "2", "3"];
+
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return appBarWithScaffold(testlerTasarim(width,height), GradientColors.Background1, "Kesfet");
+    return appBarWithScaffold(
+        testlerTasarim(width, height), GradientColors.Background1, "Kesfet");
   }
-  Widget testlerTasarim (double width,double height) {
+
+  Widget testlerTasarim(double width, double height) {
     final _testBloc = BlocProvider.of<TestBloc>(context);
     _testBloc.add(FetchKesfetEvent());
     double cardWidth = width * 0.2;
@@ -45,18 +44,20 @@ class _KesfetState extends State<Kesfet> {
               showDialog(
                   context: context,
                   builder: (_) => Material(
-                    type: MaterialType.transparency,
-                    child: Center( // Aligns the container to center
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: FilterChipDisplay(callback: (secilenler) {
-                          ///TODO sayfayı filtrele
-                          /// _testBloc.add(FetchFiltreleEvent(kategoriAdi));
-                        },),
-                      ),
-                    ),
-                  )
-              );
+                        type: MaterialType.transparency,
+                        child: Center(
+                          // Aligns the container to center
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: FilterChipDisplay(
+                              callback: (secilenler) {
+                                ///TODO sayfayı filtrele
+                                /// _testBloc.add(FetchFiltreleEvent(kategoriAdi));
+                              },
+                            ),
+                          ),
+                        ),
+                      ));
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -70,7 +71,7 @@ class _KesfetState extends State<Kesfet> {
           alignment: Alignment.centerRight,
         ),
         Expanded(
-          child : BlocBuilder<TestBloc,TestState>(
+          child: BlocBuilder<TestBloc, TestState>(
               bloc: _testBloc,
               builder: (context, TestState state) {
                 if (state is TestUninitialized) {
@@ -80,7 +81,7 @@ class _KesfetState extends State<Kesfet> {
                     child: new CircularProgressIndicator(),
                   );
                 } else if (state is TestLoaded) {
-                  return  ListView.builder(
+                  return ListView.builder(
                     itemCount: state.Tests.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
@@ -105,7 +106,8 @@ class _KesfetState extends State<Kesfet> {
                               ),
                               title: Text(
                                 state.Tests[index].testAdi,
-                                style: TextStyle(fontSize: 14, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black),
                               ),
                               subtitle: Padding(
                                 padding: const EdgeInsets.only(top: 5),
@@ -125,14 +127,12 @@ class _KesfetState extends State<Kesfet> {
                   );
                 } else if (state is TestError) {
                   return Text("İnternet yok amk");
-                }else {
-
+                } else {
                   return Text("state");
                 }
               }),
         ),
         Column(children: <Widget>[
-
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
@@ -140,16 +140,25 @@ class _KesfetState extends State<Kesfet> {
               child: Theme(
                 data: Theme.of(context).copyWith(brightness: Brightness.dark),
                 child: DropdownButton(
-                  underline: Container( height: 2,color: Colors.blueAccent,),
-                  style: TextStyle(color: Colors.blue, decorationColor: Colors.black),
-                  items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+                  underline: Container(
+                    height: 2,
+                    color: Colors.blueAccent,
+                  ),
+                  style: TextStyle(
+                      color: Colors.blue, decorationColor: Colors.black),
+                  items: spinnerItems
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value,style: TextStyle(color: Colors.black),),
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black),
+                      ),
                     );
                   }).toList(),
                   value: null,
-                  hint: Text(dropdownValue, style: TextStyle(color: Colors.white)),
+                  hint: Text(dropdownValue,
+                      style: TextStyle(color: Colors.white)),
                   onChanged: (String data) {
                     setState(() {
                       dropdownValue = data;
@@ -162,8 +171,8 @@ class _KesfetState extends State<Kesfet> {
         ]),
       ],
     );
-
   }
+
   Widget popUp() {
     return PopupMenuButton<WhyFarther>(
       elevation: 4,
@@ -173,6 +182,11 @@ class _KesfetState extends State<Kesfet> {
       ),
       onSelected: (WhyFarther result) {
         setState(() {
+          if (result == WhyFarther.favoritest) {
+            Navigator.pushNamed(context, '/FavoriTestlerim');
+          } else if (result == WhyFarther.paylas) {
+            Navigator.pushNamed(context, '/PaylasmaBolumu');
+          }
           _selection = result;
         });
       },
@@ -183,13 +197,6 @@ class _KesfetState extends State<Kesfet> {
               style: TextStyle(
                 fontSize: 15,
               )),
-        ),
-        const PopupMenuItem<WhyFarther>(
-          value: WhyFarther.sonracoz,
-          child: Text(
-            "Daha sonra çöz",
-            style: TextStyle(fontSize: 15),
-          ),
         ),
         const PopupMenuItem<WhyFarther>(
           value: WhyFarther.paylas,

@@ -30,7 +30,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarTasarim2("Bildirimler"),
+      appBar: appBarTasarim2(title : "Bildirimler",),
       body: ListView.separated(
         separatorBuilder: (context, index) => Container(
           padding: EdgeInsets.symmetric(horizontal: 5),
