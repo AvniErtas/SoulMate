@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soulmate/Tools/kategoriResimleri.dart';
+import 'package:soulmate/blocs/UserSearchBloc/user_search_event.dart';
+import 'package:soulmate/blocs/UserSearchBloc/user_search_state.dart';
+import 'package:soulmate/model/user.dart';
 
-class DataSearch extends SearchDelegate<String> {
+class DataSearch extends SearchDelegate<User> {
+  final Bloc<UserSearchEvent, UserSearchState> userBloc;
+
+  DataSearch(this.userBloc);
+
   final recentCities = [
     'test',
     'test2',
@@ -35,35 +43,51 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
+      return _search();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-        ? recentCities
-        : kategoriIsmi.where((element) => element.startsWith(query)).toList();
+    return _search();
+  }
 
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.location_city),
-        title: RichText(
-          text: TextSpan(
-              text: suggestionList[index].substring(0, query.length),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                    text: suggestionList[index].substring(query.length),
-                    style: TextStyle(color: Colors.grey)),
-              ]),
-        ),
-      ),
-      itemCount: suggestionList.length,
+  Widget _search() {
+    userBloc.add(UserSearchEvent(query));
+
+    return BlocBuilder(
+      bloc: userBloc,
+      builder: (BuildContext context, UserSearchState state) {
+        if (state.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state.hasError) {
+          return Container(
+            child: Text('Error'),
+          );
+        }
+        return ListView.builder(
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(Icons.location_city),
+              title: RichText(
+                text: TextSpan(
+                    text: state.users[index].username.substring(0, query.length),
+                    style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    children: [
+                      TextSpan(
+                          text: state.users[index].username.substring(query.length),
+                          style: TextStyle(color: Colors.grey)),
+                    ]),
+              ),
+              onTap: () => close(context, state.users[index]),
+            );
+          },
+          itemCount: state.users.length,
+        );
+      },
     );
   }
 }
