@@ -210,11 +210,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                         ],
                       ),
                     ),
-                    CategoryChooser(
-                      onTap: (category) => Navigator.pushNamed(
-                          context, 'category_bikes',
-                          arguments: category),
-                    ),
+                    CategoryChooser(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Align(
