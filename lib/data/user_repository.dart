@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:soulmate/Tools/domain.dart';
 
 enum UserDurumu {Idle,OturumAcilmamis,OturumAciliyor,OturumAcik}
 
@@ -39,7 +41,30 @@ class UserRepository with ChangeNotifier {
       return false;
     }
   }
-
+  Future<String> signUp(String mail,String password) async {
+    var firebaseuser = await _auth
+        .createUserWithEmailAndPassword(email: mail, password: password)
+        .catchError((e) => debugPrint("Hata :"+e.toString()));
+    if(firebaseuser==null) {
+      return "Bu mail adresi kayıtlı.Lütfen başka mail adresi deneyiniz.";
+    }
+    else {
+      var response =
+      await http.post(Domain().getDomainApi()+"/user/save", body: {
+        "uid": firebaseuser.user.uid,
+        "mail": firebaseuser.user.email,
+      });
+      if (response.statusCode == 200) {
+        debugPrint(response.body.toString());
+        // return Gonderi.fromJsonMap(json.decode(response.body));
+        return null;
+      } else {
+        debugPrint(response.statusCode.toString());
+        debugPrint(response.body.toString());
+      }
+      return null;
+    }
+  }
   Future signOut() async {
     _auth.signOut();
     _durum = UserDurumu.OturumAcilmamis;

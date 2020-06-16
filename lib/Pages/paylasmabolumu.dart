@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:soulmate/Widgets/dataSearch.dart';
+import 'package:soulmate/blocs/UserSearchBloc/user_bloc.dart';
 
 class PaylasmaBolumu extends StatelessWidget {
   double width;
@@ -14,7 +17,10 @@ class PaylasmaBolumu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             bitir_buton(context),
-            InkWell(child: circleImages("arkilepaylas")),
+            InkWell(onTap: (){
+              showSearch(context: context, delegate: DataSearch(BlocProvider.of<UserSearchBloc>(context)));
+            },
+                child: circleImages("arkilepaylas")),
             InkWell(child: circleImages("KesfettePaylas")),
             InkWell(
               onTap: () {},

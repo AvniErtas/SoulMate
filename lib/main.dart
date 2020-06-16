@@ -269,11 +269,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 600),
       onTap: (index) {
-        //if(userRepo.durum == UserDurumu.OturumAcik)
+        if(userRepo.durum == UserDurumu.OturumAcik)
         setState(() {
           selectedIndex = index;
         });
-        //else Navigator.pushNamed(context, '/Login');
+        else Navigator.pushNamed(context, '/Login');
       },
     );
   }

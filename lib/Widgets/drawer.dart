@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/giris.dart';
+import 'package:soulmate/blocs/UserSearchBloc/user_bloc.dart';
+
+import 'dataSearch.dart';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //Drawer'ın hazırlanması
@@ -70,8 +74,10 @@ class _DrawerPageState extends State<DrawerPage> {
     List<String> titles = [
       'Anasayfa',
       'Soru Hazırla',
-      'Geri Bildirim',
+      'Kullanıcı Ara',
+      'Bildirimler',
       'Ayarlar',
+      'Geri Bildirim',
       'Yardım'
     ];
     List<Icon> icons = [
@@ -80,6 +86,7 @@ class _DrawerPageState extends State<DrawerPage> {
         color: Colors.white,
       ),
       Icon(Icons.settings, color: Colors.white),
+      Icon(Icons.search, color: Colors.white),
       Icon(Icons.send, color: Colors.white),
       Icon(Icons.info_outline, color: Colors.white),
       Icon(Icons.send, color: Colors.white),
@@ -89,7 +96,7 @@ class _DrawerPageState extends State<DrawerPage> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: titles.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
@@ -102,12 +109,18 @@ class _DrawerPageState extends State<DrawerPage> {
                 widget.onPageChange(index);
                 break;
               case 2:
-                Navigator.pushNamed(context, '/GeriBildirim');
+                showSearch(context: context, delegate: DataSearch(BlocProvider.of<UserSearchBloc>(context)));
                 break;
               case 3:
-                Navigator.pushNamed(context, '/Ayarlar');
+                Navigator.pushNamed(context, '/Bildirimler');
                 break;
               case 4:
+                Navigator.pushNamed(context, '/Ayarlar');
+                break;
+              case 5:
+                Navigator.pushNamed(context, '/GeriBildirim');
+                break;
+              case 6:
                 GirisSayfasiState.showTutorial();
                 break;
             }

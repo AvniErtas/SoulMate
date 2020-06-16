@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,14 +45,16 @@ class _SignupTwoState extends State<SignupTwo> {
 
   Future<Null> _pickImageFromGallery() async {
     final File imageFile =
-        await ImagePicker.pickImage(source: ImageSource.gallery);
+        await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 75);
     setState(() => this._imageFile = imageFile);
+    print(imageFile.lengthSync());
   }
 
   Future<Null> _pickImageFromCamera() async {
     final File imageFile = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 85);
+        source: ImageSource.camera, imageQuality: 75);
     setState(() => this._imageFile = imageFile);
+    print(imageFile.lengthSync());
   }
 
   Widget fotoEkle() {
@@ -187,17 +190,18 @@ class _SignupTwoState extends State<SignupTwo> {
                         ),
                       ],
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
-                      height: 220,
-                      width: 150,
-                      child: this._imageFile == null
-                          ? Container()
-                          : Image.file(
-                              this._imageFile,
-                              fit: BoxFit.cover,
-                            ),
+                    ClipRRect(
+                      child: Container(
+                        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                        height: 150,
+                        width: 100,
+                        child: this._imageFile == null
+                            ? Container()
+                            : Image.file(
+                                this._imageFile,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
                   ],
                 ),
@@ -255,7 +259,7 @@ class _SignupTwoState extends State<SignupTwo> {
               height: 30.0,
               child: FlatButton(
                 onPressed: () => {
-                  if (usernameController.text.isNotEmpty)
+                  if (usernameController.text.isNotEmpty || nameController.text.isNotEmpty)
                     {
                       startUpload(),
                     }
@@ -310,25 +314,22 @@ class _SignupTwoState extends State<SignupTwo> {
       _username_kayit(user.uid);
     }else {
 //      userUpdateInfo.photoUrl = user.uid+".jpg";
-    String ext = _imageFile.path.split('.').last;
-    uploadImage(ext,user.uid);
+//    String ext = _imageFile.path.split('.').last;
+    uploadImage(user.uid);
     }
 
   }
-Future<void> uploadImage(String ext,String uid) async {
-  /*  var dio = Dio();
+Future<void> uploadImage(String uid) async {
+    var dio = Dio();
     FormData formData = FormData.fromMap({
       "uid": uid,
-      "ext": ext,
       "username": usernameController.text.toString(),
       "name": nameController.text.toString(),
       "file": await MultipartFile.fromFile(_imageFile.path),
     });
     Response response = await dio.post(
       Domain().getDomainApi()+"/user/addUsernameP",
-     // "http://192.168.1.5:8080/post/uploadFile",F
       data: formData,
-
       onSendProgress: (int sent, int total) {
         if (total != -1) {
           setState(() {
@@ -349,7 +350,7 @@ Future<void> uploadImage(String ext,String uid) async {
     if (response.statusCode == 200)
     {
      _next_page();
-    }*/
+    }
  
   }
 
