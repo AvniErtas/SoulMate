@@ -10,12 +10,6 @@ class DataSearch extends SearchDelegate<User> {
 
   DataSearch(this.userBloc);
 
-  final recentCities = [
-    'test',
-    'test2',
-    'test3',
-  ];
-
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -52,7 +46,8 @@ class DataSearch extends SearchDelegate<User> {
   }
 
   Widget _search() {
-    userBloc.add(UserSearchEvent(query));
+    if(query.isNotEmpty)
+   userBloc.add(UserSearchEvent(query));
 
     return BlocBuilder(
       bloc: userBloc,
@@ -70,7 +65,7 @@ class DataSearch extends SearchDelegate<User> {
         return ListView.builder(
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Icon(Icons.location_city),
+              leading: Icon(Icons.person_outline),
               title: RichText(
                 text: TextSpan(
                     text: state.users[index].username.substring(0, query.length),

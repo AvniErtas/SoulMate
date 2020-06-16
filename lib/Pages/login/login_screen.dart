@@ -139,12 +139,12 @@ class LoginScreen extends StatelessWidget {
 //        return _emailLogin(loginData.name,loginData.password);
 //        return _loginUser(loginData);
       },
-      onSignup: (loginData) {
+      onSignup: (loginData) async {
         signIn=false;
         print('Signup info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        return _emailSignup(loginData.name,loginData.password);
+        return await userRepo.signUp(loginData.name,loginData.password);
       },
       onSubmitAnimationCompleted: () {
         debugPrint("submitanimation");
@@ -171,29 +171,7 @@ class LoginScreen extends StatelessWidget {
       showDebugButtons: false,
     );
   }
-  Future<String> _emailSignup(String mail,String password) async {
-    var firebaseuser = await _auth
-          .createUserWithEmailAndPassword(email: mail, password: password)
-          .catchError((e) => debugPrint("Hata :"+e.toString()));
-      if(firebaseuser==null) {
-        return "Bu mail adresi kayıtlı.Lütfen başka mail adresi deneyiniz.";
-      }
-      else {
-          var response =
-        await http.post(Domain().getDomainApi()+"/user/save", body: {
-      "uid": firebaseuser.user.uid,
-      "mail_address": firebaseuser.user.email,
-    });
-   if (response.statusCode == 200) {
-      debugPrint(response.body.toString());
-      // return Gonderi.fromJsonMap(json.decode(response.body));
-      return null;
-    } else {
-      debugPrint(response.statusCode.toString());
-    } 
-    return null;
-      }
-  }
+
   Future<String> _emailLogin(String mail,String password) async {
     var firebaseuser_login = await _auth
         .signInWithEmailAndPassword(email: mail, password: password)

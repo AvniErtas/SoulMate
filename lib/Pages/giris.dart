@@ -191,8 +191,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                                     title: 'Görmek Istediğiniz Testi Seçiniz',
                                     desc: "",
                                     btnOkOnPress: () {
-                                      showSearch(context: context, delegate: DataSearch(BlocProvider.of<UserSearchBloc>(context)));
-//                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
+                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
                                     },
                                     btnCancelOnPress: () {},
                                     btnOkIcon: Icons.check_circle,

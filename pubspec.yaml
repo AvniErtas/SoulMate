@@ -49,6 +49,7 @@ dependencies:
   awesome_dialog: ^1.1.2
   app_review: ^1.1.2
   rate_my_app: ^0.4.0
+  cached_network_image: ^2.2.0+1
   flutter_login:
      git:
        url: https://github.com/onuraykut/flutter_login.git

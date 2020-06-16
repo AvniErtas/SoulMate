@@ -1,13 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kf_drawer/kf_drawer.dart';
 import 'package:provider/provider.dart';
-import 'package:soulmate/Colors/gradientcolor.dart';
-import 'package:soulmate/Tools/appbar.dart';
+import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
-import 'package:soulmate/Widgets/Cards/gradientcard.dart';
-import 'package:soulmate/Widgets/imagepicker.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 import 'dart:io';
@@ -67,21 +64,44 @@ class _UserProfilePageState extends State<UserProfilePage>
     return Center(
       child: Stack(
         children: <Widget>[
-          Container(
+          CachedNetworkImage(
+            imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=$uid',
+            imageBuilder: (context, imageProvider) => Container(
+              width: width * 0.3,
+              height: width * 0.3,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: width * 0.01,
+                ),
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: imageProvider, fit: BoxFit.cover),
+              ),
+
+            ),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
+
+
+        /*  Container(
             width: width * 0.3,
             height: width * 0.3,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/profile.jpeg'),
-                fit: BoxFit.cover,
+              image: CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/350x150",
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
+
               borderRadius: BorderRadius.circular(80.0),
               border: Border.all(
                 color: Colors.white,
                 width: width * 0.01,
               ),
             ),
-          ),
+          ),*/
           Transform.translate(
             offset: Offset.fromDirection(getRadiansFromDegree(180),
                 degOneTranslationAnimation.value * 35),
@@ -398,6 +418,9 @@ class _UserProfilePageState extends State<UserProfilePage>
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      uid = Provider.of<UserRepository>(context).user.uid;
+    });
     List<String> testAdi = new List<String>();
     for (Test test in testler) {
       testAdi.add(test.testAdi);
