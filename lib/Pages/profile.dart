@@ -5,14 +5,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
+import 'package:soulmate/Widgets/HeroPhoto.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+
+import 'package:soulmate/model/user.dart';
 
 class UserProfilePage extends StatefulWidget {
   VoidCallback _returnMainWidget;
 
-  UserProfilePage(Key k, this._returnMainWidget) : super(key: k);
+  UserProfilePage(this._returnMainWidget);
 
   @override
   _UserProfilePageState createState() => _UserProfilePageState();
@@ -33,7 +37,9 @@ class _UserProfilePageState extends State<UserProfilePage>
     return degree / unitRadian;
   }
 
+  UserRepository userRepository;
   String uid;
+  User profileUser;
   File _imageFile;
   final globalKey = GlobalKey<ScaffoldState>();
   final ImagePicker _picker = ImagePicker();
@@ -64,24 +70,41 @@ class _UserProfilePageState extends State<UserProfilePage>
     return Center(
       child: Stack(
         children: <Widget>[
-          CachedNetworkImage(
-            imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=$uid',
-            imageBuilder: (context, imageProvider) => Container(
-              width: width * 0.3,
-              height: width * 0.3,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                  width: width * 0.01,
-                ),
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: imageProvider, fit: BoxFit.cover),
-              ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HeroPhotoViewWrapper(
+                          imageProvider: NetworkImage(Domain().getDomainApi()+'/user/getPhoto?uid=$uid'),
+                        ),
+                  ),
+              );
 
+            },
+            child: Hero(
+              tag: "someTag",
+              child: CachedNetworkImage(
+                imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=$uid',
+                imageBuilder: (context, imageProvider) => Container(
+                  width: width * 0.3,
+                  height: width * 0.3,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
+                      width: width * 0.01,
+                    ),
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+
+                ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
             ),
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
 
 
@@ -188,7 +211,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     );
 
     return Text(
-      _fullName,
+      profileUser != null ? profileUser.username : 'Yükleniyor..',
       style: _nameTextStyle,
     );
   }
@@ -408,13 +431,18 @@ class _UserProfilePageState extends State<UserProfilePage>
     animationController.addListener(() {
       setState(() {});
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      uid = Provider.of<UserRepository>(context).user.uid;
-    });
+    userRepository = Provider.of<UserRepository>(context);
+    if(userRepository.durum == UserDurumu.OturumAcik && uid != userRepository.user.uid) {
+      setState(() {
+        uid = userRepository.user.uid;
+        _getUser(uid);
+      });
+    }
     List<String> testAdi = new List<String>();
     for (Test test in testler) {
       testAdi.add(test.testAdi);
@@ -493,6 +521,24 @@ class _UserProfilePageState extends State<UserProfilePage>
         ],
       ),
     );
+
+  }
+
+  Future<User> _getUser (String uid) async {
+    var response =
+    await http.post(Domain().getDomainApi() + "/user/fromUid", body: {
+      "uid": uid,
+    });
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      setState(() {
+        profileUser = User.fromRawJson(response.body);
+      });
+    } else {
+//      debugPrint(response.statusCode.toString());
+//      debugPrint(response.body);
+      throw Exception('Failed to load user');
+    }
   }
 
   void _showDialogExit() {

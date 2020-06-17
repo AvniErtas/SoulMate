@@ -39,7 +39,7 @@ import 'login/firebaseauth_provider.dart';
 class GirisSayfasi extends StatefulWidget {
   VoidCallback menuStart;
 
-  GirisSayfasi(Key k, this.menuStart) : super(key: k);
+  GirisSayfasi(this.menuStart);
 
   @override
   GirisSayfasiState createState() => GirisSayfasiState();

@@ -120,7 +120,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   var keyProfile = PageStorageKey("key_profile");
   final PageStorageBucket _bucket = new PageStorageBucket();
   KFDrawerController _drawerController;
-  List<Widget> tumSayfalar;
   int selectedIndex = 0;
 
   bool isCollapsed = true;
@@ -135,13 +134,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tumSayfalar = [
-      GirisSayfasi(keyAnaSayfa,menuStart),
-      SoruSecmeVeHazirlama(keySoruHazirlama),
-      HomeScreen(),
-      UserProfilePage(keyProfile,returnMainWidget),
-      SettingsOnePage(),
-    ];
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
     _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
@@ -176,10 +168,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         body: IndexedStack(
           index: selectedIndex,
           children: <Widget>[
-            GirisSayfasi(keyAnaSayfa,menuStart),
+            GirisSayfasi(menuStart),
             SoruSecmeVeHazirlama(keySoruHazirlama),
             HomeScreen(),
-            UserProfilePage(keyProfile,returnMainWidget),
+            UserProfilePage(returnMainWidget),
             SettingsOnePage(),
           ],
         )
