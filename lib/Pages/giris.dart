@@ -7,6 +7,7 @@ import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kf_drawer/kf_drawer.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/Kategoriler.dart';
@@ -25,6 +26,7 @@ import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_event.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_state.dart';
 import 'package:soulmate/blocs/TestBloc/bloc.dart';
 import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
+import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 import 'package:tutorial_coach_mark/animated_focus_light.dart';
 import 'package:tutorial_coach_mark/content_target.dart';
@@ -64,8 +66,10 @@ class GirisSayfasiState extends State<GirisSayfasi>
   Animation animation2;
   SequenceAnimation siralianimasyon;
 
+  String _uid;
   List<Test> testler = new List<Test>();
   AnaSayfaBloc _anaSayfaBloc;
+  UserRepository userRepository;
 
   @override
   void initState() {
@@ -91,6 +95,13 @@ class GirisSayfasiState extends State<GirisSayfasi>
 
   @override
   Widget build(BuildContext context) {
+    userRepository = Provider.of<UserRepository>(context);
+    if(userRepository.durum == UserDurumu.OturumAcik && _uid != userRepository.user.uid) {
+      setState(() {
+        _uid = userRepository.user.uid;
+      });
+    }
+
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Container(

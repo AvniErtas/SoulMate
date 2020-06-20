@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soulmate/Tools/kategoriResimleri.dart';
-import 'package:soulmate/blocs/UserSearchBloc/user_search_event.dart';
-import 'package:soulmate/blocs/UserSearchBloc/user_search_state.dart';
+import 'package:soulmate/Pages/profile.dart';
+import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
 import 'package:soulmate/model/user.dart';
 
 class DataSearch extends SearchDelegate<User> {
@@ -77,7 +76,17 @@ class DataSearch extends SearchDelegate<User> {
                           style: TextStyle(color: Colors.grey)),
                     ]),
               ),
-              onTap: () => close(context, state.users[index]),
+              onTap: () {
+                close(context, state.users[index]);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => UserProfilePage(
+                     uid: state.users[index].uid,
+                    ),
+                  ),
+                );
+              },
             );
           },
           itemCount: state.users.length,

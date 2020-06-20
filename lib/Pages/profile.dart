@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/HeroPhoto.dart';
+import 'package:soulmate/blocs/ProfileBloc/bloc.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 import 'dart:io';
@@ -14,9 +16,10 @@ import 'package:http/http.dart' as http;
 import 'package:soulmate/model/user.dart';
 
 class UserProfilePage extends StatefulWidget {
-  VoidCallback _returnMainWidget;
+  VoidCallback returnMainWidget;
+  String uid;
 
-  UserProfilePage(this._returnMainWidget);
+  UserProfilePage({this.returnMainWidget,this.uid});
 
   @override
   _UserProfilePageState createState() => _UserProfilePageState();
@@ -36,12 +39,10 @@ class _UserProfilePageState extends State<UserProfilePage>
     double unitRadian = 57.295779513;
     return degree / unitRadian;
   }
-
+  ProfileBloc profileBloc;
   UserRepository userRepository;
-  String uid;
   User profileUser;
   File _imageFile;
-  final globalKey = GlobalKey<ScaffoldState>();
   final ImagePicker _picker = ImagePicker();
 
   AnimationController animationController;
@@ -77,7 +78,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                   MaterialPageRoute(
                     builder: (context) =>
                         HeroPhotoViewWrapper(
-                          imageProvider: NetworkImage(Domain().getDomainApi()+'/user/getPhoto?uid=$uid'),
+                          imageProvider: NetworkImage(Domain().getDomainApi()+'/user/getPhoto?uid=${widget.uid}'),
                         ),
                   ),
               );
@@ -86,7 +87,7 @@ class _UserProfilePageState extends State<UserProfilePage>
             child: Hero(
               tag: "someTag",
               child: CachedNetworkImage(
-                imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=$uid',
+                imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=${widget.uid}',
                 imageBuilder: (context, imageProvider) => Container(
                   width: width * 0.3,
                   height: width * 0.3,
@@ -202,7 +203,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     setState(() => this._imageFile = file);
   }
 
-  Widget _buildFullName() {
+  Widget _buildFullName(String username) {
     TextStyle _nameTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
@@ -211,7 +212,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     );
 
     return Text(
-      profileUser != null ? profileUser.username : 'Yükleniyor..',
+      username,
       style: _nameTextStyle,
     );
   }
@@ -431,18 +432,27 @@ class _UserProfilePageState extends State<UserProfilePage>
     animationController.addListener(() {
       setState(() {});
     });
+    profileBloc = BlocProvider.of<ProfileBloc>(context);
+    if(widget.uid!=null)
+    profileBloc.add(FetchUserFromUidEvent(widget.uid));
 
   }
 
   @override
   Widget build(BuildContext context) {
-    userRepository = Provider.of<UserRepository>(context);
-    if(userRepository.durum == UserDurumu.OturumAcik && uid != userRepository.user.uid) {
-      setState(() {
-        uid = userRepository.user.uid;
-        _getUser(uid);
-      });
+
+    if(widget.uid==null) {
+      userRepository = Provider.of<UserRepository>(context);
+      if (userRepository.durum == UserDurumu.OturumAcik &&
+          widget.uid != userRepository.user.uid) {
+        setState(() {
+          widget.uid = userRepository.user.uid;
+          // _getUser(uid);
+          profileBloc.add(FetchUserFromUidEvent(widget.uid));
+        });
+      }
     }
+
     List<String> testAdi = new List<String>();
     for (Test test in testler) {
       testAdi.add(test.testAdi);
@@ -457,38 +467,54 @@ class _UserProfilePageState extends State<UserProfilePage>
             child: Container(
               height: double.infinity,
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    SizedBox(height: screenSize.height / 10),
-                    _buildProfileImage(),
-                    _buildFullName(),
-                    _buildStatus(context),
-                    _buildStatContainer(),
-                    // _buildBio(context),
-                    _buildSeparator(screenSize),
-                    SizedBox(height: 10.0),
-                    //_buildGetInTouch(context),
-                    SizedBox(height: 8.0),
-                    _buildButtons(),
-                    SizedBox(height: 8.0),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Son Çözülen Testler",
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500),
-                          )),
-                    ),
-                    SizedBox(height: 8.0),
-                    cardDesingTests(
-                        testVeSorular: testAdi, size: heightMedia / 280),
-                  ],
-                ),
+                child: BlocBuilder<ProfileBloc, ProfileState>(
+                    bloc: profileBloc,
+                    builder: (context, ProfileState state) {
+                      if (state is ProfileUninitialized) {
+                        return Text("UNINIT");
+                      } else if (state is ProfileLoading) {
+                        return new Center(
+                          child: new CircularProgressIndicator(),
+                        );
+                      } else if (state is ProfileLoaded) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          SizedBox(height: screenSize.height / 10),
+                          _buildProfileImage(),
+                          _buildFullName(state.user.username),
+                          _buildStatus(context),
+                          _buildStatContainer(),
+                          // _buildBio(context),
+                          _buildSeparator(screenSize),
+                          SizedBox(height: 10.0),
+                          //_buildGetInTouch(context),
+                          SizedBox(height: 8.0),
+                          _buildButtons(),
+                          SizedBox(height: 8.0),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Son Çözülen Testler",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          SizedBox(height: 8.0),
+                          cardDesingTests(
+                              testVeSorular: testAdi, size: heightMedia / 280),
+                        ],
+                      );
+                      } else if (state is ProfileError) {
+                        return Text("İnternet yok amk");
+                      } else {
+                        return Text("state");
+                      }
+                    }),
               ),
             ),
           ),
@@ -565,7 +591,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                     Provider.of<UserRepository>(context, listen: false);
                 userRepo.signOut();
                 Navigator.of(context).pop();
-                widget._returnMainWidget();
+                widget.returnMainWidget();
                 // _signOut();
               },
             ),

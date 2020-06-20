@@ -82,7 +82,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: appBarTasarim2(title : widget.testAdi,context: context),
+      appBar: appBarTasarim2(title : widget.testAdi),
       backgroundColor: animation.value,
       body: Container(
         child: testevethayirBolumu(),

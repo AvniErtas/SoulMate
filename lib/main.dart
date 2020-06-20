@@ -18,7 +18,9 @@ import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
+import 'package:soulmate/blocs/ProfileBloc/bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
+import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
 import 'package:soulmate/blocs/locator.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'Pages/Drawer/home.dart';
@@ -63,7 +65,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -77,7 +78,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<SonucBloc>(
           create: (BuildContext context) => SonucBloc(),
         ),
-
+        BlocProvider<UserSearchBloc>(
+          create: (BuildContext context) => UserSearchBloc(),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (BuildContext context) => ProfileBloc(),
+        ),
       ],
       child: ChangeNotifierProvider<UserRepository>(
         create: (context) => UserRepository(),
@@ -97,6 +103,7 @@ class MyApp extends StatelessWidget {
             '/Bildirimler' : (context) =>NotificationPage(),
             '/GeriBildirim' : (context) => FeedBack(),
             '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
+
           },
           home: MainWidget(),
         ),
@@ -129,157 +136,173 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Animation<double> _scaleAnimation;
   Animation<double> _menuScaleAnimation;
   Animation<Offset> _slideAnimation;
-  var userRepo;
+  UserRepository userRepo;
+  String uid;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
-    _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
-    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(_controller);
-    
-  //  _drawerController = drawerController();
+    _menuScaleAnimation =
+        Tween<double>(begin: 0.5, end: 1).animate(_controller);
+    _slideAnimation =
+        Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(
+            _controller);
+
+    //  _drawerController = drawerController();
   }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     userRepo = Provider.of<UserRepository>(context);
-    Size size = MediaQuery.of(context).size;
 
-    setState(() {
-      screenHeight = size.height;
-      screenWidth = size.width;
-    });
+      Size size = MediaQuery
+          .of(context)
+          .size;
+
+      setState(() {
+        screenHeight = size.height;
+        screenWidth = size.width;
+      });
 
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: selectedIndex == 1 ? null : appBarTasarim2(title: "Test App"),
-        drawer: DrawerPage(onPageChange: (index) {
-          pageChanger(index);
-        },),
-          extendBodyBehindAppBar: true,
-          bottomNavigationBar: bottomBarDesign(),
-        body: IndexedStack(
-          index: selectedIndex,
-          children: <Widget>[
-            GirisSayfasi(menuStart),
-            SoruSecmeVeHazirlama(keySoruHazirlama),
-            HomeScreen(),
-            UserProfilePage(returnMainWidget),
-            SettingsOnePage(),
-          ],
-        )
-      ),
-    );
-//    MenuDashboard();
-  }
-
-  Widget menu(context) {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: ScaleTransition(
-        scale: _menuScaleAnimation,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      return SafeArea(
+        child: Scaffold(
+            appBar: selectedIndex == 1 ? null : appBarTasarim2(
+                title: "Test App"),
+            drawer: DrawerPage(onPageChange: (index) {
+              pageChanger(index);
+            },),
+            extendBodyBehindAppBar: true,
+            bottomNavigationBar: bottomBarDesign(),
+            body: IndexedStack(
+              index: selectedIndex,
               children: <Widget>[
-                Text("Dashboard", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Messages", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Utility Bills", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Funds Transfer", style: TextStyle(color: Colors.white, fontSize: 22)),
-                SizedBox(height: 10),
-                Text("Branches", style: TextStyle(color: Colors.white, fontSize: 22)),
+                GirisSayfasi(menuStart),
+                SoruSecmeVeHazirlama(keySoruHazirlama),
+                HomeScreen(),
+                UserProfilePage(returnMainWidget: returnMainWidget,),
+                SettingsOnePage(),
               ],
+            )
+        ),
+      );
+//    MenuDashboard();
+    }
+
+
+    Widget menu(context) {
+      return SlideTransition(
+        position: _slideAnimation,
+        child: ScaleTransition(
+          scale: _menuScaleAnimation,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Dashboard",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                  SizedBox(height: 10),
+                  Text("Messages",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                  SizedBox(height: 10),
+                  Text("Utility Bills",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                  SizedBox(height: 10),
+                  Text("Funds Transfer",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                  SizedBox(height: 10),
+                  Text("Branches",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
-  VoidCallback menuStart() {
-    setState(() {
-      if (isCollapsed)
-        _controller.forward();
-      else
-        _controller.reverse();
+      );
+    }
+    VoidCallback menuStart() {
+      setState(() {
+        if (isCollapsed)
+          _controller.forward();
+        else
+          _controller.reverse();
 
-      isCollapsed = !isCollapsed;
-    });
+        isCollapsed = !isCollapsed;
+      });
+    }
+    List<KFDrawerItem> listss() {
+      List<KFDrawerItem> list = new List<KFDrawerItem>();
+      list.add(KFDrawerItem(
+        text: Text(
+          'GİRİŞ YAP',
+          style: TextStyle(color: Colors.white),
+        ),
+        icon: Icon(
+          Icons.input,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).push(CupertinoPageRoute(
+            fullscreenDialog: true,
+            builder: (BuildContext context) {
+              return AuthPage();
+            },
+          ));
+        },
+      ),);
+    }
+    Function onClickAyarlar() {
+      Navigator.pushReplacementNamed(context, '/Ayarlar');
+    }
+    bottomBarDesign() {
+      return CurvedNavigationBar(
+        index: selectedIndex,
+        height: 50.0,
+        items: <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white,),
+          Icon(Icons.add_circle, size: 30, color: Colors.white,),
+          Icon(Icons.message, size: 30, color: Colors.white,),
+          Icon(Icons.account_circle, size: 30, color: Colors.white,),
+        ],
+        color: Colors.indigo,
+        buttonBackgroundColor: Colors.indigo,
+        backgroundColor: Colors.white,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 600),
+        onTap: (index) {
+          if (userRepo.durum == UserDurumu.OturumAcik)
+            setState(() {
+              selectedIndex = index;
+            });
+          else
+            Navigator.pushNamed(context, '/Login');
+        },
+      );
+    }
 
-}
-  List<KFDrawerItem> listss() {
-    List<KFDrawerItem> list = new List<KFDrawerItem>();
-    list.add(KFDrawerItem(
-      text: Text(
-        'GİRİŞ YAP',
-        style: TextStyle(color: Colors.white),
-      ),
-      icon: Icon(
-        Icons.input,
-        color: Colors.white,
-      ),
-      onPressed: () {
-        Navigator.of(context).push(CupertinoPageRoute(
-          fullscreenDialog: true,
-          builder: (BuildContext context) {
-            return AuthPage();
-          },
-        ));
-      },
-    ),);
-  }
-  Function onClickAyarlar(){
-    Navigator.pushReplacementNamed(context, '/Ayarlar');
-  }
-  bottomBarDesign() {
-    return CurvedNavigationBar(
-      index: selectedIndex,
-      height: 50.0,
-      items: <Widget>[
-        Icon(Icons.home, size: 30,color: Colors.white,),
-        Icon(Icons.add_circle, size: 30,color: Colors.white,),
-        Icon(Icons.message, size: 30,color: Colors.white,),
-        Icon(Icons.account_circle, size: 30,color: Colors.white,),
-      ],
-      color: Colors.indigo,
-      buttonBackgroundColor: Colors.indigo,
-      backgroundColor: Colors.white,
-      animationCurve: Curves.easeInOut,
-      animationDuration: Duration(milliseconds: 600),
-      onTap: (index) {
-        if(userRepo.durum == UserDurumu.OturumAcik)
-        setState(() {
-          selectedIndex = index;
-        });
-        else Navigator.pushNamed(context, '/Login');
-      },
-    );
-  }
+    Function returnMainWidget() {
+      setState(() {
+        selectedIndex = 0;
+      });
+    }
 
-  Function returnMainWidget() {
-    setState(() {
-      selectedIndex = 0;
-    });
+    Function pageChanger(int index) {
+      debugPrint('girdi$index');
+      setState(() {
+        selectedIndex = index;
+      });
+    }
   }
-
-  Function pageChanger  (int index) {
-    debugPrint('girdi$index');
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-}

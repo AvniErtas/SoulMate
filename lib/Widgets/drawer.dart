@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:provider/provider.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
 import 'package:soulmate/Pages/giris.dart';
 import 'package:soulmate/blocs/UserSearchBloc/user_bloc.dart';
+import 'package:soulmate/data/user_repository.dart';
 
 import 'dataSearch.dart';
 
