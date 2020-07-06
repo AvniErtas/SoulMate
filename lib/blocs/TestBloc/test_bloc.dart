@@ -58,5 +58,15 @@ class TestBloc extends Bloc<TestTekEvent, TestState> {
         yield TestError();
       }
     }
+    else if (event is FetchCozdugumTestEvent) {
+      yield TestLoading();
+      try {
+        List<Test> getirilenTest = await testRepository.getCozdugumTestler(event.page);
+        yield TestLoaded(Tests: getirilenTest);
+      } catch (e) {
+        print(e);
+        yield TestError();
+      }
+    }
   }
 }

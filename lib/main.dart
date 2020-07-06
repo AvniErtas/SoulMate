@@ -18,6 +18,7 @@ import 'package:soulmate/Pages/settings_yeni.dart';
 import 'package:soulmate/Pages/sorusecme_hazirlama.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/blocs/AnaSayfaBloc/anasayfa_bloc.dart';
+import 'package:soulmate/blocs/NotificationsBloc/notifications_bloc.dart';
 import 'package:soulmate/blocs/ProfileBloc/bloc.dart';
 import 'package:soulmate/blocs/SonucBloc/bloc.dart';
 import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
@@ -30,9 +31,9 @@ import 'Pages/animatedPage.dart';
 import 'Pages/giris.dart';
 import 'Pages/paylasmabolumu.dart';
 import 'Pages/profile.dart';
+import 'Pages/testlerim/cozdugum_testler.dart';
 import 'Widgets/drawer.dart';
 import 'blocs/TestBloc/test_bloc.dart';
-
 
 /*TODO lIST
  TODO 1-AnaSayfadaki 4 butonun renkleri belirlenecek ve Kategorilere bağlantı eklenecek
@@ -50,18 +51,13 @@ import 'blocs/TestBloc/test_bloc.dart';
 
 */
 
-
 void main() {
 //  ClassBuilder.registerClasses();
   setupLocator();
   runApp(MyApp());
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
-
-
 
 class MyApp extends StatelessWidget {
   MyApp({Key key}) : super(key: key);
@@ -81,8 +77,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserSearchBloc>(
           create: (BuildContext context) => UserSearchBloc(),
         ),
-        BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => ProfileBloc(),
+        BlocProvider<NotificationsBloc>(
+          create: (BuildContext context) => NotificationsBloc(),
         ),
       ],
       child: ChangeNotifierProvider<UserRepository>(
@@ -93,17 +89,16 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           routes: {
-            '/Kategoriler' : (context) => KategoriBolumu(),
-            '/SonuclarTumTestler' : (context) => SonuclarTestler(),
-            '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
-            '/PaylasmaSonrasi' : (context) => PaylasmaSonrasi(),
-            '/Ayarlar' : (context) => SettingsOnePage(),
-            '/Login' : (context) => LoginScreen(),
-            '/Kesfet' : (context) => Kesfet(),
-            '/Bildirimler' : (context) =>NotificationPage(),
-            '/GeriBildirim' : (context) => FeedBack(),
-            '/PaylasmaBolumu' : (context) => PaylasmaBolumu(),
-
+            '/Kategoriler': (context) => KategoriBolumu(),
+            '/SonuclarTumTestler': (context) => SonuclarTestler(),
+            '/PaylasmaBolumu': (context) => PaylasmaBolumu(),
+            '/PaylasmaSonrasi': (context) => PaylasmaSonrasi(),
+            '/Ayarlar': (context) => SettingsOnePage(),
+            '/Login': (context) => LoginScreen(),
+            '/Kesfet': (context) => Kesfet(),
+            '/Bildirimler': (context) => NotificationPage(),
+            '/GeriBildirim': (context) => FeedBack(),
+            '/CozdugumTestler': (context) => CozdugumTestler(),
           },
           home: MainWidget(),
         ),
@@ -146,9 +141,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
     _menuScaleAnimation =
         Tween<double>(begin: 0.5, end: 1).animate(_controller);
-    _slideAnimation =
-        Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(
-            _controller);
+    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+        .animate(_controller);
 
     //  _drawerController = drawerController();
   }
@@ -163,89 +157,94 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     userRepo = Provider.of<UserRepository>(context);
 
-      Size size = MediaQuery
-          .of(context)
-          .size;
+    Size size = MediaQuery.of(context).size;
 
-      setState(() {
-        screenHeight = size.height;
-        screenWidth = size.width;
-      });
+    setState(() {
+      screenHeight = size.height;
+      screenWidth = size.width;
+    });
 
-
-      return SafeArea(
-        child: Scaffold(
-            appBar: selectedIndex == 1 ? null : appBarTasarim2(
-                title: "Test App"),
-            drawer: DrawerPage(onPageChange: (index) {
+    return SafeArea(
+      child: Scaffold(
+          appBar: selectedIndex == 1
+              ? null
+              : appBarTasarim2(title: "Test App", context: context),
+          drawer: DrawerPage(
+            onPageChange: (index) {
               pageChanger(index);
-            },),
-            extendBodyBehindAppBar: true,
-            bottomNavigationBar: bottomBarDesign(),
-            body: IndexedStack(
-              index: selectedIndex,
-              children: <Widget>[
-                GirisSayfasi(menuStart),
-                SoruSecmeVeHazirlama(keySoruHazirlama),
-                HomeScreen(),
-                UserProfilePage(returnMainWidget: returnMainWidget,),
-                SettingsOnePage(),
-              ],
-            )
-        ),
-      );
+            },
+          ),
+          extendBodyBehindAppBar: true,
+          bottomNavigationBar: bottomBarDesign(),
+          body: IndexedStack(
+            index: selectedIndex,
+            children: <Widget>[
+              GirisSayfasi(menuStart),
+              SoruSecmeVeHazirlama(keySoruHazirlama),
+              HomeScreen(),
+              BlocProvider(
+                  create: (BuildContext context) => ProfileBloc(),
+                  child: UserProfilePage(
+                    returnMainWidget: returnMainWidget,
+                  )),
+              SettingsOnePage(),
+            ],
+          )),
+    );
 //    MenuDashboard();
-    }
+  }
 
-
-    Widget menu(context) {
-      return SlideTransition(
-        position: _slideAnimation,
-        child: ScaleTransition(
-          scale: _menuScaleAnimation,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Dashboard",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                  SizedBox(height: 10),
-                  Text("Messages",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                  SizedBox(height: 10),
-                  Text("Utility Bills",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                  SizedBox(height: 10),
-                  Text("Funds Transfer",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                  SizedBox(height: 10),
-                  Text("Branches",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                ],
-              ),
+  Widget menu(context) {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: ScaleTransition(
+        scale: _menuScaleAnimation,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Dashboard",
+                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                SizedBox(height: 10),
+                Text("Messages",
+                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                SizedBox(height: 10),
+                Text("Utility Bills",
+                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                SizedBox(height: 10),
+                Text("Funds Transfer",
+                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                SizedBox(height: 10),
+                Text("Branches",
+                    style: TextStyle(color: Colors.white, fontSize: 22)),
+              ],
             ),
           ),
         ),
-      );
-    }
-    VoidCallback menuStart() {
-      setState(() {
-        if (isCollapsed)
-          _controller.forward();
-        else
-          _controller.reverse();
+      ),
+    );
+  }
 
-        isCollapsed = !isCollapsed;
-      });
-    }
-    List<KFDrawerItem> listss() {
-      List<KFDrawerItem> list = new List<KFDrawerItem>();
-      list.add(KFDrawerItem(
+  VoidCallback menuStart() {
+    setState(() {
+      if (isCollapsed)
+        _controller.forward();
+      else
+        _controller.reverse();
+
+      isCollapsed = !isCollapsed;
+    });
+  }
+
+  List<KFDrawerItem> listss() {
+    List<KFDrawerItem> list = new List<KFDrawerItem>();
+    list.add(
+      KFDrawerItem(
         text: Text(
           'GİRİŞ YAP',
           style: TextStyle(color: Colors.white),
@@ -262,47 +261,66 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             },
           ));
         },
-      ),);
-    }
-    Function onClickAyarlar() {
-      Navigator.pushReplacementNamed(context, '/Ayarlar');
-    }
-    bottomBarDesign() {
-      return CurvedNavigationBar(
-        index: selectedIndex,
-        height: 50.0,
-        items: <Widget>[
-          Icon(Icons.home, size: 30, color: Colors.white,),
-          Icon(Icons.add_circle, size: 30, color: Colors.white,),
-          Icon(Icons.message, size: 30, color: Colors.white,),
-          Icon(Icons.account_circle, size: 30, color: Colors.white,),
-        ],
-        color: Colors.indigo,
-        buttonBackgroundColor: Colors.indigo,
-        backgroundColor: Colors.white,
-        animationCurve: Curves.easeInOut,
-        animationDuration: Duration(milliseconds: 600),
-        onTap: (index) {
-          if (userRepo.durum == UserDurumu.OturumAcik)
-            setState(() {
-              selectedIndex = index;
-            });
-          else
-            Navigator.pushNamed(context, '/Login');
-        },
-      );
-    }
-
-    Function returnMainWidget() {
-      setState(() {
-        selectedIndex = 0;
-      });
-    }
-
-    Function pageChanger(int index) {
-      debugPrint('girdi$index');
-      setState(() {
-        selectedIndex = index;
-      });
-    }
+      ),
+    );
   }
+
+  Function onClickAyarlar() {
+    Navigator.pushReplacementNamed(context, '/Ayarlar');
+  }
+
+  bottomBarDesign() {
+    return CurvedNavigationBar(
+      index: selectedIndex,
+      height: 50.0,
+      items: <Widget>[
+        Icon(
+          Icons.home,
+          size: 30,
+          color: Colors.white,
+        ),
+        Icon(
+          Icons.add_circle,
+          size: 30,
+          color: Colors.white,
+        ),
+        Icon(
+          Icons.message,
+          size: 30,
+          color: Colors.white,
+        ),
+        Icon(
+          Icons.account_circle,
+          size: 30,
+          color: Colors.white,
+        ),
+      ],
+      color: Colors.indigo,
+      buttonBackgroundColor: Colors.indigo,
+      backgroundColor: Colors.white,
+      animationCurve: Curves.easeInOut,
+      animationDuration: Duration(milliseconds: 600),
+      onTap: (index) {
+        if (userRepo.durum == UserDurumu.OturumAcik)
+          setState(() {
+            selectedIndex = index;
+          });
+        else
+          Navigator.pushNamed(context, '/Login');
+      },
+    );
+  }
+
+  Function returnMainWidget() {
+    setState(() {
+      selectedIndex = 0;
+    });
+  }
+
+  Function pageChanger(int index) {
+    debugPrint('girdi$index');
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+}

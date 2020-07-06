@@ -135,7 +135,7 @@ class _SonucIncelemeState extends State<SonucInceleme> {
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: Text(
-                                      state.users[index].test_score,
+                                      state.users[index].friendLength.toString(),
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,

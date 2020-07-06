@@ -36,10 +36,12 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
       "query": query,
     });
     if (response.statusCode == 200) {
-      debugPrint(response.body);
+      debugPrint('user:: '+response.body);
       return (json.decode(response.body) as List)
           .map((tekGonderiMap) => User.fromJson(tekGonderiMap))
           .toList();
+
+
     } else {
 //      debugPrint(response.statusCode.toString());
 //      debugPrint(response.body);

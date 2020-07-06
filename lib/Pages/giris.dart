@@ -202,7 +202,7 @@ class GirisSayfasiState extends State<GirisSayfasi>
                                     title: 'Görmek Istediğiniz Testi Seçiniz',
                                     desc: "",
                                     btnOkOnPress: () {
-                                      Navigator.of(context).pushNamed('/ArkadasListesiPaylasim');
+                                      Navigator.of(context).pushNamed('/CozdugumTestler');
                                     },
                                     btnCancelOnPress: () {},
                                     btnOkIcon: Icons.check_circle,

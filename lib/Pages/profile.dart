@@ -4,25 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:soulmate/Tools/appbar.dart';
+import 'package:soulmate/Tools/bildirimKodlari.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/HeroPhoto.dart';
 import 'package:soulmate/blocs/ProfileBloc/bloc.dart';
+import 'package:soulmate/data/profile_repository.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/test.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-
 import 'package:soulmate/model/user.dart';
 
 class UserProfilePage extends StatefulWidget {
   VoidCallback returnMainWidget;
   String uid;
 
-  UserProfilePage({this.returnMainWidget,this.uid});
+  UserProfilePage({this.returnMainWidget, this.uid});
 
   @override
-  _UserProfilePageState createState() => _UserProfilePageState();
+  _UserProfilePageState createState() => _UserProfilePageState(uid);
 }
 
 class _UserProfilePageState extends State<UserProfilePage>
@@ -35,11 +37,19 @@ class _UserProfilePageState extends State<UserProfilePage>
   final String _posts = "24";
   final String _scores = "450";
 
+  var isEklendi=false;
+  var isArkadas;
+  var _isLoadingForFirstTime = true;
+  var isIstekLoading = false;
+  String uid;
+  _UserProfilePageState(this.uid);
   double getRadiansFromDegree(double degree) {
     double unitRadian = 57.295779513;
     return degree / unitRadian;
   }
+
   ProfileBloc profileBloc;
+
   UserRepository userRepository;
   User profileUser;
   File _imageFile;
@@ -67,7 +77,6 @@ class _UserProfilePageState extends State<UserProfilePage>
   Widget _buildProfileImage() {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
     return Center(
       child: Stack(
         children: <Widget>[
@@ -75,19 +84,19 @@ class _UserProfilePageState extends State<UserProfilePage>
             onTap: () {
               Navigator.push(
                 context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        HeroPhotoViewWrapper(
-                          imageProvider: NetworkImage(Domain().getDomainApi()+'/user/getPhoto?uid=${widget.uid}'),
-                        ),
+                MaterialPageRoute(
+                  builder: (context) => HeroPhotoViewWrapper(
+                    imageProvider: NetworkImage(Domain().getDomainApi() +
+                        '/user/getPhoto?uid=${uid}'),
                   ),
+                ),
               );
-
             },
             child: Hero(
               tag: "someTag",
               child: CachedNetworkImage(
-                imageUrl:  Domain().getDomainApi()+'/user/getThumbnail?uid=${widget.uid}',
+                imageUrl: Domain().getDomainApi() +
+                    '/user/getThumbnail?uid=${uid}',
                 imageBuilder: (context, imageProvider) => Container(
                   width: width * 0.3,
                   height: width * 0.3,
@@ -100,7 +109,6 @@ class _UserProfilePageState extends State<UserProfilePage>
                     image: DecorationImage(
                         image: imageProvider, fit: BoxFit.cover),
                   ),
-
                 ),
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
@@ -108,8 +116,7 @@ class _UserProfilePageState extends State<UserProfilePage>
             ),
           ),
 
-
-        /*  Container(
+          /*  Container(
             width: width * 0.3,
             height: width * 0.3,
             decoration: BoxDecoration(
@@ -130,14 +137,19 @@ class _UserProfilePageState extends State<UserProfilePage>
             offset: Offset.fromDirection(getRadiansFromDegree(180),
                 degOneTranslationAnimation.value * 35),
             child: Transform(
-              transform: Matrix4.rotationZ(getRadiansFromDegree(rotationAnimation.value))..scale(degOneTranslationAnimation.value),
+              transform: Matrix4.rotationZ(
+                  getRadiansFromDegree(rotationAnimation.value))
+                ..scale(degOneTranslationAnimation.value),
               alignment: Alignment.center,
               child: ClipOval(
                 child: Material(
                   color: Colors.transparent, // button color
                   child: Opacity(
                     opacity: degOneTranslationAnimation.value,
-                    child: IconButton(icon: Icon(Icons.photo),onPressed:() async => await _pickImageFromGallery(),),
+                    child: IconButton(
+                      icon: Icon(Icons.photo),
+                      onPressed: () async => await _pickImageFromGallery(),
+                    ),
                   ),
                 ),
               ),
@@ -147,7 +159,9 @@ class _UserProfilePageState extends State<UserProfilePage>
             offset: Offset.fromDirection(getRadiansFromDegree(270),
                 degOneTranslationAnimation.value * 35),
             child: Transform(
-              transform: Matrix4.rotationZ(getRadiansFromDegree(rotationAnimation.value))..scale(degOneTranslationAnimation.value),
+              transform: Matrix4.rotationZ(
+                  getRadiansFromDegree(rotationAnimation.value))
+                ..scale(degOneTranslationAnimation.value),
               alignment: Alignment.center,
               child: ClipOval(
                 child: Material(
@@ -155,10 +169,12 @@ class _UserProfilePageState extends State<UserProfilePage>
                   child: Opacity(
                     opacity: degOneTranslationAnimation.value,
                     child: IconButton(
-                      onPressed: (){
-                          debugPrint("ASDASD");
+                      onPressed: () {
+                        debugPrint("ASDASD");
                       },
-                      icon: Icon(Icons.photo_camera,),
+                      icon: Icon(
+                        Icons.photo_camera,
+                      ),
                     ),
                   ),
                 ),
@@ -166,14 +182,21 @@ class _UserProfilePageState extends State<UserProfilePage>
             ),
           ),
           Transform(
-            transform: Matrix4.rotationZ(getRadiansFromDegree(rotationAnimation.value*2)),
+            transform: Matrix4.rotationZ(
+                getRadiansFromDegree(rotationAnimation.value * 2)),
             alignment: Alignment.center,
             child: ClipOval(
               child: Material(
                 color: Colors.transparent, // button color
                 child: InkWell(
                   splashColor: Colors.indigo, // inkwell color
-                  child: SizedBox(width: 25, height: 25, child: Icon(Icons.edit,color: Colors.black,)),
+                  child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.black,
+                      )),
                   onTap: () {
                     if (animationController.isCompleted) {
                       animationController.reverse();
@@ -198,7 +221,7 @@ class _UserProfilePageState extends State<UserProfilePage>
 
   Future<Null> _pickImageFromCamera() async {
     final imageFile =
-    await _picker.getImage(source: ImageSource.camera, imageQuality: 85);
+        await _picker.getImage(source: ImageSource.camera, imageQuality: 85);
     final File file = File(imageFile.path);
     setState(() => this._imageFile = file);
   }
@@ -236,7 +259,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     );
   }
 
-  Widget _buildStatItem(String label, String count) {
+  Widget _buildStatItem(String label, int count) {
     TextStyle _statLabelTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
@@ -255,7 +278,7 @@ class _UserProfilePageState extends State<UserProfilePage>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          count,
+          count.toString(),
           style: _statCountTextStyle,
         ),
         Text(
@@ -266,7 +289,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     );
   }
 
-  Widget _buildStatContainer() {
+  Widget _buildStatContainer(int friendLength) {
     return Container(
       height: 50,
       margin: EdgeInsets.only(top: 8.0),
@@ -276,8 +299,8 @@ class _UserProfilePageState extends State<UserProfilePage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _buildStatItem("Test Sayısı", _followers),
-          _buildStatItem("Arkadaş", _posts),
+          _buildStatItem("Test Sayısı", 0),
+          _buildStatItem("Arkadaş", friendLength),
         ],
       ),
     );
@@ -324,65 +347,253 @@ class _UserProfilePageState extends State<UserProfilePage>
   }
 
   Widget _buildButtons() {
+    String arkadasButtonText;
+    if(isArkadas=='false')
+      arkadasButtonText = 'Arkadaş Ekle';
+    else if(isArkadas=='true')
+      arkadasButtonText = 'Arkadaşlıktan Çıkar';
+    else arkadasButtonText = 'İstek gönderildi';
     // TODO Butonlar değiştirilecek
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    debugPrint(isArkadas);
+    if(isArkadas == 'request') {
+      return  Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Expanded(
+          child: InkWell(
+            onTap: () => print("Message"),
+            child: Container(
+              height: height * 0.05,
+              decoration: BoxDecoration(
+                border: Border.all(),
+              ),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+             Center(
+             child: Text(
+               'Size arkadaşlık isteği gönderdi',
+               style: TextStyle(
+                 color: Colors.black,
+                 fontWeight: FontWeight.w600,
+                 fontSize: 13,
+               ),
+             ),
+            ),
+            InkWell(
+              onTap: () {
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: InkWell(
-              onTap: () => print("followed"),
-              child: Container(
-                height: height * 0.05,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: Color(0xFF404A5C),
-                ),
-                child: Center(
-                  child: Text(
-                    "ARKADAŞ EKLE",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(Icons.check,color: Colors.green,),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                    new ProfileRepository().setArkadasIstekReddet(uid);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(Icons.close,color: Colors.black,),
+              ),
+            ),
+               ],
+             ),
+            ),
+          ),
+        ),
+      );
+    } else
+    return Visibility(
+      visible: widget.returnMainWidget == null,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  if(isArkadas=='false')
+                    arkadasEkleDialog();
+                  else if(isArkadas=='true')
+                    arkadasSilDialog();
+                  else arkadasIstekKaldirDialog();
+                },
+                child: Container(
+                  height: height * 0.05,
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    color: isArkadas=='pending' ? Colors.green : Colors.grey.shade700,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Visibility(
+                        visible: isIstekLoading,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isArkadas=='pending',
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Icon(Icons.check,color: Colors.white,),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          arkadasButtonText,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(width: 10.0),
-          Expanded(
-            child: InkWell(
-              onTap: () => print("Message"),
-              child: Container(
-                height: height * 0.05,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "MESAJ GÖNDER",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
+            SizedBox(width: 10.0),
+            Expanded(
+              child: InkWell(
+                onTap: () => print("Message"),
+                child: Container(
+                  height: height * 0.05,
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        "MESAJ GÖNDER",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
+  Future<void> _arkadasSil() async {
+    var response =
+    await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
+      "uid": uid,
+      "bildirimID": arkadasSil,
+    });
+    if (response.statusCode == 200) {
+      debugPrint(response.body.toString());
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
+  }
+  void arkadasEkleDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Arkadaş olarak eklemek istiyor musunuz?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Evet"),
+              onPressed: () {
+                setState(() {
+                  isIstekLoading = true;
+                });
+                new ProfileRepository().setArkadasEkle(uid).then((value) => {
+                  setIstek(),
+                });
+
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void setIstek() async {
+    setState(() {
+      isIstekLoading = false;
+      isArkadas = 'pending';
+    });
+  }
+  void arkadasSilDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Arkadaşlıktan çıkarmak istiyor musunuz?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Evet"),
+              onPressed: () {
+                _arkadasSil();
+                isEklendi = false;
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void arkadasIstekKaldirDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Arkadaşlık isteğini geri çekmek istiyor musunuz?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Evet"),
+              onPressed: () {
+//                _arkadasSil();
+//                isEklendi = false;
+                new ProfileRepository().setArkadasIstekCek(uid);
+                setState(() {
+                isArkadas = 'false';
+              });
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Hayır"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   void initState() {
     testler.add(new Test(
@@ -427,31 +638,41 @@ class _UserProfilePageState extends State<UserProfilePage>
         AnimationController(vsync: this, duration: Duration(milliseconds: 250));
     degOneTranslationAnimation =
         Tween(begin: 0.0, end: 1.0).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0,end:0.0).animate(CurvedAnimation(parent: animationController,curve: Curves.easeOut));
+    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
     super.initState();
-    animationController.addListener(() {
+    /*animationController.addListener(() {
       setState(() {});
-    });
-    profileBloc = BlocProvider.of<ProfileBloc>(context);
-    if(widget.uid!=null)
-    profileBloc.add(FetchUserFromUidEvent(widget.uid));
-
+    });*/
   }
-
+  @override
+  void didChangeDependencies() {
+      profileBloc = BlocProvider.of<ProfileBloc>(context);
+      if (uid != null) {
+        if(_isLoadingForFirstTime) {
+          profileBloc.add(FetchUserFromUidEvent(uid));
+          _isLoadingForFirstTime = false;
+        }
+      }
+      else {
+        userRepository = Provider.of<UserRepository>(context);
+        if (userRepository.durum == UserDurumu.OturumAcik &&
+            uid != userRepository.user.uid) {
+          debugPrint('girdii');
+          setState(() {
+            uid = userRepository.user.uid;
+          });
+          // _getUser(uid);
+          if(_isLoadingForFirstTime)
+          profileBloc.add(FetchUserFromUidEvent(uid));
+          _isLoadingForFirstTime = false;
+        }
+      }
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
 
-    if(widget.uid==null) {
-      userRepository = Provider.of<UserRepository>(context);
-      if (userRepository.durum == UserDurumu.OturumAcik &&
-          widget.uid != userRepository.user.uid) {
-        setState(() {
-          widget.uid = userRepository.user.uid;
-          // _getUser(uid);
-          profileBloc.add(FetchUserFromUidEvent(widget.uid));
-        });
-      }
-    }
 
     List<String> testAdi = new List<String>();
     for (Test test in testler) {
@@ -460,6 +681,9 @@ class _UserProfilePageState extends State<UserProfilePage>
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: widget.returnMainWidget == null,
+      appBar:
+          widget.returnMainWidget == null ? appBarTasarim2(title: '') : null,
       body: Stack(
         children: <Widget>[
           _buildCoverImage(screenSize),
@@ -477,38 +701,39 @@ class _UserProfilePageState extends State<UserProfilePage>
                           child: new CircularProgressIndicator(),
                         );
                       } else if (state is ProfileLoaded) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          SizedBox(height: screenSize.height / 10),
-                          _buildProfileImage(),
-                          _buildFullName(state.user.username),
-                          _buildStatus(context),
-                          _buildStatContainer(),
-                          // _buildBio(context),
-                          _buildSeparator(screenSize),
-                          SizedBox(height: 10.0),
-                          //_buildGetInTouch(context),
-                          SizedBox(height: 8.0),
-                          _buildButtons(),
-                          SizedBox(height: 8.0),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Son Çözülen Testler",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
-                          SizedBox(height: 8.0),
-                          cardDesingTests(
-                              testVeSorular: testAdi, size: heightMedia / 280),
-                        ],
-                      );
+                        if(isArkadas == null) isArkadas = state.user.isArkadas;
+                        return Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            SizedBox(height: screenSize.height / 10),
+                            _buildProfileImage(),
+                            _buildFullName(state.user.username),
+                            _buildStatus(context),
+                            _buildStatContainer(state.user.friendLength),
+                            // _buildBio(context),
+                            _buildSeparator(screenSize),
+                            //_buildGetInTouch(context),
+                            SizedBox(height: 8.0),
+                            _buildButtons(),
+                            SizedBox(height: 8.0),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Son Çözülen Testler",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                            ),
+                            SizedBox(height: 8.0),
+                            cardDesingTests(
+                                testVeSorular: testAdi,
+                                size: heightMedia / 280),
+                          ],
+                        );
                       } else if (state is ProfileError) {
                         return Text("İnternet yok amk");
                       } else {
@@ -518,53 +743,41 @@ class _UserProfilePageState extends State<UserProfilePage>
               ),
             ),
           ),
-          Positioned(
-            bottom: -20,
-            left: -20,
-            child: Container(
-              width: 80,
-              height: 80,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Color(0xff5287f7),
-                shape: BoxShape.circle,
+          Visibility(
+            visible: widget.returnMainWidget != null,
+            child: Positioned(
+              bottom: -20,
+              left: -20,
+              child: Container(
+                width: 80,
+                height: 80,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xff5287f7),
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
           ),
-          Positioned(
-            bottom: 00,
-            left: 00,
-            child: IconButton(
-              icon: Icon(
-                Icons.power_settings_new,
-                color: Colors.white,
+          Visibility(
+            visible: widget.returnMainWidget != null,
+            child: Positioned(
+              bottom: 00,
+              left: 00,
+              child: IconButton(
+                icon: Icon(
+                  Icons.power_settings_new,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  _showDialogExit();
+                },
               ),
-              onPressed: () {
-                _showDialogExit();
-              },
             ),
           ),
         ],
       ),
     );
-
-  }
-
-  Future<User> _getUser (String uid) async {
-    var response =
-    await http.post(Domain().getDomainApi() + "/user/fromUid", body: {
-      "uid": uid,
-    });
-    if (response.statusCode == 200) {
-      debugPrint(response.body);
-      setState(() {
-        profileUser = User.fromRawJson(response.body);
-      });
-    } else {
-//      debugPrint(response.statusCode.toString());
-//      debugPrint(response.body);
-      throw Exception('Failed to load user');
-    }
   }
 
   void _showDialogExit() {
@@ -587,9 +800,7 @@ class _UserProfilePageState extends State<UserProfilePage>
             new FlatButton(
               child: new Text("Evet"),
               onPressed: () {
-                var userRepo =
-                    Provider.of<UserRepository>(context, listen: false);
-                userRepo.signOut();
+                userRepository.signOut();
                 Navigator.of(context).pop();
                 widget.returnMainWidget();
                 // _signOut();

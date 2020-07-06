@@ -18,3 +18,9 @@ class FetchTestFromIdEvent extends TestTekEvent {
 
   FetchTestFromIdEvent(this.testId);
 }
+
+class FetchCozdugumTestEvent extends TestTekEvent {
+  int page;
+
+  FetchCozdugumTestEvent(this.page);
+}

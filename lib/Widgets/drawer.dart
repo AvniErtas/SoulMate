@@ -28,6 +28,7 @@ class _DrawerPageState extends State<DrawerPage> {
   }
 
   Widget buildDrawer() {
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double drawerWidth = width * 0.65;

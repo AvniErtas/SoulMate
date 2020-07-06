@@ -1,11 +1,19 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/model/test.dart';
 import 'package:http/http.dart' as http;
 
 class TestRepository {
+
+  FirebaseAuth _auth;
+  FirebaseUser _user;
+
+  TestRepository() {
+    _auth = FirebaseAuth.instance;
+  }
 
   List <Test> getPopulerTest() {
     List<Test> testler = new List<Test>();
@@ -48,32 +56,51 @@ class TestRepository {
   }
 
   Future <Test> getTestFromId(String id) async{
-    int i=0;
     var response =
     await http.post(Domain().getDomainApi() + "/test/id", body: {
       "id": id,
     });
     if (response.statusCode == 200) {
-//      final gelenJson = jsonDecode(response.body);
       debugPrint(response.body);
       return testFromJson((response.body));
-//      return Test.fromJson(gelenJson);
     } else {
       debugPrint(response.statusCode.toString());
       throw Exception('Failed to load post');
     }
-   /* Test test = new Test();
-    List<Sorular> sorular = new List<Sorular>();
-    sorular.add(new Sorular(soruTipi: 0,soru: 'Soru 111'));
-    sorular.add(new Sorular(soruTipi: 0,soru: 'Soru 222'));
-    sorular.add(new Sorular(soruTipi: 1,soru: 'Soru 333'));
-    sorular.add(new Sorular(soruTipi: 2,soru: 'Soru 444'));
-    test = new Test(id: '123',olusturanUid: '124',olusturanTipi: 'Ekip',kategori: 'Aşk',olusturmaTarihi: "11111",testAdi: 'Sonuçççç',sorular: sorular);
-*/
 
-  debugPrint('girdi');
-//  return test;
+  }
 
+  Future <List<Test>> getCozdugumTestler(int page) async{
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    var response =
+    await http.post(Domain().getDomainApi() + "/test/id", body: {
+      "page" : page,
+      "id": user.uid,
+    });
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return (json.decode(response.body) as List)
+          .map((tekGonderiMap) => Test.fromJson(tekGonderiMap))
+          .toList();
+    } else {
+      debugPrint(response.statusCode.toString());
+      throw Exception('Failed to load post');
+    }
+
+  }
+
+  Future<void> favorilereEkle () async {
+    _user = await _auth.currentUser();
+    var response =
+    await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
+      "uid":  _user.uid,
+    });
+    if (response.statusCode == 200) {
+//      debugPrint(response.body.toString());
+      return;
+    } else {
+      debugPrint(response.statusCode.toString());
+    }
   }
 
 }
