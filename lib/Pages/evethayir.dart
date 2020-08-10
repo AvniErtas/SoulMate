@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:soulmate/Colors/gradientcolor.dart';
+import 'package:soulmate/Pages/springySlider.dart';
 import 'package:soulmate/Tools/appbar.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Tools/progressDialog.dart';
@@ -10,15 +12,17 @@ import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/blocs/TestBloc/test_bloc.dart';
 import 'package:soulmate/blocs/TestBloc/test_event.dart';
 import 'package:soulmate/blocs/TestBloc/test_state.dart';
-import 'package:soulmate/model/paylasim.dart';
+import 'package:soulmate/data/paylasim_repository.dart';
+import 'package:soulmate/data/user_repository.dart';
+import 'package:soulmate/model/paylasimKaydet.dart';
 import 'package:soulmate/model/sorular.dart';
 import 'package:soulmate/model/test.dart';
 import 'package:http/http.dart' as http;
 
 class EvetHayirBolumu extends StatefulWidget {
-  String testAdi;
   String id;
-  EvetHayirBolumu(this.testAdi, this.id);
+  String testPaylasimId;
+  EvetHayirBolumu({@required this.id,this.testPaylasimId});
 
   @override
   _EvetHayirBolumuState createState() => _EvetHayirBolumuState();
@@ -41,6 +45,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
   ProgressDialog pr;
   TestBloc _testBloc;
   bool isLoaded = false;
+  String testAd;
   @override
   void initState() {
     animatedContainerSize[0] = 100.0;
@@ -82,7 +87,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
     heightMedia = MediaQuery.of(context).size.height;
     widthMedia = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: appBarTasarim2(title : widget.testAdi),
+      appBar: appBarTasarim2(title : testAd),
       backgroundColor: animation.value,
       body: Container(
         child: testevethayirBolumu(),
@@ -104,12 +109,15 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
                   child: new CircularProgressIndicator(),
                 );
               } else if (state is TestLoaded) {
-                test = state.test;
+
+
                 if(!isLoaded) {
-                  siklar = new List<int>(test.sorular.length);
-                  border = new List<Border>(test.sorular.length);
+                  test = state.test;
+                  siklar = new List<int>(state.test.sorular.length);
+                  border = new List<Border>(state.test.sorular.length);
+                  isLoaded = true;
                 }
-                isLoaded = true;
+
 
                 return soruWidget();
 //              return Container();
@@ -410,17 +418,7 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
             new FlatButton(
               child: new Text("Evet"),
               onPressed: () {
-                // TODO paylasilan objesini sunucuya kaydet path= /paylasim/cevapEkle
-//                Paylasilan paylasilan =
-//                    new Paylasilan("paylasimID", "paylasilanUid", siklar);
-                Paylasim paylasim = new Paylasim(
-                    testID: test.id,
-                    paylasanUid: "123",
-                    paylasanAdi: "onur",
-                    paylasanCevaplari: siklar);
-                Navigator.of(context).pop();
-//                nextPage();
-                _dataKaydet(paylasim);
+                widget.testPaylasimId == null ? _dataKaydet() : _dataKaydetExist();
               },
             ),
           ],
@@ -477,25 +475,43 @@ class _EvetHayirBolumuState extends State<EvetHayirBolumu>
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   //Çözülen testin kaydedileceği yer
-  Future<void> _dataKaydet(Paylasim paylasim) async {
+  Future<void> _dataKaydet() async {
+    Navigator.of(context).pop();
+    UserRepository userRepository = Provider.of<UserRepository>(context,listen: false);
+
+    PaylasimKaydet paylasim = new PaylasimKaydet(
+        testID: test.id,
+        paylasanUid: userRepository.user.uid,
+        paylasanCevaplari: siklar);
+
     pr = progressDialog(context);
     await pr.show();
     var response = await http.post(Domain().getDomainApi() + "/paylasim/save",
         headers: {"Content-type": "application/json"},
         body: paylasim.toRawJson());
     if (response.statusCode == 200) {
-      debugPrint(response.body.toString());
+      debugPrint(response.body);
       pr.hide().then((isHidden) {
-        nextPage();
+        Navigator.pushReplacementNamed(context, '/PaylasmaBolumu',arguments: response.body);
       });
-      // return Gonderi.fromJsonMap(json.decode(response.body));
-//      return DegerlendirmeIcerigi.fromRawJson(response.body);
     } else {
       debugPrint(response.statusCode.toString());
     }
   }
 
-  void nextPage() {
-    Navigator.pushReplacementNamed(context, '/PaylasmaBolumu');
+  void _dataKaydetExist() async {
+    ProgressDialog pr = progressDialog(context);
+    await pr.show();
+    new PaylasimRepository()
+        .dataKaydetExist(widget.testPaylasimId,siklar)
+        .then((value) => {
+      pr.hide().then((isHidden) {
+//        Navigator.pushReplacementNamed(context, '/PaylasmaBolumu',arguments: widget.testPaylasimId);
+      debugPrint("value:"+value.toString());
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Springy(value)));
+      })
+    });
   }
+
 }

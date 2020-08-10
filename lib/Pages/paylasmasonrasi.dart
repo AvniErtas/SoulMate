@@ -13,6 +13,9 @@ class PaylasmaSonrasi extends StatelessWidget {
     return Scaffold(
       appBar: appBarTasarim("title"),
       floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
         child: const Icon(Icons.forward),
       ),
       floatingActionButtonLocation:

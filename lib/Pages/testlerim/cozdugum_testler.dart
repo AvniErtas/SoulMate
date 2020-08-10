@@ -28,7 +28,7 @@ class _CozdugumTestlerState extends State<CozdugumTestler> {
     double height = MediaQuery.of(context).size.height;
 
     return appBarWithScaffold(
-        testlerTasarim(width, height), GradientColors.Background1, "Testlerim");
+        testlerTasarim(width, height), GradientColors.Background1, "Çözdüğüm Testler");
   }
 
   Widget testlerTasarim(double width, double height) {
@@ -109,7 +109,7 @@ class _CozdugumTestlerState extends State<CozdugumTestler> {
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.black),
                               ),
-                              subtitle: Padding(
+                             /* subtitle: Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: Text(
 //                                      state.Tests[index].sorular.length.toString(),
@@ -117,7 +117,7 @@ class _CozdugumTestlerState extends State<CozdugumTestler> {
                                   textAlign: TextAlign.end,
                                   style: TextStyle(color: Colors.black),
                                 ),
-                              ),
+                              ),*/
                               trailing: popUp(),
                             ),
                           ),

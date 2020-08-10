@@ -9,6 +9,7 @@ import 'package:soulmate/Tools/bildirimKodlari.dart';
 import 'package:soulmate/Tools/domain.dart';
 import 'package:soulmate/Widgets/Cards/CardDesingTests.dart';
 import 'package:soulmate/Widgets/HeroPhoto.dart';
+import 'package:soulmate/Widgets/userList.dart';
 import 'package:soulmate/blocs/ProfileBloc/bloc.dart';
 import 'package:soulmate/data/profile_repository.dart';
 import 'package:soulmate/data/user_repository.dart';
@@ -58,7 +59,7 @@ class _UserProfilePageState extends State<UserProfilePage>
   AnimationController animationController;
   Animation degOneTranslationAnimation;
   Animation rotationAnimation;
-
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   double heightMedia;
   List<Test> testler = new List<Test>();
 
@@ -86,8 +87,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                 context,
                 MaterialPageRoute(
                   builder: (context) => HeroPhotoViewWrapper(
-                    imageProvider: NetworkImage(Domain().getDomainApi() +
-                        '/user/getPhoto?uid=${uid}'),
+                    imageProvider: NetworkImage(Domain().getProfile() + uid),
                   ),
                 ),
               );
@@ -95,8 +95,7 @@ class _UserProfilePageState extends State<UserProfilePage>
             child: Hero(
               tag: "someTag",
               child: CachedNetworkImage(
-                imageUrl: Domain().getDomainApi() +
-                    '/user/getThumbnail?uid=${uid}',
+                imageUrl: Domain().getThumb() + uid,
                 imageBuilder: (context, imageProvider) => Container(
                   width: width * 0.3,
                   height: width * 0.3,
@@ -274,18 +273,24 @@ class _UserProfilePageState extends State<UserProfilePage>
       fontWeight: FontWeight.w600,
     );
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          count.toString(),
-          style: _statCountTextStyle,
-        ),
-        Text(
-          label,
-          style: _statLabelTextStyle,
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => UserList(uid)));
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            count.toString(),
+            style: _statCountTextStyle,
+          ),
+          Text(
+            label,
+            style: _statLabelTextStyle,
+          ),
+        ],
+      ),
     );
   }
 
@@ -383,7 +388,31 @@ class _UserProfilePageState extends State<UserProfilePage>
             ),
             InkWell(
               onTap: () {
+                var isArkadasTemp;
+                      new ProfileRepository().setArkadasIstekKabul(uid).then((value) => {
+                        if(value == 200) {
+                          scaffoldKey.currentState.showSnackBar(
+                              SnackBar(content: Text('İstek kabul edildi',
+                                style: TextStyle(fontSize: 15.0, fontWeight:
+                                FontWeight.bold, color: Colors.black),),
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.greenAccent,)
+                          ),
+                          isArkadasTemp = 'true',
 
+                        } else  scaffoldKey.currentState.showSnackBar(
+                            SnackBar(content: Text('Hata oluştu',
+                              style: TextStyle(fontSize: 15.0, fontWeight:
+                              FontWeight.bold, color: Colors.black),),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.greenAccent,)
+                        ),
+                        isArkadasTemp = 'false',
+
+                      });
+                      setState(() {
+                        isArkadas = isArkadasTemp;
+                      });
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -392,7 +421,12 @@ class _UserProfilePageState extends State<UserProfilePage>
             ),
             InkWell(
               onTap: () {
-                    new ProfileRepository().setArkadasIstekReddet(uid);
+                    new ProfileRepository().setArkadasIstekReddet(uid).then((value) => {
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text('İstek reddedildi', style: TextStyle(fontSize: 15.0, fontWeight:
+                          FontWeight.bold,color: Colors.black),), duration: Duration(seconds: 2),backgroundColor: Colors.greenAccent,)
+                      ),
+                    });
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -489,18 +523,6 @@ class _UserProfilePageState extends State<UserProfilePage>
     );
   }
 
-  Future<void> _arkadasSil() async {
-    var response =
-    await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
-      "uid": uid,
-      "bildirimID": arkadasSil,
-    });
-    if (response.statusCode == 200) {
-      debugPrint(response.body.toString());
-    } else {
-      debugPrint(response.statusCode.toString());
-    }
-  }
   void arkadasEkleDialog() {
     showDialog(
       context: context,
@@ -548,8 +570,10 @@ class _UserProfilePageState extends State<UserProfilePage>
             new FlatButton(
               child: new Text("Evet"),
               onPressed: () {
-                _arkadasSil();
-                isEklendi = false;
+                new ProfileRepository().arkadasSil(uid);
+                setState(() {
+                  isEklendi = false;
+                });
                 Navigator.of(context).pop();
               },
             ),
@@ -681,6 +705,7 @@ class _UserProfilePageState extends State<UserProfilePage>
     heightMedia = MediaQuery.of(context).size.height;
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      key: scaffoldKey,
       extendBodyBehindAppBar: widget.returnMainWidget == null,
       appBar:
           widget.returnMainWidget == null ? appBarTasarim2(title: '') : null,

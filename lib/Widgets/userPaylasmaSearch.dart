@@ -7,14 +7,14 @@ import 'package:soulmate/blocs/UserSearchBloc/bloc.dart';
 import 'package:soulmate/data/user_repository.dart';
 import 'package:soulmate/model/user.dart';
 
-class DataSearch extends SearchDelegate<User> {
+class UserPaylasmaSearch extends SearchDelegate<User> {
   final Bloc<UserListEvent, UserSearchState> userBloc;
-  
-  DataSearch(this.userBloc);
+
+  UserPaylasmaSearch(this.userBloc);
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    
+
     return [
       IconButton(
         icon: Icon(Icons.clear),
@@ -40,7 +40,7 @@ class DataSearch extends SearchDelegate<User> {
 
   @override
   Widget buildResults(BuildContext context) {
-      return _search();
+    return _search();
   }
 
   @override
@@ -50,7 +50,7 @@ class DataSearch extends SearchDelegate<User> {
 
   Widget _search() {
     if(query.isNotEmpty)
-   userBloc.add(UserSearchEvent(query));
+      userBloc.add(UserListSearchPrivateEvent(query));
 
     return BlocBuilder(
       bloc: userBloc,
@@ -66,6 +66,7 @@ class DataSearch extends SearchDelegate<User> {
             child: Text('Error'),
           );
         }
+
         return ListView.builder(
           itemBuilder: (context, index) {
             return ListTile(
@@ -83,24 +84,6 @@ class DataSearch extends SearchDelegate<User> {
               ),
               onTap: () {
                 close(context, state.users[index]);
-                var router = new MaterialPageRoute(
-                    builder: (BuildContext context){
-                      return BlocProvider<ProfileBloc>(
-                        create: (BuildContext context) =>   ProfileBloc(),
-                        child:  UserProfilePage(
-                          uid: state.users[index].uid,
-                        ),
-                      );
-                    });
-                Navigator.of(context).push(router);
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => UserProfilePage(
-                     uid: state.users[index].uid,
-                    ),
-                  ),
-                );*/
               },
             );
           },

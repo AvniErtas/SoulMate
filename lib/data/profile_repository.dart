@@ -27,7 +27,7 @@ class ProfileRepository {
     }
   }
 
-  Future<void> setArkadasEkle(String uid) async {
+  Future<int> setArkadasEkle(String uid) async {
     _user = await _auth.currentUser();
     var response =
     await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
@@ -37,12 +37,14 @@ class ProfileRepository {
     });
     if (response.statusCode == 200) {
 //      debugPrint(response.body.toString());
+      return response.statusCode;
     } else {
       debugPrint(response.statusCode.toString());
+      return response.statusCode;
     }
   }
 
-  Future<void> setArkadasIstekCek(String uid) async {
+  Future<int> setArkadasIstekCek(String uid) async {
     _user = await _auth.currentUser();
     var response =
     await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
@@ -52,9 +54,10 @@ class ProfileRepository {
     });
     if (response.statusCode == 200) {
 //      debugPrint(response.body.toString());
-    return;
+      return response.statusCode;
     } else {
       debugPrint(response.statusCode.toString());
+      return response.statusCode;
     }
   }
 
@@ -68,23 +71,40 @@ class ProfileRepository {
     });
     if (response.statusCode == 200) {
 //      debugPrint(response.body.toString());
-      return;
+      return response.statusCode;
     } else {
       debugPrint(response.statusCode.toString());
+      return response.statusCode;
     }
   }
 
-  Future<void> setArkadasIstekKabul(String uid) async {
+  Future<int> setArkadasIstekKabul(String uid) async {
     _user = await _auth.currentUser();
     var response =
     await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
       "uid":  _user.uid,
       "myUid": uid,
-      "bildirimID": arkadasIstekCek,
+      "bildirimID": arkadasIstekKabul,
     });
     if (response.statusCode == 200) {
 //      debugPrint(response.body.toString());
-      return;
+      return response.statusCode;
+    } else {
+      debugPrint(response.statusCode.toString());
+      return response.statusCode;
+    }
+  }
+
+  Future<void> arkadasSil(String uid) async {
+    _user = await _auth.currentUser();
+    var response =
+    await http.post(Domain().getDomainApi() + "/user/arkadasIslemleri", body: {
+      "uid":  uid,
+      "myUid": _user.uid,
+      "bildirimID": arkadasIstekKabul,
+    });
+    if (response.statusCode == 200) {
+      debugPrint(response.body.toString());
     } else {
       debugPrint(response.statusCode.toString());
     }

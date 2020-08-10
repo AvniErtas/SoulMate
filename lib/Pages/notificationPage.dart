@@ -9,6 +9,7 @@ import 'package:soulmate/blocs/NotificationsBloc/notifications_event.dart';
 import 'package:soulmate/blocs/NotificationsBloc/notifications_state.dart';
 import 'package:soulmate/blocs/ProfileBloc/profile_bloc.dart';
 
+import 'evethayir.dart';
 import 'profile.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -41,8 +42,9 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarTasarim2(title : "Bildirimler",),
-
+      appBar: appBarTasarim2(
+        title: "Bildirimler",
+      ),
       body: BlocBuilder<NotificationsBloc, NotificationsState>(
           bloc: _notificationsBloc,
           builder: (context, NotificationsState state) {
@@ -53,34 +55,48 @@ class _NotificationPageState extends State<NotificationPage> {
               return new Center(
                 child: new CircularProgressIndicator(),
               );
-            }
-            else if (state is NotificationLoaded) {
-             return ListView.separated(
+            } else if (state is NotificationLoaded) {
+              return ListView.separated(
                 separatorBuilder: (context, index) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   color: Colors.blueGrey,
                   height: 1.2,
-
                 ),
                 itemCount: state.bildirim.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String gelenBildirim = new BildirimHazirla().getBildirim(state.bildirim[index].bildirimID, state.bildirim[index].gonderenAdi);
+                  String gelenBildirim = new BildirimHazirla().getBildirim(
+                      state.bildirim[index].bildirimID,
+                      state.bildirim[index].gonderenAdi);
                   return ListTile(
-                    onTap: (){
-                      if(state.bildirim[index].bildirimID == arkadasEkle) {
-                        var router = new MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return BlocProvider<ProfileBloc>(
-                                create: (BuildContext context) => ProfileBloc(),
-                                child: UserProfilePage(
-                                  uid: state.bildirim[index].gonderenUid,
-                                ),
-                              );
-                            });
-                        Navigator.of(context).push(router);
+                    onTap: () {
+                      switch (state.bildirim[index].bildirimID) {
+                        case arkadasEkle:
+                          var router = new MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return BlocProvider<ProfileBloc>(
+                              create: (BuildContext context) => ProfileBloc(),
+                              child: UserProfilePage(
+                                uid: state.bildirim[index].gonderenUid,
+                              ),
+                            );
+                          });
+                          Navigator.of(context).push(router);
+                          break;
+                        case kisiylePaylas:
+                          //TODO kisiylePaylas tıklanma işlemi yazılacak
+                        debugPrint( state.bildirim[index].toString());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EvetHayirBolumu(
+                                        id: state.bildirim[index].testId,
+                                        testPaylasimId:
+                                            state.bildirim[index].paylasimId,
+                                      )));
+                          break;
                       }
                     },
-                    onLongPress: (){},
+                    onLongPress: () {},
                     title: Text(gelenBildirim),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
@@ -88,15 +104,14 @@ class _NotificationPageState extends State<NotificationPage> {
                         alignment: Alignment.center,
                         width: 60,
                         height: 60,
-                        child:
-                        Image.asset(kategoriImageURL[index], fit: BoxFit.contain),
+                        child: Image.asset(kategoriImageURL[index],
+                            fit: BoxFit.contain),
                       ),
                     ),
                   );
                 },
               );
-            }
-            else if (state is NotificationError) {
+            } else if (state is NotificationError) {
               return Text("İnternet yok amk");
             } else {
               return Text("state");
@@ -104,7 +119,6 @@ class _NotificationPageState extends State<NotificationPage> {
           }),
     );
   }
-
 
   /*Widget imageWidget() {
     return Container(
@@ -127,6 +141,5 @@ class _NotificationPageState extends State<NotificationPage> {
       elevation: 2,
     );
   }*/
-
 
 }

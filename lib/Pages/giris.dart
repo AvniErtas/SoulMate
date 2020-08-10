@@ -252,8 +252,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
                               }
                               return cardDesingTests2(
                                   testVeSorular: state.Tests[0],
-                                  onClick: (itemIndex, id) =>
-                                      onClickTest(itemIndex, id));
+                                  onClick: (id) =>
+                                      onClickTest( id));
                             } else if (state is AnaSayfaError) {
                               return Text("İnternet yok amk");
                             } else {
@@ -286,8 +286,8 @@ class GirisSayfasiState extends State<GirisSayfasi>
                             }
                             return cardDesingTests(
                                 testVeSorular: testAdi,
-                                onClick: (itemIndex, id) =>
-                                    onClickTest(itemIndex, id));
+                                onClick: (id) =>
+                                    onClickTest(id));
                           } else if (state is AnaSayfaError) {
                             return Text("İnternet yok amk");
                           } else {
@@ -346,9 +346,10 @@ class GirisSayfasiState extends State<GirisSayfasi>
     );
   }
 
-  Function onClickTest(String soruAdi, String id) {
+  Function onClickTest(String id) {
+    debugPrint("id::::"+id);
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => EvetHayirBolumu(soruAdi, id)));
+        MaterialPageRoute(builder: (context) => EvetHayirBolumu(id: id,)));
   }
 
   SequenceAnimation sequenceAnimation() {

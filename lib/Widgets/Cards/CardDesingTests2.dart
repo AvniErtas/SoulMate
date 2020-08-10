@@ -16,7 +16,8 @@ CarouselSlider cardDesingTests2({@required List<Test> testVeSorular,Function onC
       child: InkWell(
         key: keyButton,
         onTap: () {
-          onClick != null ? onClick(testVeSorular[itemIndex].testAdi,testVeSorular[itemIndex].id) : {};
+          debugPrint("test::"+ testVeSorular[itemIndex].id);
+          onClick(testVeSorular[itemIndex].id);
         },
         child: Stack(
           children: <Widget>[

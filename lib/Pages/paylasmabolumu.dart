@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:soulmate/Widgets/dataSearch.dart';
+import 'package:soulmate/Widgets/userList.dart';
+import 'package:soulmate/Widgets/userPaylasmaSearch.dart';
 import 'package:soulmate/blocs/UserSearchBloc/user_bloc.dart';
+import 'package:soulmate/data/user_repository.dart';
+
+import 'arkadaslistesiPaylasim.dart';
 
 class PaylasmaBolumu extends StatelessWidget {
   double width;
   double height;
   @override
   Widget build(BuildContext context) {
+    String paylasimId = ModalRoute.of(context).settings.arguments;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -18,7 +25,10 @@ class PaylasmaBolumu extends StatelessWidget {
           children: <Widget>[
             bitir_buton(context),
             InkWell(onTap: (){
-              showSearch(context: context, delegate: DataSearch(BlocProvider.of<UserSearchBloc>(context)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ArkadasListesiPaylasim(paylasimId)));
+//              showSearch(context: context, delegate: UserPaylasmaSearch(BlocProvider.of<UserSearchBloc>(context)));
+
             },
                 child: circleImages("arkilepaylas")),
             InkWell(child: circleImages("KesfettePaylas")),

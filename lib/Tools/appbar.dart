@@ -37,7 +37,7 @@ Widget appBarTasarim2({@required String title,context}) {
     ],
     backgroundColor: Colors.indigo,
     title: Text(
-      title,
+      title == null ? "" : title,
       style: TextStyle(
         color: Colors.white,
         fontSize: 18,
