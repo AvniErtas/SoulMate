@@ -273,24 +273,18 @@ class _UserProfilePageState extends State<UserProfilePage>
       fontWeight: FontWeight.w600,
     );
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => UserList(uid)));
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            count.toString(),
-            style: _statCountTextStyle,
-          ),
-          Text(
-            label,
-            style: _statLabelTextStyle,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          count.toString(),
+          style: _statCountTextStyle,
+        ),
+        Text(
+          label,
+          style: _statLabelTextStyle,
+        ),
+      ],
     );
   }
 
@@ -305,7 +299,12 @@ class _UserProfilePageState extends State<UserProfilePage>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           _buildStatItem("Test Sayısı", 0),
-          _buildStatItem("Arkadaş", friendLength),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserList(uid)));
+              },
+          child: _buildStatItem("Arkadaş", friendLength)),
         ],
       ),
     );

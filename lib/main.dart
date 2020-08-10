@@ -36,18 +36,22 @@ import 'Widgets/drawer.dart';
 import 'blocs/TestBloc/test_bloc.dart';
 
 /*TODO lIST
- TODO 1-AnaSayfadaki 4 butonun renkleri belirlenecek ve Kategorilere bağlantı eklenecek
- TODO 2-AnaSayfa Bildirim ikonu yönlendirmesi ayarlanacak
- TODO 3-AnaSayfa Popüler Testler ve En Çok Çözülenler veri tabanından getirilecek
- TODO 4-Soru Hazırla Sayfası  yönlendirme ikonları değiştirilecek
- TODO 5-Mesaj Sayfası ayarlanacak
+ TODO 1-Bildirim ekranında basılı tutunca silme ekranı gelsin
+ TODO 2-test çözüldüyse bildirim kalksın, profil fotosu gelsin
+ TODO 3-Testini seç kategoriler ekranı; favorilere ekle yapılacak, alt taraf düzeltilecek, testler veritabanından çekilecek
+ TODO 4-Sonuç incele ekranı veritabanından çekilecek, gönderilen testleri çözen kişilerin sonuçları getirilecek, paylaş butonu kalsın sadece
+ TODO 5-Keşfet ekranında kendimizin belirlediği testler veritabından getirilecek ve kategori işlemleri gerçekletirilecek
  TODO 6-Profil sayfası profil resmi değiştirme butonları aktif hale getirilecek
- TODO 7-Scaffold altındaki renk belirlenecek
- TODO 8-Favorilerime ekle,daha sonra çöz , paylaş butonları aktif hale getirilecek
- TODO 9-Sonuçları incele sayfası açılan menü düzenlenecek
- TODO 10-Keşfet sayfası açılan menü düzenlenecek
- TODO 11-Yan Menü Bildirim kaldırılacak
- TODO 12-Profil bölümü arkadaş ekle ve mesaj gönder butonları aktif hale getirilecek
+ TODO 7-Çözdüğüm testler veritabanından getirilecek(test id'ye göre),filtreleme bölümü ve favorilere ekle iptal edilecek
+ TODO 8-Test istekleri ekranı oluşturulacak, gelen test istekleri veritabanındaki kullanıcının bildirimler listesinde "kisiylePaylas" kodundan çekilecek
+ TODO 9-Soru hazırlama bitir dendiğinde veritabanına kaydedilecek
+ TODO 10-Profil ekranında fotoğraf değiştirme ve isim değiştirme yapılacak,son çözülen testler getirilecek (5 tane)
+ TODO 11-Geri bildirim, veritabanına kaydedilsin
+ TODO 12-Yardım ekranı sadece anasayfada gösterilecek,bunun için index kontrolü yapacağız
+ TODO 13-Nodejs ile mesajlaşma kısmı araştırlacak
+ TODO 14-Login ekranındaki hatalar düzeltilecek,google ve facebook girişi aktif edilecek
+ TODO 15-Paylaşma sonrası öneri sayfası oluşturulacak
+ TODO 16-Çoklu paylaşma ekranı yapılacak
 
 */
 
