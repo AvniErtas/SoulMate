@@ -4,12 +4,12 @@ class Domain {
 /*String domainApi="http://books.loseyourip.com:8082";
   String domain="http://books.loseyourip.com";*/
 
-String domainApi="http://7fa6f33c8d56.ngrok.io";
-String domain="http://f87ed3e7cfcf.ngrok.io";
-String profile="/profile/";
+/*String domainApi="http://148.251.168.11:8085";
+String domain="http://148.251.168.11";*/
+String profile="/testapp/profile/";
 String thumb="thumb/";
-/*String domainApi="http://192.168.43.121:8085";
-String domain="http://192.168.43.121";*/
+String domainApi="http://192.168.1.106:8085";
+String domain="http://192.168.1.106";
 
   String getDomain() {
     return domain;
